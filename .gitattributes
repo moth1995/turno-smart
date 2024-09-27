@@ -1,0 +1,22 @@
+# Normalize line endings for text files
+* text=auto
+
+# Treat these file types as binary (no line ending conversion)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.dll binary
+*.exe binary
+
+# Ensure JSON and TypeScript files use LF for line endings
+*.json text eol=lf
+*.ts text eol=lf
+
+# Ensure .NET files use CRLF on checkout
+*.cs text eol=crlf
+*.csproj text eol=crlf
+*.sln text eol=crlf
