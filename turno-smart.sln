@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "turno-smart", "turno-smart\turno-smart.csproj", "{F01AE125-FD0A-4EB3-A43D-7609F65A01EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F01AE125-FD0A-4EB3-A43D-7609F65A01EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F01AE125-FD0A-4EB3-A43D-7609F65A01EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F01AE125-FD0A-4EB3-A43D-7609F65A01EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F01AE125-FD0A-4EB3-A43D-7609F65A01EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BE2AD6EB-7698-4C2D-98D8-F9EC0AD61F54}
+	EndGlobalSection
+EndGlobal
