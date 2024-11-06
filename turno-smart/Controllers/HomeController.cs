@@ -65,11 +65,6 @@ namespace turno_smart.Controllers
             return View(doctors);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         public IActionResult Servicios()
         {
             return View();
