@@ -1,5 +1,7 @@
 ﻿@{
     var navbarExpanded = false;
+    var loginModel = ViewData["LoginModel"] as turno_smart.Areas.Identity.Pages.Account.LoginModel.InputModel;
+
 }
 ﻿@using Microsoft.AspNetCore.Identity
 
@@ -54,5 +56,5 @@
 </nav>
 <!-- Modales -->
 @await Html.PartialAsync("_RegistrationModal")
-@await Html.PartialAsync("_LoginModal")
+@await Html.PartialAsync("_LoginModal", loginModel)
 @await Html.PartialAsync("_ForgotPasswordModal")

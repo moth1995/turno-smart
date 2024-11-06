@@ -16,6 +16,7 @@ namespace turno_smart.Controllers
 
         public IActionResult Index()
         {
+            ViewData["LoginModel"] = new Areas.Identity.Pages.Account.LoginModel.InputModel();
             var doctors = new List<DoctorVM>
         {
             new DoctorVM
