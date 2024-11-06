@@ -1,4 +1,4 @@
-namespace turno_smart.Models
+namespace turno_smart.ViewModels
 {
     public class ErrorViewModel
     {

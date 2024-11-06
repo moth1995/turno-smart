@@ -1,0 +1,58 @@
+﻿@{
+    var navbarExpanded = false;
+}
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-light bg-custom-nav py-2">
+    <div class="container-fluid px-3">
+        <!-- Botón Toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#basic-navbar-nav" aria-controls="basic-navbar-nav" aria-expanded="@navbarExpanded" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="basic-navbar-nav">
+            <div class="navbar-nav ms-0">
+                <a class="text-white ps-0 nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="Servicios">Servicios</a>
+                <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="Contacto">Contacto</a>
+                <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="Institucion">Institución</a>
+            </div>
+        </div>
+
+        <div class="d-flex d-md-flex align-items-center ms-auto">
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="d-flex gap-2">
+                    <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hola @UserManager.GetUserName(User)!</a>
+                    <a href="javascript:void(0);" class="nav-link text-dark" onclick="document.getElementById('logout-form').submit();">Logout</a>
+                    <form id="logout-form" class="d-none" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                    </form>
+
+                </div>
+            }
+            else
+            {
+                <small class="text-white-50 me-2">¿Todavía no tienes una cuenta?</small>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-light btn-sm" onclick="openRegistrationModal()">
+                        Registrarse
+                    </button>
+                    <button type="button" class="btn btn-light btn-sm" onclick="openLoginModal()">
+                        Iniciar sesión
+                    </button>
+                </div>
+            }
+
+        </div>
+    </div>
+</nav>
+<!-- Modales -->
+@await Html.PartialAsync("_RegistrationModal")
+@await Html.PartialAsync("_LoginModal")
+@await Html.PartialAsync("_ForgotPasswordModal")
