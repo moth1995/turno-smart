@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-//using turno_smart.Models;
+using turno_smart.Models;
 using turno_smart.ViewModels;
 
 namespace turno_smart.Controllers
@@ -16,7 +16,8 @@ namespace turno_smart.Controllers
 
         public IActionResult Index()
         {
-            ViewData["LoginModel"] = new Areas.Identity.Pages.Account.LoginModel.InputModel();
+            ViewData["LoginModel"] = new LoginVM();
+            ViewData["RegisterModel"] = new RegisterVM();
             var doctors = new List<DoctorVM>
         {
             new DoctorVM

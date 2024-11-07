@@ -1,4 +1,4 @@
-﻿@model turno_smart.Areas.Identity.Pages.Account.LoginModel.InputModel
+﻿@model LoginVM
 
 <!-- Modal de Login -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <!-- Formulario de login -->
-                <form id="loginForm" method="post" asp-area="Identity" asp-page="/Account/Login">
+                <form id="loginForm" method="post" asp-controller="Account" asp-action="Login">
                     <div class="mb-3">
                         <input asp-for="Email" class="form-control" placeholder="Email" value="" />
                         <span asp-validation-for="Email" class="text-danger"></span>

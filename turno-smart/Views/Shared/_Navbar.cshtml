@@ -1,13 +1,12 @@
-﻿@{
+﻿﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Usuarios> SignInManager
+@inject UserManager<Usuarios> UserManager
+
+@{
     var navbarExpanded = false;
-    var loginModel = ViewData["LoginModel"] as turno_smart.Areas.Identity.Pages.Account.LoginModel.InputModel;
-
+    var loginModel = ViewData["LoginModel"] as LoginVM;
+    var registerModel = ViewData["RegisterModel"] as RegisterVM;
 }
-﻿@using Microsoft.AspNetCore.Identity
-
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-md navbar-light bg-custom-nav py-2">
@@ -31,9 +30,9 @@
             @if (SignInManager.IsSignedIn(User))
             {
                 <div class="d-flex gap-2">
-                    <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hola @UserManager.GetUserName(User)!</a>
+                    <a id="manage" class="nav-link text-dark" asp-area="" asp-page="/Account/Manage/Index" title="Manage">Hola @UserManager.GetUserName(User)!</a>
                     <a href="javascript:void(0);" class="nav-link text-dark" onclick="document.getElementById('logout-form').submit();">Logout</a>
-                    <form id="logout-form" class="d-none" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                    <form id="logout-form" class="d-none" asp-area="" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
                     </form>
 
                 </div>
@@ -55,6 +54,6 @@
     </div>
 </nav>
 <!-- Modales -->
-@await Html.PartialAsync("_RegistrationModal")
+@await Html.PartialAsync("_RegistrationModal", registerModel)
 @await Html.PartialAsync("_LoginModal", loginModel)
 @await Html.PartialAsync("_ForgotPasswordModal")
