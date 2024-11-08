@@ -4,9 +4,9 @@ namespace turno_smart.Models
 {
     public class Turnos
     {
-        public int Id_Turno { get; set; }
-        public int Id_Paciente { get; set; }
-        public int Id_Medico { get; set; }
-        public DateTime Fecha_Turno { get; set; }
+        public int Id { get; set; }
+        public int IdPaciente { get; set; }
+        public int IdMedico { get; set; }
+        public DateTime FechaTurno { get; set; }
     }
 }
