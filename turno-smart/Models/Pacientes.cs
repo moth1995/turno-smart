@@ -30,5 +30,6 @@ namespace turno_smart.Models
         public DateTime? FechaBaja { get; set; } // Nullable por si el paciente no tiene fecha de baja
 
         public virtual List<Turno> Turnos { get; set; }
+        public virtual List<HistorialMedico> HistorialMedico { get; set; }
     }
 }

@@ -11,5 +11,6 @@ namespace turno_smart.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public required string Descripcion { get; set; }
+        public virtual List<HistorialMedico> HistorialMedico { get; set; }
     }
 }

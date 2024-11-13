@@ -13,11 +13,12 @@ namespace turno_smart.Models
         public required string Apellido { get; set; }
 
         [Display(Name = "Especialidad")]
+        [ForeignKey(nameof(Especialidad))]
         public required int IdEspecialidad { get; set; }
         public int Telefono { get; set; }
         public required string Email { get; set; }
-
         public virtual Especialidad Especialidad { get; set; }
         public virtual List<Turno> Turnos { get; set; }
+        public virtual List<HistorialMedico> HistorialMedico { get; set; }
     }
 }
