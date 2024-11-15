@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using turno_smart.Data;
+using turno_smart.Interfaces;
 using turno_smart.Models;
+using turno_smart.Services;
 
 namespace turno_smart
 {
@@ -32,6 +34,8 @@ namespace turno_smart
                 .AddDefaultTokenProviders();
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+            //builder.Services.AddScoped<PacienteService>();
+            builder.Services.AddScoped<IPacienteService, PacienteService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

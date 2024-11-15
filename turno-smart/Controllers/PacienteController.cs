@@ -2,14 +2,17 @@ using Microsoft.AspNetCore.Mvc;
 using turno_smart.Interfaces;
 using turno_smart.Models;
 using turno_smart.ViewModels.PacienteVM;
+using System.Threading.Tasks;
+using turno_smart.Services;
+using turno_smart.Data;
 
 namespace turno_smart.Controllers
-{
-    
+{    
     public class PacienteController(IPacienteService pacienteService) : Controller {
 
         private readonly IPacienteService _pacienteService = pacienteService;
 
+        
         [HttpGet]
         public IActionResult Index(string? filter)
         {
@@ -207,6 +210,18 @@ namespace turno_smart.Controllers
             } catch (Exception ex) {
                 return BadRequest(ex.Message);
             }
+        }
+
+        public IActionResult Buscar()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Buscar(string nombre, string apellido, int? dni)
+        {
+            var pacientes = await _pacienteService.BuscarPacientes(nombre, apellido, dni);
+            return View("ResultadoBusqueda", pacientes);
         }
     } 
 }

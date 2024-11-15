@@ -24,6 +24,13 @@ namespace turno_smart.Data
             }
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Paciente>()
+                .HasKey(p => p.Id);  // define ID como primary key
+
+        }
+
          public DbSet<Paciente> Pacientes { get; set; } = default!;
          public DbSet<Medico> Medicos { get; set; } = default!;
          public DbSet<Especialidad> Especialidades { get; set; } = default!;

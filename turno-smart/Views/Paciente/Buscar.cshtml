@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Buscar Paciente";
+}
+
+<h2>Buscar Paciente</h2>
+
+<form asp-action="Buscar" method="post">
+    <div>
+        <label>Nombre:</label>
+        <input type="text" name="nombre" />
+    </div>
+    <div>
+        <label>Apellido:</label>
+        <input type="text" name="apellido" />
+    </div>
+    <div>
+        <label>DNI:</label>
+        <input type="number" name="dni" />
+    </div>
+    <button type="submit">Buscar</button>
+</form>
