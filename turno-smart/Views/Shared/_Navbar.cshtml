@@ -4,8 +4,6 @@
 
 @{
     var navbarExpanded = false;
-    var loginModel = ViewData["LoginModel"] as LoginVM;
-    var registerModel = ViewData["RegisterModel"] as RegisterVM;
 }
 
 <!-- Navbar -->
@@ -41,10 +39,10 @@
             {
                 <small class="text-white-50 me-2">¿Todavía no tienes una cuenta?</small>
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-outline-light btn-sm" onclick="openRegistrationModal()">
+                    <button type="button" class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#registrationModal" data-url="@Url.Action("Register", "Account")">
                         Registrarse
                     </button>
-                    <button type="button" class="btn btn-light btn-sm" onclick="openLoginModal()">
+                    <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal" data-url="@Url.Action("Login", "Account")">
                         Iniciar sesión
                     </button>
                 </div>
@@ -54,6 +52,6 @@
     </div>
 </nav>
 <!-- Modales -->
-@await Html.PartialAsync("_RegistrationModal", registerModel)
-@await Html.PartialAsync("_LoginModal", loginModel)
+@await Html.PartialAsync("_RegistrationModal", new RegisterVM())
+@await Html.PartialAsync("_LoginModal", new LoginVM())
 @await Html.PartialAsync("_ForgotPasswordModal")

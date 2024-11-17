@@ -16,8 +16,6 @@ namespace turno_smart.Controllers
 
         public IActionResult Index()
         {
-            ViewData["LoginModel"] = new LoginVM();
-            ViewData["RegisterModel"] = new RegisterVM();
             var doctors = new List<DoctorVM>
         {
             new DoctorVM

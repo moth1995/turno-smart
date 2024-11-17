@@ -7,7 +7,6 @@ namespace turno_smart.Models
     [Table("Usuarios")]
     public class Usuarios : IdentityUser
     {
-        [Key]
-        public required int DNI { get; set; }
+        public int DNI { get; set; }
     }
 }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using turno_smart.Models;
 using turno_smart.ViewModels;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace turno_smart.Controllers
 {
@@ -17,7 +16,12 @@ namespace turno_smart.Controllers
             this.signInManager = signInManager;
             this.userManager = userManager;
         }
-
+        [HttpGet]
+        public IActionResult Login()
+        {
+            var loginVM = new LoginVM();
+            return PartialView("_LoginModal", loginVM);
+        }
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model)
         {
@@ -38,6 +42,12 @@ namespace turno_smart.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public IActionResult Register()
+        {
+            var registerVM = new RegisterVM();
+            return PartialView("_RegistrationModal", registerVM);
+        }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
         {
