@@ -26,6 +26,7 @@ namespace turno_smart.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Paciente>()
                 .HasKey(p => p.Id);  // define ID como primary key
 
