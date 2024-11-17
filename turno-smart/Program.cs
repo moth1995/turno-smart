@@ -34,8 +34,13 @@ namespace turno_smart
                 .AddDefaultTokenProviders();
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
-            //builder.Services.AddScoped<PacienteService>();
             builder.Services.AddScoped<IPacienteService, PacienteService>();
+            builder.Services.AddScoped<IEspecialidadService, EspecialidadService>();
+            builder.Services.AddScoped<IHistorialMedicoService, HistorialMedicoService>();
+            builder.Services.AddScoped<IEstudioService, EstudioService>();
+            builder.Services.AddScoped<IMedicoService, MedicoService>();
+            builder.Services.AddScoped<ITurnoService, TurnoService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
