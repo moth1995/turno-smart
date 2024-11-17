@@ -19,14 +19,13 @@ namespace turno_smart.Controllers
 
 			var listEspecialidadVM = new ListEspecialidadVM();
 
-			if(!string.IsNullOrEmpty(filter)) {
-				var especialidades = _especialidadService.GetAll(filter);
-				listEspecialidadVM.Especialidades = especialidades;
+			var especialidades = _especialidadService.GetAll(filter);
+			listEspecialidadVM.Especialidades = especialidades.Select(e => new EspecialidadVM
+            {
+                Id = e.Id,
+                Nombre = e.Nombre,
+            }).ToList();
 
-			} else {
-				var especialidades = _especialidadService.GetAll();
-				listEspecialidadVM.Especialidades = especialidades;
-			}
 
 			return View(listEspecialidadVM);
 		}

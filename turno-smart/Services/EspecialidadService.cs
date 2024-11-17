@@ -24,7 +24,7 @@ namespace turno_smart.Services
             }
         }
 
-        public List<Especialidad> GetAll(string filter)
+        public List<Especialidad> GetAll(string? filter)
         {
            var query = from especialidad in _DBContext.Especialidades select especialidad;
             if (!string.IsNullOrEmpty(filter)) {
