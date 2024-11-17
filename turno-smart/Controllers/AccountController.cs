@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using turno_smart.Models;
-using turno_smart.ViewModels;
+using turno_smart.ViewModels.AccountVM;
 
 namespace turno_smart.Controllers
 {

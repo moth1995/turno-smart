@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace turno_smart.ViewModels
+namespace turno_smart.ViewModels.AccountVM
 {
     public class RegisterVM
     {

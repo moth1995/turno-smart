@@ -1,0 +1,54 @@
+﻿@model ListEspecialidadVM
+
+<div class="container py-5">
+    <partial name="_BackToServicios" />
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h1 class="display-4 mb-4">Especialidades</h1>
+            <p class="lead mb-5">Seleccioná el profesional con el que querés reservar tu turno online.</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <form method="get" class="input-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Buscar especialidad..."
+                       asp-for="Filter" />
+                <button type="submit" class="btn btn-outline-secondary">🔍</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    @if (Model.Especialidades.Any())
+                    {
+                        <ul class="list-unstyled">
+                            @foreach (var item in Model.Especialidades)
+                            {
+                                <li class="mb-3" data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Descripcion">
+                                    <a asp-controller="Medicos"
+                                       asp-action="Index"
+                                       asp-route-especialidad="@item.Nombre"
+                                       class="text-decoration-none text-dark d-flex align-items-center">
+                                        <span class="me-2">•</span>
+                                        @item.Nombre
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No se encontraron especialidades</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

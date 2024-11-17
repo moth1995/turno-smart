@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using turno_smart.Models;
 using turno_smart.ViewModels;
+using turno_smart.ViewModels.HomeVM;
 
 namespace turno_smart.Controllers
 {

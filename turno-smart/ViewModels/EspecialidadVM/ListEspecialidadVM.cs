@@ -1,5 +1,3 @@
-using turno_smart.Models;
-
 namespace turno_smart.ViewModels.EspecialidadVM
 
 {
