@@ -10,7 +10,7 @@ namespace turno_smart.Controllers
         private readonly IEspecialidadService _especialidadService = especialidadService;
 
         [HttpGet]
-		public IActionResult Index(string? filter)
+		public async Task<IActionResult> Index(string? filter)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -19,11 +19,12 @@ namespace turno_smart.Controllers
 
 			var listEspecialidadVM = new ListEspecialidadVM();
 
-			var especialidades = _especialidadService.GetAll(filter);
+			var especialidades = await _especialidadService.GetAll(filter);
 			listEspecialidadVM.Especialidades = especialidades.Select(e => new EspecialidadVM
             {
                 Id = e.Id,
                 Nombre = e.Nombre,
+                Descripcion = e.Descripcion,
             }).ToList();
 
 

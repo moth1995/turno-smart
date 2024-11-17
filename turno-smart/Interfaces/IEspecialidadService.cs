@@ -3,7 +3,7 @@ namespace turno_smart.Interfaces;
 
 public interface IEspecialidadService {
   void Create(Especialidad obj);
-  List<Especialidad> GetAll(string? filter);
+  Task<List<Especialidad>> GetAll(string? filter);
   List<Especialidad> GetAll();
   void Update(Especialidad obj);
   void Delete(int id);

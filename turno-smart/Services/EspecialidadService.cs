@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using turno_smart.Data;
 using turno_smart.Interfaces;
 using turno_smart.Models;
@@ -18,24 +19,25 @@ namespace turno_smart.Services
         {
             var especialidad = GetById(id);
 
-            if (especialidad != null){
+            if (especialidad != null)
+            {
                 _DBContext.Remove(especialidad);
                 _DBContext.SaveChanges();
             }
         }
 
-        public List<Especialidad> GetAll(string? filter)
+        public async Task<List<Especialidad>> GetAll(string? filter)
         {
            var query = from especialidad in _DBContext.Especialidades select especialidad;
-            if (!string.IsNullOrEmpty(filter)) {
-
-            var lowerFilter = filter.ToLower();
+            if (!string.IsNullOrEmpty(filter)) 
+            {
+                var lowerFilter = filter.ToLower();
                 query = query.Where(x => 
-                    x.Nombre.Contains(lowerFilter, StringComparison.CurrentCultureIgnoreCase)
+                    x.Nombre.ToLower().Contains(lowerFilter)
                 );
             }
 
-            return [.. query];
+            return await query.ToListAsync();
         }
 
         public List<Especialidad> GetAll()
