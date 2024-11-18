@@ -9,7 +9,7 @@ namespace turno_smart
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -67,7 +67,71 @@ namespace turno_smart
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                string[] roles = new string[] { "Admin", "Medico", "Paciente" };
+                foreach (var role in roles)
+                {
+                    if (!await roleManager.RoleExistsAsync(role))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                    }
+                }
+            }
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Usuarios>>();
+
+                List<TestUser> testUsers = new List<TestUser>()
+                {
+                    new TestUser()
+                    {
+                        Email  = "admin@turno-smart.com",
+                        Password = "Admin123!",
+                        Role = "Admin"
+                    },
+                    new TestUser()
+                    {
+                        Email  = "medico@turno-smart.com",
+                        Password = "Medico123!",
+                        Role = "Medico"
+                    },
+                    new TestUser()
+                    {
+                        Email  = "paciente@turno-smart.com",
+                        Password = "Paciente123!",
+                        Role = "Paciente"
+                    }
+                };
+
+                foreach (var testUser in testUsers)
+                {
+                    if (await userManager.FindByEmailAsync(testUser.Email) == null)
+                    {
+                        var user = new Usuarios()
+                        {
+                            UserName = testUser.Email,
+                            Email = testUser.Email,
+                            DNI = 12345678,
+                        };
+
+                        await userManager.CreateAsync(user, testUser.Password);
+
+                        await userManager.AddToRoleAsync(user, testUser.Role);
+                    }
+                }
+            }
+
             app.Run();
         }
+    }
+    public class TestUser()
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Role {  get; set; }
     }
 }
