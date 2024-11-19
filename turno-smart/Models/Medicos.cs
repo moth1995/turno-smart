@@ -14,11 +14,14 @@ namespace turno_smart.Models
 
         [Display(Name = "Especialidad")]
         [ForeignKey(nameof(Especialidad))]
-        public required int IdEspecialidad { get; set; }
+        public  int IdEspecialidad { get; set; }
         public int Telefono { get; set; }
         public required string Email { get; set; }
         public virtual Especialidad Especialidad { get; set; }
         public virtual List<Turno> Turnos { get; set; }
         public virtual List<HistorialMedico> HistorialMedico { get; set; }
+        public int EspecialidadId { get; internal set; }
+        //public IEnumerable<object> Disponibilidades { get; internal set; }
+        public virtual ICollection<Disponibilidad> Disponibilidades { get; set; }
     }
 }

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Medico>
+
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-6">
+            <h2 class="display-4 mb-4">Seleccionar Médico</h2>
+            <p class="lead mb-5">Médicos disponibles en el día seleccionado</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <ul class="list-unstyled">
+                        @foreach (var medico in Model)
+                        {
+                            <li>
+                                <a href="@Url.Action("SeleccionarHorario", "Especialidad", new { medicoId = medico.Id, dia = ViewBag.Dia })">
+                                    @medico.Nombre
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

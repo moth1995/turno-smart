@@ -8,4 +8,9 @@ public interface IMedicoService {
   void Update(Medico obj);
   void Delete(int id);
   Medico? GetById(int id);
+
+  List<DateTime> GetDiasDisponibles(int especialidadId);
+  List<Medico> GetMedicosDisponibles(int especialidadId, DateTime dia);
+  List<TimeSpan> GetHorariosDisponibles(int medicoId, DateTime dia);
+  void ConfirmarTurno(int medicoId, DateTime dia, TimeSpan hora);
 }

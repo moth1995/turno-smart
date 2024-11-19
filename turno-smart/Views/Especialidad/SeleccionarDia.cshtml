@@ -1,0 +1,31 @@
+﻿@model IEnumerable<DateTime>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-6">
+            <h2 class="display-4 mb-4">Seleccionar Día</h2>
+            <p class="lead mb-5">Médicos disponibles en los siguientes días.</p>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <ul class="list-unstyled">
+                        @foreach (var dia in Model)
+                        {
+                            <li>
+                                <a href="@Url.Action("SeleccionarMedico", "Especialidad", new { especialidadId = ViewBag.EspecialidadId, dia = dia })">
+                                    @dia.ToShortDateString()
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Especialidad>
+
+<title>Seleccionar Especialidad</title>
+
+<div class="container py-5">
+     <partial name="_BackToServicios" />
+    <div class="row">
+        <div class="col-lg-6">
+            <h1 class="display-4 mb-4">Seleccionar Especialidad</h1>
+            <p class="lead mb-5">Seleccioná la especialidad con la que querés reservar tu turno online.</p>
+        </div>
+    </div>
+
+
+    <script>
+        function filterEspecialidades() {
+            var input, filter, ul, li, a, i, txtValue, visibleCount;
+            input = document.getElementById('especialidadInput');
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("especialidadList");
+            li = ul.getElementsByTagName('li');
+            visibleCount = 0;
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                    visibleCount++;
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+            var noResultsMessage = document.getElementById('noResultsMessage');
+            if (visibleCount === 0) {
+                noResultsMessage.style.display = "block";
+            } else {
+                noResultsMessage.style.display = "none";
+            }
+        }       
+    </script>
+
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <input class="form-control" type="text" id="especialidadInput" onkeyup="filterEspecialidades()" placeholder="Buscar especialidad... 🔍">
+            @* <button type="submit" class="btn btn-outline-secondary">🔍</button> *@
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <ul class="list-unstyled" id="especialidadList">
+                         @foreach (var especialidad in Model)
+                         {
+                             <li class="mb-3" data-bs-toggle="tooltip" data-bs-placement="top">
+                                  <a href="@Url.Action("SeleccionarDia", "Especialidad", new { especialidadId = especialidad.Id })">
+                                        @especialidad.Nombre
+                                  </a>
+                             </li>
+                         }
+                    </ul>
+                    <p id="noResultsMessage" style="display:none;">No se encontraron especialidades</p
+                                      
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+

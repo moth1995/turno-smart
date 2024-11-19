@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using turno_smart.Data;
 
@@ -11,9 +12,11 @@ using turno_smart.Data;
 namespace turno_smart.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241115200944_Especialidades")]
+    partial class Especialidades
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,30 +158,6 @@ namespace turno_smart.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("turno_smart.Models.Disponibilidad", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Dia")
-                        .HasColumnType("datetime2");
-
-                    b.Property<TimeSpan>("Hora")
-                        .HasColumnType("time");
-
-                    b.Property<int>("MedicoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MedicoId");
-
-                    b.ToTable("Disponibilidades");
-                });
-
             modelBuilder.Entity("turno_smart.Models.Especialidad", b =>
                 {
                     b.Property<int>("Id")
@@ -198,51 +177,6 @@ namespace turno_smart.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Especialidades");
-                });
-
-            modelBuilder.Entity("turno_smart.Models.Estudio", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Estudios");
-                });
-
-            modelBuilder.Entity("turno_smart.Models.HistorialMedico", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("IdEstudio")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdMedico")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPaciente")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdEstudio");
-
-                    b.HasIndex("IdMedico");
-
-                    b.HasIndex("IdPaciente");
-
-                    b.ToTable("HistorialesMedicos");
                 });
 
             modelBuilder.Entity("turno_smart.Models.Medico", b =>
@@ -276,7 +210,7 @@ namespace turno_smart.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdEspecialidad");
+                    b.HasIndex("EspecialidadId");
 
                     b.ToTable("Medicos");
                 });
@@ -347,14 +281,8 @@ namespace turno_smart.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Dia")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("FechaTurno")
                         .HasColumnType("datetime2");
-
-                    b.Property<TimeSpan>("Hora")
-                        .HasColumnType("time");
 
                     b.Property<int>("IdMedico")
                         .HasColumnType("int");
@@ -365,11 +293,14 @@ namespace turno_smart.Data.Migrations
                     b.Property<int>("MedicoId")
                         .HasColumnType("int");
 
+                    b.Property<int>("PacienteId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdMedico");
+                    b.HasIndex("MedicoId");
 
-                    b.HasIndex("IdPaciente");
+                    b.HasIndex("PacienteId");
 
                     b.ToTable("Turnos");
                 });
@@ -493,49 +424,11 @@ namespace turno_smart.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("turno_smart.Models.Disponibilidad", b =>
-                {
-                    b.HasOne("turno_smart.Models.Medico", "Medico")
-                        .WithMany("Disponibilidades")
-                        .HasForeignKey("MedicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Medico");
-                });
-
-            modelBuilder.Entity("turno_smart.Models.HistorialMedico", b =>
-                {
-                    b.HasOne("turno_smart.Models.Estudio", "Estudio")
-                        .WithMany("HistorialMedico")
-                        .HasForeignKey("IdEstudio")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("turno_smart.Models.Medico", "Medico")
-                        .WithMany("HistorialMedico")
-                        .HasForeignKey("IdMedico")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("turno_smart.Models.Paciente", "Paciente")
-                        .WithMany("HistorialMedico")
-                        .HasForeignKey("IdPaciente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Estudio");
-
-                    b.Navigation("Medico");
-
-                    b.Navigation("Paciente");
-                });
-
             modelBuilder.Entity("turno_smart.Models.Medico", b =>
                 {
                     b.HasOne("turno_smart.Models.Especialidad", "Especialidad")
                         .WithMany("Medicos")
-                        .HasForeignKey("IdEspecialidad")
+                        .HasForeignKey("EspecialidadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -546,13 +439,13 @@ namespace turno_smart.Data.Migrations
                 {
                     b.HasOne("turno_smart.Models.Medico", "Medico")
                         .WithMany("Turnos")
-                        .HasForeignKey("IdMedico")
+                        .HasForeignKey("MedicoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("turno_smart.Models.Paciente", "Paciente")
                         .WithMany("Turnos")
-                        .HasForeignKey("IdPaciente")
+                        .HasForeignKey("PacienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -566,24 +459,13 @@ namespace turno_smart.Data.Migrations
                     b.Navigation("Medicos");
                 });
 
-            modelBuilder.Entity("turno_smart.Models.Estudio", b =>
-                {
-                    b.Navigation("HistorialMedico");
-                });
-
             modelBuilder.Entity("turno_smart.Models.Medico", b =>
                 {
-                    b.Navigation("Disponibilidades");
-
-                    b.Navigation("HistorialMedico");
-
                     b.Navigation("Turnos");
                 });
 
             modelBuilder.Entity("turno_smart.Models.Paciente", b =>
                 {
-                    b.Navigation("HistorialMedico");
-
                     b.Navigation("Turnos");
                 });
 #pragma warning restore 612, 618

@@ -1,0 +1,59 @@
+﻿@* @model IEnumerable<TimeSpan>
+
+<h2>Seleccionar Horario</h2>
+<ul>
+    @foreach (var hora in Model)
+    {
+        <li>
+            <a href="@Url.Action("ConfirmarTurno", new { medicoId = ViewBag.MedicoId, dia = ViewBag.Dia, hora = hora })">
+                @hora
+            </a>
+        </li>
+    }
+</ul> *@
+
+@* @model IEnumerable<TimeSpan>
+
+<h2>Seleccionar Horario</h2>
+<ul>
+@foreach (var hora in Model)
+{
+    <li>
+        <a href="@Url.Action("ConfirmarTurno", "Especialidad", new { medicoId = ViewBag.MedicoId, dia = ViewBag.Dia, hora = hora })">
+            @hora
+        </a>
+    </li>
+}
+</ul> *@
+@model IEnumerable<TimeSpan>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-6">
+            <h2 class="display-4 mb-4">Seleccionar Horario</h2>
+            <p class="lead mb-5">Horarios disponibles del médico seleccionado</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <ul class="list-unstyled">
+                        @foreach (var hora in Model)
+                        {
+                            <li>
+                                <form action="@Url.Action("ConfirmarTurno", "Especialidad")" method="post">
+                                    <input type="hidden" name="medicoId" value="@ViewBag.MedicoId" />
+                                    <input type="hidden" name="dia" value="@ViewBag.Dia.ToString("yyyy-MM-dd")" />
+                                    <input type="hidden" name="hora" value="@hora" />
+                                    <button type="submit">@hora</button>
+                                </form>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

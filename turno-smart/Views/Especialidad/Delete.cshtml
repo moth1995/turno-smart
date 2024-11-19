@@ -1,0 +1,20 @@
+﻿@model turno_smart.ViewModels.EspecialidadVM.DeleteEspecialidadVM
+
+@{
+    ViewBag.Title = "Eliminar Especialidad";
+}
+
+<h2>Eliminar Especialidad</h2>
+
+<h3>¿Estás seguro que deseas eliminar esta especialidad?</h3>
+<div>
+    <h4>@Model.Nombre</h4>
+    @* <p>@Model.Descripcion</p> *@
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+

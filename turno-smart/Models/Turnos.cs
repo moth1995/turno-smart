@@ -20,5 +20,9 @@ namespace turno_smart.Models
         public DateTime FechaTurno { get; set; }
         public virtual Paciente Paciente { get; set; }
         public virtual Medico Medico { get; set; }
+        public int MedicoId { get; set; }
+
+        public DateTime Dia { get; set; }
+        public TimeSpan Hora { get; set; }
     }
 }

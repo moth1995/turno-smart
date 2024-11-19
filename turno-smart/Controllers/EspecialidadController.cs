@@ -5,9 +5,12 @@ using turno_smart.ViewModels.EspecialidadVM;
 
 namespace turno_smart.Controllers
 {
-    public class EspecialidadController(IEspecialidadService especialidadService): Controller {
+    
+    public class EspecialidadController: Controller {
 
-        private readonly IEspecialidadService _especialidadService = especialidadService;
+        private readonly IEspecialidadService _especialidadService ;
+        private readonly IMedicoService _medicoService;
+       
 
         [HttpGet]
 		public async Task<IActionResult> Index(string? filter)
@@ -178,7 +181,67 @@ namespace turno_smart.Controllers
                 //TempData["ErrorMessage"] = "Error al intentar eliminar el médico" + ex.Message;
                 return RedirectToAction(nameof(Index));
             }
-        } 
+        }
+
+
+        public EspecialidadController(IEspecialidadService especialidadService, IMedicoService medicoService)
+        {
+            _especialidadService = especialidadService;
+            _medicoService = medicoService;
+        }
+
+        // Métodos de flujo de turno...
+        [HttpGet]
+        [Route("Especialidad")]
+        public IActionResult SeleccionarEspecialidad()
+        {
+            var especialidades = _especialidadService.GetAll();
+            return View(especialidades);
+        }
+
+        [HttpGet]
+        [Route("SeleccionarDia/{especialidadId}")]
+        public IActionResult SeleccionarDia(int especialidadId)
+        {
+            var diasDisponibles = _medicoService.GetDiasDisponibles(especialidadId);
+            ViewBag.EspecialidadId = especialidadId;
+            return View(diasDisponibles);
+        }
+
+        [HttpGet]
+        public IActionResult SeleccionarMedico(int especialidadId, DateTime dia)
+        {
+            var medicosDisponibles = _medicoService.GetMedicosDisponibles(especialidadId, dia);
+            ViewBag.Dia = dia;
+            ViewBag.EspecialidadId = especialidadId;
+            return View(medicosDisponibles);
+        }
+
+        [HttpGet]
+        public IActionResult SeleccionarHorario(int medicoId, DateTime dia)
+        {
+            var horariosDisponibles = _medicoService.GetHorariosDisponibles(medicoId, dia);
+            ViewBag.MedicoId = medicoId;
+            ViewBag.Dia = dia;
+            return View(horariosDisponibles);
+        }
+
+        [HttpPost]
+        [Route("ConfirmarTurno")]
+        public IActionResult ConfirmarTurno(int medicoId, DateTime dia, TimeSpan hora)
+        {
+            // Lógica para confirmar el turno
+            // _medicoService.ConfirmarTurno(medicoId, dia, hora);
+            _medicoService.ConfirmarTurno(medicoId, dia, hora);
+            return RedirectToAction("TurnoConfirmado");
+            
+        }
+        [HttpGet]
+        [Route("TurnoConfirmado")]
+        public IActionResult TurnoConfirmado()
+        {
+            return View();
+        }
 
     }
 }
