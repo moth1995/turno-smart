@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using turno_smart.Interfaces;
 using turno_smart.Models;
+using turno_smart.ViewModels.ProfesionalVM;
 using turno_smart.ViewModels.TurnoVM;
 
 namespace turno_smart.Controllers
@@ -63,7 +64,13 @@ namespace turno_smart.Controllers
         {
             if(!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                //return BadRequest(ModelState);Codigo origen
+                vm.Medicos = _medicoService.GetAll().Select(e => new SelectListItem
+                {
+                    Value = e.Id.ToString(),
+                    Text = e.Nombre
+                }).ToList();
+                return View(vm);
             }
 
             try
@@ -77,11 +84,19 @@ namespace turno_smart.Controllers
 
                 _turnoService.Create(turno);
 
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+                return RedirectToAction("Success");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                //return BadRequest(ex.Message);
+                ModelState.AddModelError(string.Empty, "An error occurred while saving the entity changes. See the inner exception for details.");
+                vm.Medicos = _medicoService.GetAll().Select(e => new SelectListItem
+                {
+                    Value = e.Id.ToString(),
+                    Text = e.Nombre
+                }).ToList();
+                return View(vm);
             }
 		}
 
@@ -183,6 +198,31 @@ namespace turno_smart.Controllers
             } catch (Exception ex) {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet]
+        public IActionResult InformacionProfesional(string nombre)
+        {
+            var profesional = ObtenerInformacionProfesional(nombre);
+            if (profesional == null)
+            {
+                return NotFound();
+            }
+            return View(profesional);
+        }
+
+        private ProfesionalVM ObtenerInformacionProfesional(string nombre)
+        {
+            // Información hardcodeada para cualquier profesional
+            return new ProfesionalVM
+            {
+                Nombre = nombre,
+                Especialidad = "Cirugía Oftalmológica",
+                HorarioAtencion = "De Lunes a Domingo, de 8:00h a 23:00h",
+                Direccion = "Calle Cualquiera 123, Cualquier Lugar, CP: 12345",
+                Telefono = "91-1234-567",
+                Email = "hola@sitiogenial.es"
+            };
         }
     }
 }

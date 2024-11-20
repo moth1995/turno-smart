@@ -1,8 +1,7 @@
-﻿@model ListEspecialidadVM
+﻿@model ListaEspecialidadVM
 
 <div class="container py-5">
     <partial name="_BackToServicios" />
-
     <div class="row">
         <div class="col-lg-6">
             <h1 class="display-4 mb-4">Especialidades</h1>
@@ -10,45 +9,84 @@
         </div>
     </div>
 
+
+
     <div class="row mb-4">
         <div class="col-lg-8">
-            <form method="get" class="input-group">
-                <input type="text"
-                       class="form-control"
-                       placeholder="Buscar especialidad..."
-                       asp-for="Filter" />
+            <form method="get" action="@Url.Action("Index")" class="input-group">
+                <input type="text" class="form-control" name="searchTerm" value="@Model.SearchTerm" placeholder="Buscar especialidad..." />
                 <button type="submit" class="btn btn-outline-secondary">🔍</button>
             </form>
         </div>
     </div>
-
     <div class="row">
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
-                    @if (Model.Especialidades.Any())
+                    @if (string.IsNullOrEmpty(Model.EspecialidadSeleccionada))
                     {
-                        <ul class="list-unstyled">
-                            @foreach (var item in Model.Especialidades)
+                        var categorias = Model.Especialidades.Select(e => e.Categoria).Distinct();
+                        if (!Model.Especialidades.Any())
+                        {
+                            <p>No se encontraron especialidades</p>
+                        }
+                        else
+                        {
+                            foreach (var categoria in categorias)
                             {
-                                <li class="mb-3" data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Descripcion">
-                                    <a asp-controller="Medicos"
-                                       asp-action="Index"
-                                       asp-route-especialidad="@item.Nombre"
-                                       class="text-decoration-none text-dark d-flex align-items-center">
-                                        <span class="me-2">•</span>
-                                        @item.Nombre
-                                    </a>
-                                </li>
+                                <h2>@categoria</h2>
+                                <ul>
+                                    @foreach (var especialidad in Model.Especialidades.Where(e => e.Categoria == categoria))
+                                    {
+                                        <li>
+                                            <div class="especialidad-item" onclick="location.href='@Url.Action("Index", new { especialidadSeleccionada = especialidad.Nombre })'">
+                                                @especialidad.Nombre
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                                <hr />
                             }
-                        </ul>
+                        }
                     }
                     else
                     {
-                        <p class="text-muted">No se encontraron especialidades</p>
+                        var especialidad = Model.Especialidades.FirstOrDefault(e => e.Nombre == Model.EspecialidadSeleccionada);
+                        if (especialidad != null)
+                        {
+                            <h2>@especialidad.Nombre</h2>
+                            @if (especialidad.Profesionales.Any())
+                            {
+                                <ul>
+                                    @foreach (var profesional in especialidad.Profesionales)
+                                    {
+                                        <li>
+                                            <a href="@Url.Action("InformacionProfesional", "Turno", new { nombre = profesional })">@profesional</a>
+
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p>No se encontraron profesionales para la especialidad seleccionada</p>
+                            }
+                            <a href="@Url.Action("Index")">Volver a las especialidades</a>
+                        }
+                        else
+                        {
+                            <p>No se encontraron profesionales para la especialidad seleccionada</p>
+                            <a href="@Url.Action("Index")">Volver a las especialidades</a>
+                        }
                     }
+
                 </div>
             </div>
         </div>
     </div>
+
 </div>
+<footer class="footer">
+    Centro Médico Ejemplo 2024 - <a href="#">Política de privacidad</a>
+</footer>
+

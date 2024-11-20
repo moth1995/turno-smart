@@ -1,0 +1,49 @@
+﻿@using turno_smart.ViewModels.ProfesionalVM
+
+@model ProfesionalVM
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2>LOCALIZACIÓN</h2>
+            <p>Te esperamos</p>
+            <p><strong>Horario de atención:</strong> De Lunes a Domingo, de 8:00h a 23:00h.</p>
+            <p><strong>Dirección:</strong> Calle Cualquiera 123, Cualquier Lugar, CP: 12345</p>
+            <p><strong>Teléfono:</strong> 91-1234-567</p>
+            <p><strong>Email:</strong> hola@sitiogenial.es</p>
+
+            <h2>Reserva tu turno para @Model.Nombre</h2>
+            <p>También puedes reservar por teléfono si lo prefieres.</p>
+
+            <form asp-action="Create" method="post">
+                <div class="form-group">
+                    <label for="FechaTurno">Fecha</label>
+                    <input type="date" class="form-control" id="FechaTurno" name="FechaTurno" required />
+                </div>
+                <div class="form-group">
+                    <label for="Hora">Hora</label>
+                    <select class="form-control" id="Hora" name="Hora" required>
+                        <option value="">Seleccione una hora</option>
+                        @foreach (var time in new List<string> { "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30" })
+                        {
+                            <option value="@time">@time</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Reason">Motivo de la consulta</label>
+                    <input type="text" class="form-control" id="Reason" name="Reason" required />
+                </div>
+                <div class="form-group form-group-spacing">
+                    <label for="AttachmentFile">Adjuntar orden médica (opcional)</label>
+                    <input type="file" class="form-control" id="AttachmentFile" name="AttachmentFile" />
+                </div>
+                <br/>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-custom w-100">Confirmar</button>
+                </div>
+               
+            </form>
+        </div>
+    </div>
+</div>
