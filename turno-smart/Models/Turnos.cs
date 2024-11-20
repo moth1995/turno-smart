@@ -7,16 +7,10 @@ namespace turno_smart.Models
     [Table("Turnos")]
     public class Turno
     {
-
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        
-        [ForeignKey(nameof(Paciente))]
         public int IdPaciente { get; set; }
-        
-        [ForeignKey(nameof(Medico))]
         public int IdMedico { get; set; }
+        public string Estado { get; set; }
         public DateTime FechaTurno { get; set; }
         public virtual Paciente Paciente { get; set; }
         public virtual Medico Medico { get; set; }

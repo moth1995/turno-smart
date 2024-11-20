@@ -27,8 +27,62 @@ namespace turno_smart.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            // Relación Usuario -> Paciente (1:1)
             modelBuilder.Entity<Paciente>()
-                .HasKey(p => p.Id);  // define ID como primary key
+                .HasOne(p => p.Usuario)
+                .WithOne()
+                .HasForeignKey<Paciente>(p => p.DNI)
+                .HasPrincipalKey<Usuarios>(u => u.DNI) // Establecer DNI como clave principal
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación Usuario -> Medico (1:1)
+            modelBuilder.Entity<Medico>()
+                .HasOne(m => m.Usuario)
+                .WithOne()
+                .HasForeignKey<Medico>(m => m.DNI)
+                .HasPrincipalKey<Usuarios>(u => u.DNI) // Establecer DNI como clave principal
+                .OnDelete(DeleteBehavior.Restrict);
+            // Relación Especialidad -> Medico (1:N)
+            modelBuilder.Entity<Medico>()
+                .HasOne(m => m.Especialidad)
+                .WithMany(e => e.Medicos)
+                .HasForeignKey(m => m.IdEspecialidad)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación Paciente -> Turnos (1:N)
+            modelBuilder.Entity<Turno>()
+                .HasOne(t => t.Paciente)
+                .WithMany(p => p.Turnos)
+                .HasForeignKey(t => t.IdPaciente)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación Medico -> Turnos (1:N)
+            modelBuilder.Entity<Turno>()
+                .HasOne(t => t.Medico)
+                .WithMany(m => m.Turnos)
+                .HasForeignKey(t => t.IdMedico)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación Paciente -> HistorialMedico (1:N)
+            modelBuilder.Entity<HistorialMedico>()
+                .HasOne(h => h.Paciente)
+                .WithMany(p => p.HistorialMedico)
+                .HasForeignKey(h => h.IdPaciente)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación Medico -> HistorialMedico (1:N)
+            modelBuilder.Entity<HistorialMedico>()
+                .HasOne(h => h.Medico)
+                .WithMany(m => m.HistorialMedico)
+                .HasForeignKey(h => h.IdMedico)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación Estudio -> HistorialMedico (1:N)
+            modelBuilder.Entity<HistorialMedico>()
+                .HasOne(h => h.Estudio)
+                .WithMany(e => e.HistorialMedico)
+                .HasForeignKey(h => h.IdEstudio)
+                .OnDelete(DeleteBehavior.Restrict);
 
         }
 
