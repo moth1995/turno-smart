@@ -31,14 +31,43 @@
                         <ul class="list-unstyled">
                             @foreach (var item in Model.Especialidades)
                             {
-                                <li class="mb-3" data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Descripcion">
+                                <li class="mb-3 d-flex align-items-center justify-content-between">
                                     <a asp-controller="Medicos"
                                        asp-action="Index"
                                        asp-route-especialidad="@item.Nombre"
-                                       class="text-decoration-none text-dark d-flex align-items-center">
+                                       class="text-decoration-none text-dark d-flex align-items-center"
+                                       data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Descripcion">
                                         <span class="me-2">•</span>
                                         @item.Nombre
                                     </a>
+                                
+                                    <div class="ms-auto">
+                                        <!-- Botón para Editar -->
+                                        <a asp-controller="Especialidades"
+                                           asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-primary me-1">
+                                            Editar
+                                        </a>
+
+                                        <!-- Botón para Detalles -->
+                                        <a asp-controller="Especialidades"
+                                           asp-action="Details"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-secondary me-1">
+                                            Detalles
+                                        </a>
+
+                                        <!-- Botón para Eliminar -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal"
+                                                data-id="@item.Id"
+                                                data-name="@item.Nombre">
+                                            Eliminar
+                                        </button>
+                                    </div>
                                 </li>
                             }
                         </ul>
