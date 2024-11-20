@@ -2,19 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using turno_smart.Models;
 using turno_smart.ViewModels.AccountVM;
+using turno_smart.Interfaces;
 
 namespace turno_smart.Controllers
 {
     public class AccountController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly SignInManager<Usuarios> signInManager;
-        private readonly UserManager<Usuarios> userManager;
-        public AccountController(ILogger<HomeController> logger, SignInManager<Usuarios> signInManager, UserManager<Usuarios> userManager)
+        private readonly SignInManager<Usuarios> _signInManager;
+        private readonly UserManager<Usuarios> _userManager;
+        private readonly IPacienteService _pacienteService;
+        public AccountController(ILogger<HomeController> logger, SignInManager<Usuarios> signInManager, UserManager<Usuarios> userManager, IPacienteService pacienteService)
         {
             _logger = logger;
-            this.signInManager = signInManager;
-            this.userManager = userManager;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _pacienteService = pacienteService;
         }
         [HttpGet]
         public IActionResult Login()
@@ -27,7 +30,7 @@ namespace turno_smart.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
                 if (result.Succeeded)
                 {
@@ -56,7 +59,8 @@ namespace turno_smart.Controllers
                 int dni;
                 if (!int.TryParse(model.DNI, out dni))
                 {
-                    return RedirectToAction("Index", "Home");
+                    ModelState.AddModelError("", "DNI ingresado invalido");
+                    return PartialView("_RegistrationForm", model);
                 }
                 Usuarios users = new Usuarios
                 {
@@ -65,10 +69,30 @@ namespace turno_smart.Controllers
                     DNI = dni,
                 };
 
-                var result = await userManager.CreateAsync(users, model.Password);
+                var result = await _userManager.CreateAsync(users, model.Password);
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(users, "Paciente");
+                    Paciente paciente = new Paciente() 
+                    {
+                        Nombre = model.Nombre,
+                        Apellido = model.Apellido,
+                        DNI = dni,
+                        FechaNacimiento = model.FechaNacimiento,
+                        Email = model.Email,
+                        FechaAlta = DateTime.Now,
+                        Usuario = users,
+                        Ciudad = "",
+                        Provincia = "",
+                        Domicilio = "",
+                        Cobertura = 0,
+                        Telefono = 0,
+                        Estado = 0,
+                    };
+
+                    _pacienteService.Create(paciente);
+
                     return RedirectToAction("Login", "Account");
                 }
                 else
@@ -78,14 +102,14 @@ namespace turno_smart.Controllers
                         ModelState.AddModelError("", error.Description);
                     }
 
-                    return RedirectToAction("Index", "Home");
+                    return PartialView("_RegistrationForm", model);
                 }
             }
-            return RedirectToAction("Index", "Home");
+            return PartialView("_RegistrationForm", model);
         }
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
     }

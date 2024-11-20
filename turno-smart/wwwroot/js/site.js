@@ -46,3 +46,22 @@ function onLoginModalForgotPasswordBtnClick() {
     openForgotPasswordModal();
 }
 
+$(document).ready(function () {
+    // Manejo del envío del formulario
+    $('#registrationForm').on('submit', function (event) {
+        event.preventDefault(); // Evita la redirección
+        console.log($(this).attr('action'));
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (result) {
+                $("#registrationForm").html(result);
+                grecaptcha.reset();
+            },
+            error: function () {
+                alert('Error al procesar la solicitud.');
+            }
+        });
+    });
+});

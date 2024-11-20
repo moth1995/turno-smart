@@ -80,7 +80,6 @@ namespace turno_smart
                     }
                 }
             }
-
             using (var scope = app.Services.CreateScope())
             {
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Usuarios>>();
@@ -91,20 +90,9 @@ namespace turno_smart
                     {
                         Email  = "admin@turno-smart.com",
                         Password = "Admin123!",
-                        Role = "Admin"
+                        Role = "Admin",
+                        DNI = 12345678
                     },
-                    new TestUser()
-                    {
-                        Email  = "medico@turno-smart.com",
-                        Password = "Medico123!",
-                        Role = "Medico"
-                    },
-                    new TestUser()
-                    {
-                        Email  = "paciente@turno-smart.com",
-                        Password = "Paciente123!",
-                        Role = "Paciente"
-                    }
                 };
 
                 foreach (var testUser in testUsers)
@@ -133,5 +121,6 @@ namespace turno_smart
         public string Email { get; set; }
         public string Password { get; set; }
         public string Role {  get; set; }
+        public int DNI { get; set; }
     }
 }
