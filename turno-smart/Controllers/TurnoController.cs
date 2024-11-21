@@ -50,7 +50,7 @@ namespace turno_smart.Controllers
             {
                 return NotFound();
             }
-            var availableSlots = await _medicoService.GetAvailableSlotsAsync(medico.Id, 7);
+            var availableSlots = await _medicoService.GetAvailableSlotsAsync(medico.Id, 60, new TimeSpan(8, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(0, 30, 0));
             var vm = new CreateTurnoVM
             {
                 PacienteId = 2,

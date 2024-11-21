@@ -38,11 +38,6 @@ namespace turno_smart.Controllers
 
             var listMedicoVM = new ListMedicoVM();
 
-            foreach (var m in medicos)
-            {
-                Console.WriteLine(m.Especialidad);
-            }
-
             var medicosVM = medicos.Select(m => new MedicoVM
             {
                 Id = m.Id,

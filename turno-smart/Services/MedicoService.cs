@@ -69,7 +69,7 @@ namespace turno_smart.Services
             _DBContext.SaveChanges();
         }
 
-        public async Task<Dictionary<DateTime, List<TimeSpan>>> GetAvailableSlotsAsync(int medicoId, int maxDays)
+        public async Task<Dictionary<DateTime, List<TimeSpan>>> GetAvailableSlotsAsync(int medicoId, int maxDays, TimeSpan startTime, TimeSpan endTime, TimeSpan slotLenght)
         {
             // Obtén al médico por ID
             var medico = await _DBContext.Medicos
@@ -85,20 +85,16 @@ namespace turno_smart.Services
                 .Where(t => t.IdMedico == medicoId && t.FechaTurno >= DateTime.Today && t.FechaTurno <= DateTime.Today.AddDays(maxDays))
                 .ToListAsync();
 
-            // Rango de atención del médico (08:00 - 18:00)
-            var startTime = new TimeSpan(8, 0, 0);
-            var endTime = new TimeSpan(18, 0, 0);
-
             // Crear un diccionario para almacenar las fechas y los horarios disponibles
             var availableSlots = new Dictionary<DateTime, List<TimeSpan>>();
 
             // Para cada día en el rango de maxDays
             for (int i = 0; i < maxDays; i++)
             {
-                var date = DateTime.Today.AddDays(i);
+                var date = DateTime.Today.AddDays(i).Date;
                 var availableTimes = new List<TimeSpan>();
-                // Generar todos los posibles slots en el rango de 08:00 a 18:00 cada 30 minutos
-                for (var currentTime = startTime; currentTime < endTime; currentTime = currentTime.Add(new TimeSpan(0, 30, 0)))
+
+                for (var currentTime = startTime; currentTime < endTime; currentTime = currentTime.Add(slotLenght))
                 {
                     // Comprobar si el turno ya está reservado en esa fecha y hora
                     var isSlotTaken = turnos.Any(t => t.FechaTurno.Date == date.Date && t.FechaTurno.TimeOfDay == currentTime);

@@ -9,5 +9,5 @@ public interface IMedicoService {
     void Update(Medico obj);
     void Delete(int id);
     Medico? GetById(int id);
-    Task<Dictionary<DateTime, List<TimeSpan>>> GetAvailableSlotsAsync(int medicoId, int maxDays);
+    Task<Dictionary<DateTime, List<TimeSpan>>> GetAvailableSlotsAsync(int medicoId, int maxDays, TimeSpan startTime, TimeSpan endTime, TimeSpan slotLenght);
 }
