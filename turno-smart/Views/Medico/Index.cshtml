@@ -50,7 +50,7 @@
                                 @foreach (var medico in group)
                                 {
                                     <li class="mb-3">
-                                        <a href="@Url.Action("Reservar", "Turnos", new { id = medico.Id })"
+                                        <a href="@Url.Action("Create", "Turno", new { medicoId = medico.Id })"
                                            class="text-decoration-none text-dark d-flex align-items-center">
                                             <span class="me-2">•</span>
                                             @medico.Nombre

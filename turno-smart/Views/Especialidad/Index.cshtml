@@ -32,9 +32,9 @@
                             @foreach (var item in Model.Especialidades)
                             {
                                 <li class="mb-3 d-flex align-items-center justify-content-between">
-                                    <a asp-controller="Medicos"
+                                    <a asp-controller="Medico"
                                        asp-action="Index"
-                                       asp-route-especialidad="@item.Nombre"
+                                       asp-route-especialidadId="@item.Id"
                                        class="text-decoration-none text-dark d-flex align-items-center"
                                        data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Descripcion">
                                         <span class="me-2">•</span>

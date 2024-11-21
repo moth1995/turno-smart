@@ -1,0 +1,65 @@
+﻿@model CreateTurnoVM
+
+<div class="container pt-4">
+    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary mb-3">⬅️ Volver</a>
+
+    <h1 class="mb-4">Reserva de turno</h1>
+
+    <form method="post" asp-action="Book">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" name="Specialty" value="@Model.MedicoEspecialidad" />
+        <input type="hidden" name="DoctorName" value="@Model.MedicoNombre" />
+
+        <div class="mb-3">
+            <label for="dateInput" class="form-label">Seleccione una Fecha</label>
+            <input type="date" id="dateInput" class="form-control" name="SelectedDate"
+                   min="@Model.AvailableDates.First().ToString("yyyy-MM-dd")"
+                   max="@Model.AvailableDates.Last().ToString("yyyy-MM-dd")" />
+        </div>
+
+        <div class="mb-3">
+            <label for="timeSelect" class="form-label">Seleccione un Horario</label>
+            <select id="timeSelect" class="form-select" name="SelectedTime">
+                <option value="">Seleccione un horario</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Reservar</button>
+    </form>
+</div>
+
+    <script>
+    document.getElementById('dateInput').addEventListener('change', function () {
+        const selectedDate = this.value; // "2024-11-21"
+        const availableSlots = @Html.Raw(Json.Serialize(Model.AvailableSlots));
+
+        // Convertir las claves del objeto `availableSlots` para que solo tengan la fecha (YYYY-MM-DD)
+        const formattedAvailableSlots = {};
+        for (const [key, value] of Object.entries(availableSlots)) {
+            // Extraemos solo la fecha (YYYY-MM-DD) del valor completo (YYYY-MM-DDTHH:mm:ss)
+            const dateKey = key.substring(0, 10); // Extrae 'YYYY-MM-DD'
+            formattedAvailableSlots[dateKey] = value;
+        }
+
+        // Ahora `formattedAvailableSlots` tiene las claves con el formato correcto
+        const timeSelect = document.getElementById('timeSelect');
+        timeSelect.innerHTML = ''; // Limpiar opciones previas
+
+        console.log(selectedDate); // Verifica el valor de selectedDate
+
+        if (formattedAvailableSlots[selectedDate]) {
+            formattedAvailableSlots[selectedDate].forEach(slot => {
+                const option = document.createElement('option');
+                option.value = slot;
+                option.textContent = slot;
+                timeSelect.appendChild(option);
+            });
+        } else {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'No hay horarios disponibles';
+            timeSelect.appendChild(option);
+        }
+    });
+    </script>

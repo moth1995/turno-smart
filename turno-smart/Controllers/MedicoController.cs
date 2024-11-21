@@ -20,19 +20,29 @@ namespace turno_smart.Controllers
         private readonly UserManager<Usuarios> _userManager = userManager;
 
         [HttpGet]
-		public async Task<IActionResult> Index(string? filter)
+		public async Task<IActionResult> Index(string? filter, int? especialidadId)
 		{
 			if (!ModelState.IsValid)
 			{
 				return BadRequest(ModelState);
 			}
+            List<Medico> medicos;
+            if (especialidadId != null)
+            {
+                medicos = await _medicoService.GetAll((int)especialidadId);
+            }
+            else
+            {
+                medicos = await _medicoService.GetAll(filter);
+            }
 
             var listMedicoVM = new ListMedicoVM();
-            var medicos = await _medicoService.GetAll(filter);
+
             foreach (var m in medicos)
             {
                 Console.WriteLine(m.Especialidad);
             }
+
             var medicosVM = medicos.Select(m => new MedicoVM
             {
                 Id = m.Id,

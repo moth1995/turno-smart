@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using turno_smart.Interfaces;
 using turno_smart.Models;
 using turno_smart.ViewModels.TurnoVM;
@@ -37,22 +38,27 @@ namespace turno_smart.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? medicoId)
         {
+            if (medicoId == null)
+            {
+                return RedirectToAction("Index", "Medico");
+            }
 
-            var medicos = _medicoService.GetAll();
-
+            var medico = _medicoService.GetById((int)medicoId);
+            if (medico == null)
+            {
+                return NotFound();
+            }
+            var availableSlots = await _medicoService.GetAvailableSlotsAsync(medico.Id, 7);
             var vm = new CreateTurnoVM
             {
-                IdPaciente = 0,
-                IdMedico = 0,
-                FechaTurno = DateTime.Now,
-                Medicos = medicos.Select(e => new SelectListItem
-                {
-                    Value = e.Id.ToString(),
-                    Text = e.Nombre
-                }).ToList(),
-
+                PacienteId = 2,
+                MedicoId = medico.Id,
+                MedicoNombre = $"{medico.Nombre} {medico.Apellido}",
+                MedicoEspecialidad = medico.Especialidad.Nombre,
+                AvailableDates = availableSlots.Keys.ToList(),
+                AvailableSlots = availableSlots,
             };
 
             return View(vm);
@@ -70,9 +76,8 @@ namespace turno_smart.Controllers
             {
                 var turno = new Turno
                 {
-                    IdPaciente = vm.IdPaciente,
-                    IdMedico = vm.IdMedico,
-                    FechaTurno = vm.FechaTurno
+                    IdPaciente = vm.PacienteId,
+                    IdMedico = vm.MedicoId,
                 };
 
                 _turnoService.Create(turno);
