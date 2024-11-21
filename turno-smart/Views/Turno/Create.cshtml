@@ -34,11 +34,13 @@
             <h2 class="h3 mb-4">@Model.MedicoNombre - @Model.MedicoEspecialidad</h2>
             <p class="text-muted mb-4">También puedes reservar por teléfono si lo prefieres.</p>
 
-            <form method="post" asp-action="Book">
+            <form method="post" asp-action="Create">
                 @Html.AntiForgeryToken()
 
-                <input type="hidden" name="Specialty" value="@Model.MedicoEspecialidad" />
-                <input type="hidden" name="DoctorName" value="@Model.MedicoNombre" />
+                <input type="hidden" asp-for="MedicoEspecialidad" value="@Model.MedicoEspecialidad" />
+                <input type="hidden" asp-for="MedicoId" value="@Model.MedicoId"/>
+                <input type="hidden" asp-for="PacienteId" value="@Model.PacienteId" />
+                <input type="hidden" asp-for="MedicoNombre" value="@Model.MedicoNombre" />
 
                 <div class="mb-4">
                     <label asp-for="SelectedDate" class="form-label">Seleccione una Fecha</label>

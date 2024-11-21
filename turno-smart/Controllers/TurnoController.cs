@@ -59,6 +59,7 @@ namespace turno_smart.Controllers
                 MedicoEspecialidad = medico.Especialidad.Nombre,
                 AvailableDates = availableSlots.Keys.ToList(),
                 AvailableSlots = availableSlots,
+                MotivoConsulta = "",
             };
 
             return View(vm);
@@ -71,18 +72,31 @@ namespace turno_smart.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            DateTime selectedDateTime;
+            if (DateTime.TryParse($"{vm.SelectedDate} {vm.SelectedTime}", out selectedDateTime))
+            {
+                Console.WriteLine($"Fecha y hora seleccionadas: {selectedDateTime}");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "La fecha y hora seleccionadas no son válidas.");
+                return View(vm);
+            }
             try
             {
                 var turno = new Turno
                 {
                     IdPaciente = vm.PacienteId,
                     IdMedico = vm.MedicoId,
+                    Estado = "RESERVADO",
+                    FechaTurno = selectedDateTime,
+                    MotivoConsulta = vm.MotivoConsulta,
+
                 };
 
                 _turnoService.Create(turno);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {

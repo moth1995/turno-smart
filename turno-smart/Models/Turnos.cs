@@ -12,6 +12,7 @@ namespace turno_smart.Models
         public int IdMedico { get; set; }
         public string Estado { get; set; }
         public DateTime FechaTurno { get; set; }
+        public string MotivoConsulta { get; set; }
         public virtual Paciente Paciente { get; set; }
         public virtual Medico Medico { get; set; }
     }
