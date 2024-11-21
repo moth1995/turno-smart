@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using turno_smart.Data;
 using turno_smart.Interfaces;
 using turno_smart.Models;
@@ -24,20 +25,20 @@ namespace turno_smart.Services
             }
         }
 
-        public List<Medico> GetAll(string filter)
+        public async Task<List<Medico>> GetAll(string? filter)
         {
            var query = from medico in _DBContext.Medicos select medico;
             if (!string.IsNullOrEmpty(filter)) {
 
-            var lowerFilter = filter.ToLower();
+                string lowerFilter = filter.ToLower();
                 query = query.Where(x => 
-                    x.Nombre.Contains(lowerFilter, StringComparison.CurrentCultureIgnoreCase) ||
-                    x.Apellido.Contains(lowerFilter, StringComparison.CurrentCultureIgnoreCase) ||
-                    x.Especialidad.Nombre.Contains(lowerFilter, StringComparison.CurrentCultureIgnoreCase)
+                    x.Nombre.ToLower().Contains(lowerFilter) ||
+                    x.Apellido.ToLower().Contains(lowerFilter) ||
+                    x.Especialidad.Nombre.ToLower().Contains(lowerFilter)
                 );
             }
 
-            return [.. query];
+            return await query.ToListAsync();
         }
 
         public List<Medico> GetAll()

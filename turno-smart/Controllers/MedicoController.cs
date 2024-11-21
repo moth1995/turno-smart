@@ -1,39 +1,50 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net;
 using turno_smart.Interfaces;
 using turno_smart.Models;
+using turno_smart.Services;
 using turno_smart.ViewModels.MedicoVM;
 
 namespace turno_smart.Controllers
 {
     public class MedicoController(
         IMedicoService medicoService,
-        IEspecialidadService especialidadService
-    ): Controller {
+        IEspecialidadService especialidadService,
+        UserManager<Usuarios> userManager
+    ) : Controller {
 
         private readonly IMedicoService _medicoService = medicoService;
         private readonly IEspecialidadService _especialidadService = especialidadService;
+        private readonly UserManager<Usuarios> _userManager = userManager;
 
         [HttpGet]
-		public IActionResult Index(string? filter)
+		public async Task<IActionResult> Index(string? filter)
 		{
 			if (!ModelState.IsValid)
 			{
 				return BadRequest(ModelState);
 			}
 
-			var listMedicoVM = new ListMedicoVM();
+            var listMedicoVM = new ListMedicoVM();
+            var medicos = await _medicoService.GetAll(filter);
+            foreach (var m in medicos)
+            {
+                Console.WriteLine(m.Especialidad);
+            }
+            var medicosVM = medicos.Select(m => new MedicoVM
+            {
+                Id = m.Id,
+                Nombre = $"{m.Nombre} {m.Apellido}",
+                Especialidad = m.Especialidad.Nombre
+            }).ToList();
 
-			if(!string.IsNullOrEmpty(filter)) {
-				var medicos = _medicoService.GetAll(filter);
-				listMedicoVM.Medicos = medicos;
+            var medicosVMSorted = medicosVM.OrderBy(m => m.Especialidad).ToList();
 
-			} else {
-				var medicos = _medicoService.GetAll();
-				listMedicoVM.Medicos = medicos;
-			}
+            listMedicoVM.Medicos = medicosVMSorted;
 
-			return View(listMedicoVM);
+            return View(listMedicoVM);
 		}
 
         
@@ -49,6 +60,7 @@ namespace turno_smart.Controllers
 				Apellido = string.Empty,
 				IdEspecialidad = especialidades.FirstOrDefault()?.Id ?? 0,
 				Telefono = 0,
+                DNI = 0,
 				Email = string.Empty,
 				Especialidad = especialidades.Select(e => new SelectListItem
 				{
@@ -62,7 +74,7 @@ namespace turno_smart.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateMedicoVM obj)
+        public async Task<IActionResult> Create(CreateMedicoVM model)
         {
 
             ModelState.Remove("Especialidad");
@@ -71,23 +83,53 @@ namespace turno_smart.Controllers
 				return BadRequest(ModelState);
 			}
 
-            try {
-                var medicoModel = new Medico()
-                {
-                    Nombre = obj.Nombre,
-                    Apellido = obj.Apellido,
-                    Telefono = obj.Telefono,
-                    Email = obj.Email,
-                    IdEspecialidad = obj.IdEspecialidad,
-                };
+            Usuarios user = new Usuarios
+            {
+                Email = model.Email,
+                UserName = model.Email,
+                DNI = model.DNI,
+            };
 
-                _medicoService.Create(medicoModel);
-                //TempData["SuccessMessage"] = "Médico creado correctamente.";
-                return RedirectToAction(nameof(Index));
-            } catch (Exception ex) {
-                //TempData["ErrorMessage"] = "Error al intentar crear medico." + ex.Message;
-                return RedirectToAction(nameof(Index));
+            var result = await _userManager.CreateAsync(user, "NuevoMedic0!");
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "Medico");
+                try
+                {
+                    var medico = new Medico()
+                    {
+                        Nombre = model.Nombre,
+                        Apellido = model.Apellido,
+                        Telefono = model.Telefono,
+                        DNI = model.DNI,
+                        Email = model.Email,
+                        IdEspecialidad = model.IdEspecialidad,
+                    };
+
+                    _medicoService.Create(medico);
+                    //TempData["SuccessMessage"] = "Médico creado correctamente.";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    //TempData["ErrorMessage"] = "Error al intentar crear medico." + ex.Message;
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+            var especialidades = _especialidadService.GetAll();
+            model.Especialidad = especialidades.Select(e => new SelectListItem
+            {
+                Value = e.Id.ToString(),
+                Text = e.Nombre
+            }).ToList();
+
+            return View(model);
+
         }
 
         [HttpGet]

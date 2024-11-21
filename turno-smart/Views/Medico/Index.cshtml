@@ -1,0 +1,72 @@
+﻿@model ListMedicoVM
+@{
+    ViewData["Title"] = "Profesionales";
+}
+<div class="container py-5">
+    <div class="d-flex justify-content align-items-center gap-3">
+        <partial name="_BackToservicios" />
+        <!-- Botón para abrir el modal -->
+        <a type="button" class="btn btn-light btn-lg mt-4" asp-area="" asp-controller="Medico" asp-action="Create">
+            ➕ Crear Médico
+        </a>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="display-4 mb-4">@ViewData["Title"]</h1>
+            <p class="lead mb-5">
+                Seleccioná el profesional con el que querés reservar tu turno online.
+            </p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <form method="get" class="input-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Buscar profesional..."
+                       asp-for="Filter" />
+                <button type="submit" class="btn btn-outline-secondary">🔍</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            @if (Model.Medicos.Any())
+            {
+                <div id="doctors-list" class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        @{
+                            var groupedBySpecialty = Model.Medicos
+                            .GroupBy(m => m.Especialidad)
+                            .OrderBy(g => g.Key);
+                        }
+
+                        @foreach (var group in groupedBySpecialty)
+                        {
+                            <h2 class="h4 mb-4">@group.Key</h2>
+                            <ul class="list-unstyled">
+                                @foreach (var medico in group)
+                                {
+                                    <li class="mb-3">
+                                        <a href="@Url.Action("Reservar", "Turnos", new { id = medico.Id })"
+                                           class="text-decoration-none text-dark d-flex align-items-center">
+                                            <span class="me-2">•</span>
+                                            @medico.Nombre
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                            <hr class="my-4" />
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No se encontraron profesionales</p>
+            }
+        </div>
+    </div>
+</div>
