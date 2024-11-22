@@ -228,6 +228,24 @@ namespace turno_smart.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost]
+        public IActionResult TurnoConfirmed(int id)
+        {
+            try
+            {
+                var turno = _turnoService.GetById(id);
+
+                if (turno == null) return NotFound();
+                turno.Estado = "CONFIRMADO";
+                _turnoService.Update(turno);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpGet]
         public IActionResult Delete(int id)

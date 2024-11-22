@@ -1,4 +1,5 @@
 ﻿@model ListTurnosVM
+@using System.Globalization
 
 <h1 class="display-4 text-center mb-2">Mis Turnos</h1>
 <p class="text-center text-muted mb-5">
@@ -23,11 +24,26 @@
                             </button>
                         </form>
                     </div>
-
+                    @{
+                        var badgeBG = "";
+                        if (turno.Estado.ToLower() == "confirmado")
+                        {
+                            badgeBG = "bg-success";
+                        }
+                        else if (turno.Estado.ToLower() == "reservado")
+                        {
+                            badgeBG = "bg-warning";
+                        }
+                        else if (turno.Estado.ToLower() == "cancelado")
+                        {
+                            badgeBG = "bg-danger";
+                        }
+                        var ti = CultureInfo.CurrentCulture.TextInfo;
+                    }
                     <div class="card-body p-4">
                         <div class="mb-3">
-                            <span class="badge @(turno.Estado == "CONFIRMADO" ? "bg-success" : "bg-warning")">
-                                @(turno.Estado == "CONFIRMADO" ? "Confirmado" : "Reservado")
+                            <span class="badge @badgeBG">
+                                @ti.ToTitleCase(turno.Estado)
                             </span>
                         </div>
 

@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Centro Médico Ejemplo";
 }
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Usuarios> SignInManager
+@inject UserManager<Usuarios> UserManager
 
     <div class="container py-5">
         <div class="row align-items-center mb-5">
@@ -21,7 +24,10 @@
                     <p class="text-uppercase mb-4">
                         DONDE SU SALUD ES PRIMERO
                     </p>
-                <partial name="_AgendarConsultarButton" />
+                @if (!(User.IsInRole("Medico") || User.IsInRole("Admin")))
+                {
+                    <partial name="_AgendarConsultarButton" />
+                }
                 </div>
             </div>
             <div class="col-lg-6">
