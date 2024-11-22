@@ -4,17 +4,6 @@
     ViewData["Title"] = "Crear Médico";
 }
 
-<div class="container py-5">
-    <div class="d-flex justify-content align-items-center gap-3">
-        <!-- Botón para volver a servicios -->
-        <partial name="_BackToservicios" />
-
-        <!-- Botón para abrir el modal -->
-        <button type="button" class="btn btn-light btn-lg mt-4" asp-area="" asp-controller="Medico" asp-action="Create">
-            ➕ Crear Médico
-        </button>
-    </div>
-
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
             <h1 class="display-4 text-center mb-4">@ViewData["Title"]</h1>

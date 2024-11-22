@@ -1,0 +1,70 @@
+﻿@model CreatePacienteVM
+@{
+    ViewData["Title"] = "Crear Paciente";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h1 class="display-4 text-center mb-4">@ViewData["Title"]</h1>
+            <p class="lead text-center mb-5">
+                Complete los datos para crear un nuevo paciente en el sistema.
+            </p>
+
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label for="Nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="Nombre" name="Nombre" value="@Model.Nombre" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Apellido" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="Apellido" name="Apellido" value="@Model.Apellido" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="DNI" class="form-label">DNI</label>
+                            <input type="number" class="form-control" id="DNI" name="DNI" value="@Model.DNI" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Telefono" class="form-label">Teléfono</label>
+                            <input type="number" class="form-control" id="Telefono" name="Telefono" value="@Model.Telefono" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="FechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                            <input type="date" class="form-control" placeholder="Fecha de Nacimiento" asp-for="FechaNacimiento" />
+                            <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Domicilio" class="form-label">Domicilio</label>
+                            <input type="text" class="form-control" id="Domicilio" name="Domicilio" value="@Model.Domicilio" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Ciudad" class="form-label">Ciudad</label>
+                            <input type="text" class="form-control" id="Ciudad" name="Ciudad" value="@Model.Ciudad" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Email" class="form-label">Provincia</label>
+                            <input type="text" class="form-control" id="Provincia" name="Provincia" value="@Model.Provincia" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Email" class="form-label">Correo Electrónico</label>
+                            <input type="text" class="form-control" id="Email" name="Email" value="@Model.Email" required />
+                        </div>
+                        <input type="hidden" name="Cobertura" value="0"/>
+
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="submit" class="btn btn-primary btn-lg">Crear Paciente</button>
+                            <a href="@Url.Action("Index", "Paciente")" class="btn btn-outline-secondary btn-lg">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
