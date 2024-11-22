@@ -77,14 +77,6 @@ namespace turno_smart.Controllers
 
             return View(listTurnos);
         }
-
-        [HttpPost]
-        public IActionResult ChangeDate(DateTime date, string direction)
-        {
-            DateTime newDate = direction == "next" ? date.AddDays(1) : date.AddDays(-1);
-
-            return RedirectToAction("Index", new { date = newDate });
-        }
         [HttpGet]
         [Authorize(Roles = "Admin,Paciente")]
         public async Task<IActionResult> Create(int? medicoId)
@@ -152,7 +144,7 @@ namespace turno_smart.Controllers
 
                 _turnoService.Create(turno);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
