@@ -65,19 +65,37 @@
             {
                 <small class="text-white-50 me-2">¿Todavía no tienes una cuenta?</small>
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#registrationModal" data-url="@Url.Action("Register", "Account")">
-                        Registrarse
-                    </button>
-                    <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal" data-url="@Url.Action("Login", "Account")">
-                        Iniciar sesión
-                    </button>
+                    <form method="get" asp-action="Register" asp-controller="Account" id="register-btn">
+                        <button type="submit" class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#registrationModal">
+                            Registrarse
+                        </button>
+                    </form>
+                    <form method="get" asp-action="Login" asp-controller="Account" id="login-btn">
+                        <button type="submit" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            Iniciar sesión
+                        </button>
+                    </form>
                 </div>
             }
 
         </div>
     </div>
 </nav>
-<!-- Modales -->
-@await Html.PartialAsync("_RegistrationModal", new RegisterVM())
-@await Html.PartialAsync("_LoginModal", new LoginVM())
+<!-- Modal de Registro -->
+<div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" id="modal-registration-content">
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal de Login -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="modal-login-content">
+        </div>
+    </div>
+</div>
+
 @await Html.PartialAsync("_ForgotPasswordModal")

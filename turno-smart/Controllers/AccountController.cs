@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using turno_smart.Models;
 using turno_smart.ViewModels.AccountVM;
 using turno_smart.Interfaces;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 namespace turno_smart.Controllers
 {
@@ -34,15 +35,11 @@ namespace turno_smart.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return Json(new { redirectUrl = Url.Action("Index", "Home") });
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Email or password is incorrect.");
-                    return RedirectToAction("Index", "Home");
-                }
+                ModelState.AddModelError("", "Email or password is incorrect.");
             }
-            return RedirectToAction("Index", "Home");
+            return PartialView("_LoginModal", model);
         }
 
         [HttpGet]
@@ -60,7 +57,7 @@ namespace turno_smart.Controllers
                 if (!int.TryParse(model.DNI, out dni))
                 {
                     ModelState.AddModelError("", "DNI ingresado invalido");
-                    return PartialView("_RegistrationForm", model);
+                    return PartialView("_RegistrationModal", model);
                 }
                 Usuarios users = new Usuarios
                 {
@@ -93,7 +90,7 @@ namespace turno_smart.Controllers
 
                     _pacienteService.Create(paciente);
 
-                    return RedirectToAction("Login", "Account");
+                    return PartialView("_RegistrationSuccess", model);
                 }
                 else
                 {
@@ -102,10 +99,10 @@ namespace turno_smart.Controllers
                         ModelState.AddModelError("", error.Description);
                     }
 
-                    return PartialView("_RegistrationForm", model);
+                    return PartialView("_RegistrationModal", model);
                 }
             }
-            return PartialView("_RegistrationForm", model);
+            return PartialView("_RegistrationModal", model);
         }
         public async Task<IActionResult> Logout()
         {

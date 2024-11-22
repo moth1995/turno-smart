@@ -46,25 +46,35 @@ function onLoginModalForgotPasswordBtnClick() {
     openForgotPasswordModal();
 }
 
-$(document).ready(function () {
-    // Manejo del envío del formulario
-    $('#registrationForm').on('submit', function (event) {
-        event.preventDefault(); // Evita la redirección
-        console.log($(this).attr('action'));
+function handleFormSubmission(formSelector, resultContainerSelector) {
+    $(document).on('submit', formSelector, function (event) {
+        event.preventDefault();
+        const form = $(this);
+        console.log(form.attr('action'));
+        console.log(form.attr('method'));
         $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: $(this).serialize(),
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
             success: function (result) {
-                $("#registrationForm").html(result);
-                grecaptcha.reset();
+                if (result.redirectUrl !== undefined) {
+                    window.location.replace(result.redirectUrl);
+                } else {
+                    $(resultContainerSelector).html(result);
+                }
             },
             error: function () {
                 alert('Error al procesar la solicitud.');
             }
         });
     });
-});
+}
+
+handleFormSubmission('#registrationForm', '#modal-registration-content');
+handleFormSubmission('#register-btn', '#modal-registration-content');
+handleFormSubmission('#login-btn', '#modal-login-content');
+handleFormSubmission('#loginForm', '#modal-login-content');
+
 
 $(document).on('submit', '#TurnoEditForm', function (event) {
     event.preventDefault(); // Evita la redirección
