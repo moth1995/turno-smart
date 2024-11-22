@@ -1,7 +1,37 @@
 ﻿@model ListEspecialidadVM
+@Html.AntiForgeryToken()
 
-<div class="container py-5">
-    <partial name="_BackToServicios" />
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            var errorMessage = '@TempData["ErrorMessage"]';
+
+            if (successMessage) {
+                toastr.success(successMessage);
+            }
+
+            if (errorMessage) {
+                toastr.error(errorMessage);
+            }
+        });
+    </script>
+}
+
+    <div class="container py-5">
+        <div class="d-flex justify-content align-items-center gap-3">
+            <partial name="_BackToServicios" />
+            @if (User.IsInRole("Admin"))
+        {
+            <p>
+                <form method="get" asp-action="Create">
+                    <button type="submit" class="btn btn-light btn-lg mt-4">➕ Crear Especialidad</button>
+                </form>
+            </p>
+        }
+    </div>
 
     <div class="row">
         <div class="col-lg-6">
@@ -44,7 +74,7 @@
                                     {
                                         <div class="ms-auto">
                                             <!-- Botón para Editar -->
-                                            <a asp-controller="Especialidades"
+                                            <a asp-controller="Especialidad"
                                                asp-action="Edit"
                                                asp-route-id="@item.Id"
                                                class="btn btn-sm btn-primary me-1">
@@ -52,7 +82,7 @@
                                             </a>
 
                                             <!-- Botón para Detalles -->
-                                            <a asp-controller="Especialidades"
+                                            <a asp-controller="Especialidad"
                                                asp-action="Details"
                                                asp-route-id="@item.Id"
                                                class="btn btn-sm btn-secondary me-1">
@@ -60,14 +90,12 @@
                                             </a>
 
                                             <!-- Botón para Eliminar -->
-                                            <button type="button"
-                                                    class="btn btn-sm btn-danger"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal"
-                                                    data-id="@item.Id"
-                                                    data-name="@item.Nombre">
+                                            <a asp-controller="Especialidad"
+                                               asp-action="Delete"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-danger">
                                                 Eliminar
-                                            </button>
+                                            </a>                                           
                                         </div>
                                     }
                                 </li>
@@ -78,6 +106,8 @@
                     {
                         <p class="text-muted">No se encontraron especialidades</p>
                     }
+
+
                 </div>
             </div>
         </div>
