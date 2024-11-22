@@ -239,6 +239,7 @@ namespace turno_smart.Controllers
                 var vm = new DeleteTurnoVM()
                 {
                     Id = turno.Id,
+                    PacienteNombre = turno.Paciente.FullName(),
                     MedicoEspecialidad = turno.Medico.Especialidad.Nombre,
                     FechaTurno = turno.FechaTurno,
                 };
@@ -263,7 +264,8 @@ namespace turno_smart.Controllers
                 var turno = _turnoService.GetById(id);
 
                 if(turno == null) return NotFound();
-                _turnoService.Delete(id);
+                turno.Estado = "Cancelado";
+                _turnoService.Update(turno);
 
                 return Json(new { redirectUrl = Url.Action("Index") });
             } 
