@@ -113,12 +113,12 @@ namespace turno_smart.Controllers
                     };
 
                     _medicoService.Create(medico);
-                    //TempData["SuccessMessage"] = "Médico creado correctamente.";
+                    TempData["SuccessMessage"] = "Médico creado correctamente.";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
-                    //TempData["ErrorMessage"] = "Error al intentar crear medico." + ex.Message;
+                    TempData["ErrorMessage"] = "Error al intentar crear medico." + ex.Message;
                     return RedirectToAction(nameof(Index));
                 }
             }
