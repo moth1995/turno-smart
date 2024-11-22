@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using turno_smart.Interfaces;
 using turno_smart.Models;
 using turno_smart.ViewModels.TurnoVM;
@@ -153,63 +152,79 @@ namespace turno_smart.Controllers
 		}
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if(!ModelState.IsValid)
+            try 
             {
-                return BadRequest(ModelState);
-            }
-
-            try {
                 var turno = _turnoService.GetById(id);
 
                 if(turno == null) return NotFound();
+                var availableSlots = await _medicoService.GetAvailableSlotsAsync(turno.IdMedico, 60, new TimeSpan(8, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(0, 30, 0));
 
                 var vm = new EditTurnoVM
                 {
-                    Id = turno.Id,
-                    IdPaciente = turno.IdPaciente,
-                    IdMedico = turno.IdMedico,
-                    FechaTurno = turno.FechaTurno,
-                    Medicos = _medicoService.GetAll().Select(e => new SelectListItem
-                    {
-                        Value = e.Id.ToString(),
-                        Text = e.Nombre
-                    }).ToList(),
-                    Pacientes = _pacienteService.GetAll().Select(e => new SelectListItem
-                    {
-                        Value = e.Id.ToString(),
-                        Text = e.Nombre
-                    }).ToList()
+                    TurnoId = turno.Id,
+                    MedicoNombre = turno.Medico.FullName(),
+                    MedicoEspecialidad = turno.Medico.Especialidad.Nombre,
+                    MotivoConsulta = turno.MotivoConsulta,
+                    SelectedDate = turno.FechaTurno.Date.ToString("d"),
+                    SelectedTime = turno.FechaTurno.ToString("t"),
+                    AvailableDates = availableSlots.Keys.ToList(),
+                    AvailableSlots = availableSlots,
                 };
 
                 return View(vm);
-            } catch (Exception ex) {
+            } 
+            catch (Exception ex) 
+            {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPost]
-        public IActionResult Edit(EditTurnoVM vm)
+        public async Task<IActionResult> Edit(EditTurnoVM vm)
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            DateTime selectedDateTime;
 
-            try {
-                var turno = _turnoService.GetById(vm.Id);
+            if (!ModelState.IsValid || !DateTime.TryParse($"{vm.SelectedDate} {vm.SelectedTime}", out selectedDateTime))
+            {
+                if (vm == null) return NotFound();
+                var turno = _turnoService.GetById(vm.TurnoId);
+
+                if (turno == null) return NotFound();
+                var availableSlots = await _medicoService.GetAvailableSlotsAsync(turno.IdMedico, 60, new TimeSpan(8, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(0, 30, 0));
+                
+                ModelState.AddModelError(string.Empty, "La fecha y hora seleccionadas no son válidas.");
+                var newVM = new EditTurnoVM
+                {
+                    TurnoId = turno.Id,
+                    MedicoNombre = turno.Medico.FullName(),
+                    MedicoEspecialidad = turno.Medico.Especialidad.Nombre,
+                    MotivoConsulta = turno.MotivoConsulta,
+                    SelectedDate = turno.FechaTurno.Date.ToString("d"),
+                    SelectedTime = turno.FechaTurno.ToString("t"),
+                    AvailableDates = availableSlots.Keys.ToList(),
+                    AvailableSlots = availableSlots,
+                };
+
+                return View(newVM);
+            }
+            try
+            {
+                var turno = _turnoService.GetById(vm.TurnoId);
 
                 if(turno == null) return NotFound();
 
-                turno.IdPaciente = vm.IdPaciente;
-                turno.IdMedico = vm.IdMedico;
-                turno.FechaTurno = vm.FechaTurno;
+                turno.FechaTurno = selectedDateTime;
+                turno.MotivoConsulta = vm.MotivoConsulta;
+                turno.Estado = "RESERVADO";
 
                 _turnoService.Update(turno);
 
-                return RedirectToAction("Index");
-            } catch (Exception ex) {
+                return Json(new { redirectUrl = Url.Action("Index") });
+            }
+            catch (Exception ex) 
+            {
                 return BadRequest(ex.Message);
             }
         }
@@ -222,12 +237,15 @@ namespace turno_smart.Controllers
                 return BadRequest(ModelState);
             }
 
-            try {
+            try
+            {
                 var turno = _turnoService.GetById(id);
                 if(turno == null) return NotFound();
 
                 return View(turno);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) 
+            {
                 return BadRequest(ex.Message);
             }
         }
