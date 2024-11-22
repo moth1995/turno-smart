@@ -38,9 +38,24 @@
 
             @if (SignInManager.IsSignedIn(User))
             {
+                
+                var user = await @UserManager.GetUserAsync(User);
+                string name = user.UserName;
+                if (user.Medico != null)
+                {
+                    name = $"Dr. {user.Medico.FullName()}";
+                }
+                else if (user.Paciente != null)
+                {
+                    name = user.Paciente.FullName();
+                }
+                
                 <div class="d-flex gap-2">
-                    <a id="manage" class="nav-link text-dark" asp-area="" asp-page="/Account/Manage/Index" title="Manage">Hola @UserManager.GetUserName(User)!</a>
-                    <a href="javascript:void(0);" class="nav-link text-dark" onclick="document.getElementById('logout-form').submit();">Logout</a>
+                    <a id="manage" class="nav-link text-white" asp-area="" asp-page="/Account/Manage/Index" title="Manage">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user me-2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        @name
+                    </a>
+                    <a href="javascript:void(0);" class="nav-link text-white" onclick="document.getElementById('logout-form').submit();">Logout</a>
                     <form id="logout-form" class="d-none" asp-area="" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
                     </form>
 

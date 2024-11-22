@@ -65,3 +65,24 @@ $(document).ready(function () {
         });
     });
 });
+
+$(document).on('submit', '#TurnoEditForm', function (event) {
+    event.preventDefault(); // Evita la redirección
+    console.log($(this).attr('action'));
+    console.log($(this).attr('method'));
+    $.ajax({
+        url: $(this).attr('action'),
+        type: $(this).attr('method'),
+        data: $(this).serialize(),
+        success: function (result) {
+            if (result.redirectUrl !== undefined) {
+                window.location.replace(result.redirectUrl);
+            } else {
+                $("#modal-edit-content").html(result);
+            }
+        },
+        error: function () {
+            alert('Error al procesar la solicitud.');
+        }
+    });
+});
