@@ -71,23 +71,26 @@ namespace turno_smart.Controllers
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(users, "Paciente");
-                    Paciente paciente = new Paciente() 
+                    Paciente paciente = _pacienteService.GetByDNI(users.DNI);
+                    if (paciente == null)
                     {
-                        Nombre = model.Nombre,
-                        Apellido = model.Apellido,
-                        DNI = dni,
-                        FechaNacimiento = model.FechaNacimiento,
-                        Email = model.Email,
-                        FechaAlta = DateTime.Now,
-                        Usuario = users,
-                        Ciudad = "",
-                        Provincia = "",
-                        Domicilio = "",
-                        Cobertura = 0,
-                        Telefono = 0,
-                        Estado = 0,
-                    };
-
+                        paciente = new Paciente()
+                        {
+                            Nombre = model.Nombre,
+                            Apellido = model.Apellido,
+                            DNI = dni,
+                            FechaNacimiento = model.FechaNacimiento,
+                            Email = model.Email,
+                            FechaAlta = DateTime.Now,
+                            Usuario = users,
+                            Ciudad = "",
+                            Provincia = "",
+                            Domicilio = "",
+                            Cobertura = 0,
+                            Telefono = 0,
+                            Estado = 0,
+                        };
+                    }
                     _pacienteService.Create(paciente);
 
                     return PartialView("_RegistrationSuccess", model);
