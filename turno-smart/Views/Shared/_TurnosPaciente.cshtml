@@ -57,10 +57,11 @@
                             <span class="fw-medium">Motivo de la consulta: </span>
                             @turno.MotivoConsulta
                         </p>
-
-                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-edit" onclick="OpenEditModal(@turno.TurnoId)">
-                            Editar Turno
-                        </button>
+                        <form method="get" asp-action="Edit" asp-controller="Turno" asp-route-id="@turno.TurnoId" id="edit-btn">
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                Editar Turno
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -104,23 +105,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    function OpenEditModal(id) {
-        var data = { id: id };
-        $.ajax(
-            {
-                type: 'GET',
-                url: '/Turno/Edit',
-                contentType: 'application/json; charset=utf=8',
-                data: data,
-                success: function (result) {
-                    $('#modal-edit-content').html(result);
-                    $('#modal-edit').modal('show');
-                },
-                error: function (er) {
-                    alert(er);
-                }
-            });
-    }
-</script>

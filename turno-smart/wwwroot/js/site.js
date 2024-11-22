@@ -52,6 +52,7 @@ function handleFormSubmission(formSelector, resultContainerSelector) {
         const form = $(this);
         console.log(form.attr('action'));
         console.log(form.attr('method'));
+        console.log(form.serialize());
         $.ajax({
             url: form.attr('action'),
             type: form.attr('method'),
@@ -74,25 +75,6 @@ handleFormSubmission('#registrationForm', '#modal-registration-content');
 handleFormSubmission('#register-btn', '#modal-registration-content');
 handleFormSubmission('#login-btn', '#modal-login-content');
 handleFormSubmission('#loginForm', '#modal-login-content');
+handleFormSubmission('#TurnoEditForm', '#modal-edit-content');
+handleFormSubmission('#edit-btn', '#modal-edit-content');
 
-
-$(document).on('submit', '#TurnoEditForm', function (event) {
-    event.preventDefault(); // Evita la redirección
-    console.log($(this).attr('action'));
-    console.log($(this).attr('method'));
-    $.ajax({
-        url: $(this).attr('action'),
-        type: $(this).attr('method'),
-        data: $(this).serialize(),
-        success: function (result) {
-            if (result.redirectUrl !== undefined) {
-                window.location.replace(result.redirectUrl);
-            } else {
-                $("#modal-edit-content").html(result);
-            }
-        },
-        error: function () {
-            alert('Error al procesar la solicitud.');
-        }
-    });
-});
