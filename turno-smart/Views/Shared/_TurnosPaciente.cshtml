@@ -16,10 +16,12 @@
                         <h5 class="mb-0">
                             Atención Médica
                         </h5>
-                        <button class="btn btn-link position-absolute top-0 end-0 p-3" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                data-id="@turno.TurnoId" data-especialidad="@turno.MedicoEspecialidad" data-fecha="@turno.Fecha.ToString(@"dd/MM/yyyy")" data-hora="@turno.Hora.ToString(@"hh\:mm")">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x "><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
-                        </button>
+                        <form method="get" asp-action="Delete" asp-controller="Turno" asp-route-id="@turno.TurnoId" id="delete-btn">
+
+                            <button class="btn btn-link position-absolute top-0 end-0 p-3" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x "><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                            </button>
+                        </form>
                     </div>
 
                     <div class="card-body p-4">
@@ -75,7 +77,7 @@
     }
 
 </div>
-<!-- modal placeholders-->
+<!-- Modal de Edit-->
 <div id="modal-edit" class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -86,22 +88,8 @@
 <!-- Modal de Eliminacion -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Cancelar Turno</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>¿Estás seguro que deseas cancelar tu turno para <span id="especialidad"></span>?</p>
-                <p class="text-muted mb-0">Fecha: <span id="fecha"></span> hs</p>
-            </div>
-            <div class="modal-footer">
-                <form method="post" asp-action="DeleteConfirmed" asp-controller="Turno">
-                    <input type="hidden" name="id" id="turnoId" />
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                </form>
-            </div>
+        <div class="modal-content" id="modal-delete-content">
+
         </div>
     </div>
 </div>

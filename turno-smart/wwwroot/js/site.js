@@ -71,10 +71,13 @@ function handleFormSubmission(formSelector, resultContainerSelector) {
     });
 }
 
-handleFormSubmission('#registrationForm', '#modal-registration-content');
-handleFormSubmission('#register-btn', '#modal-registration-content');
-handleFormSubmission('#login-btn', '#modal-login-content');
-handleFormSubmission('#loginForm', '#modal-login-content');
-handleFormSubmission('#TurnoEditForm', '#modal-edit-content');
-handleFormSubmission('#edit-btn', '#modal-edit-content');
+handleFormSubmission('#registrationForm', '#modal-registration-content'); //post
+handleFormSubmission('#register-btn', '#modal-registration-content'); //get
+handleFormSubmission('#login-btn', '#modal-login-content'); //post
+handleFormSubmission('#loginForm', '#modal-login-content'); //get
+handleFormSubmission('#TurnoEditForm', '#modal-edit-content'); //post
+handleFormSubmission('#edit-btn', '#modal-edit-content'); //get
+handleFormSubmission('#turno-delete-form', '#modal-delete-content'); //post
+handleFormSubmission('#delete-btn', '#modal-delete-content'); //get
+
 

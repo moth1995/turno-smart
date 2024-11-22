@@ -1,4 +1,8 @@
-﻿@model ListMedicoVM
+﻿﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Usuarios> SignInManager
+@inject UserManager<Usuarios> UserManager
+
+@model ListMedicoVM
 @{
     ViewData["Title"] = "Medicos";
 }
@@ -53,11 +57,22 @@
                                 @foreach (var medico in group)
                                 {
                                     <li class="mb-3">
-                                        <a href="@Url.Action("Create", "Turno", new { medicoId = medico.Id })"
-                                           class="text-decoration-none text-dark d-flex align-items-center">
-                                            <span class="me-2">•</span>
-                                            @medico.Nombre
-                                        </a>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <p class="text-decoration-none text-dark d-flex align-items-center">
+                                                <span class="me-2">•</span>
+                                                @medico.Nombre
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Create", "Turno", new { medicoId = medico.Id })"
+                                               class="text-decoration-none text-dark d-flex align-items-center">
+                                                <span class="me-2">•</span>
+                                                @medico.Nombre
+                                            </a>
+
+                                        }
                                     </li>
                                 }
                             </ul>

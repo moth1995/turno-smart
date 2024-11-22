@@ -232,17 +232,17 @@ namespace turno_smart.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             try
             {
                 var turno = _turnoService.GetById(id);
                 if(turno == null) return NotFound();
-
-                return View(turno);
+                var vm = new DeleteTurnoVM()
+                {
+                    Id = turno.Id,
+                    MedicoEspecialidad = turno.Medico.Especialidad.Nombre,
+                    FechaTurno = turno.FechaTurno,
+                };
+                return View(vm);
             }
             catch (Exception ex) 
             {
@@ -265,7 +265,7 @@ namespace turno_smart.Controllers
                 if(turno == null) return NotFound();
                 _turnoService.Delete(id);
 
-                return RedirectToAction("Index");
+                return Json(new { redirectUrl = Url.Action("Index") });
             } 
             catch (Exception ex) 
             {
