@@ -1,15 +1,19 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using turno_smart.Interfaces;
 using turno_smart.Models;
+using turno_smart.Services;
 using turno_smart.ViewModels.PacienteVM;
 
 namespace turno_smart.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class PacienteController(IPacienteService pacienteService) : Controller {
+    public class PacienteController(IPacienteService pacienteService, UserManager<Usuarios> userManager) : Controller {
 
         private readonly IPacienteService _pacienteService = pacienteService;
+        private readonly UserManager<Usuarios> _userManager = userManager;
 
         [HttpGet]
         public IActionResult Index(string? filter)
@@ -64,37 +68,57 @@ namespace turno_smart.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreatePacienteVM obj)
+        public async Task<IActionResult> Create(CreatePacienteVM obj)
         {
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return View(obj);
             }
 
-            try {
-                var pacienteModel = new Paciente()
+            try 
+            {
+                Usuarios user = new Usuarios
                 {
-                    Nombre = obj.Nombre,
-                    Apellido = obj.Apellido,
-                    FechaNacimiento = obj.FechaNacimiento,
-                    DNI = obj.DNI,
-                    Domicilio = obj.Domicilio,
-                    Ciudad = obj.Ciudad,
-                    Provincia = obj.Provincia,
-                    Cobertura = obj.Cobertura,
-                    Telefono = obj.Telefono,
                     Email = obj.Email,
-                    Estado = obj.Estado,
-                    FechaAlta = obj.FechaAlta
+                    UserName = obj.Email,
+                    DNI = obj.DNI,
                 };
 
-                _pacienteService.Create(pacienteModel);
+                var result = await _userManager.CreateAsync(user, "NuevoPacient3!");
+                if (result.Succeeded)
+                {
 
-                return RedirectToAction("Index");
-            } catch (Exception ex) {
+                    var pacienteModel = new Paciente()
+                    {
+                        Nombre = obj.Nombre,
+                        Apellido = obj.Apellido,
+                        FechaNacimiento = obj.FechaNacimiento,
+                        DNI = obj.DNI,
+                        Domicilio = obj.Domicilio,
+                        Ciudad = obj.Ciudad,
+                        Provincia = obj.Provincia,
+                        Cobertura = obj.Cobertura,
+                        Telefono = obj.Telefono,
+                        Email = obj.Email,
+                        Estado = obj.Estado,
+                        FechaAlta = obj.FechaAlta
+                    };
+
+                    _pacienteService.Create(pacienteModel);
+
+                    return RedirectToAction("Index");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            catch (Exception ex) 
+            {
                 return BadRequest(ex.Message);
             }
+            return View(obj);
         }
 
         [HttpGet]
