@@ -63,10 +63,10 @@ namespace turno_smart.Controllers
                 };
 
                 _especialidadService.Create(especialidadModel);
-                //TempData["SuccessMessage"] = "Médico creado correctamente.";
+                TempData["SuccessMessage"] = "Especialidad creada correctamente.";
                 return RedirectToAction(nameof(Index));
             } catch (Exception ex) {
-                //TempData["ErrorMessage"] = "Error al intentar crear especialidad." + ex.Message;
+                TempData["ErrorMessage"] = "Error al intentar crear especialidad." + ex.Message;
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -104,7 +104,7 @@ namespace turno_smart.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(EditEspecialidadVM obj)
         {
@@ -121,12 +121,28 @@ namespace turno_smart.Controllers
                 especialidad.Descripcion = obj.Descripcion ?? especialidad.Descripcion;
 
                 _especialidadService.Update(especialidad);
-                //TempData["SuccessMessage"] = "Información del médico actualizada correctamente.";
+                TempData["SuccessMessage"] = "Información de la especialidad actualizada correctamente.";
                 return RedirectToAction(nameof(Index));
             } catch (Exception ex) {
-                //TempData["ErrorMessage"] = "Error al intentar actualizar la información del médico." + ex.Message;
+                TempData["ErrorMessage"] = "Error al intentar actualizar la información de la especialidad." + ex.Message;
                 return RedirectToAction(nameof(Index));
             }
+        }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var especialidad = _especialidadService.GetById(id);
+            if (especialidad == null) return NotFound();
+
+            var especialidadModel = new EspecialidadVM
+            {
+                Id = especialidad.Id,
+                Nombre = especialidad.Nombre,
+                Descripcion = especialidad.Descripcion
+            };
+
+            return View(especialidadModel);
         }
 
         [HttpGet]
@@ -171,11 +187,11 @@ namespace turno_smart.Controllers
                 if(especialidad == null) return NotFound();
 
                 _especialidadService.Delete(id);
-                //TempData["SuccessMessage"] = "Médico eliminado correctamente.";
+                TempData["SuccessMessage"] = "Especialidad eliminada correctamente.";
                 return RedirectToAction(nameof(Index));
 
             } catch (Exception ex) {
-                //TempData["ErrorMessage"] = "Error al intentar eliminar el médico" + ex.Message;
+                TempData["ErrorMessage"] = "Error al intentar eliminar la especialidad" + ex.Message;
                 return RedirectToAction(nameof(Index));
             }
         } 
