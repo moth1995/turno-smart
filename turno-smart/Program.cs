@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using turno_smart.Data;
@@ -32,6 +33,12 @@ namespace turno_smart
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Home/Index";
+                options.AccessDeniedPath = "/Home/Index"; // Ruta para acceso denegado
+            });
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             builder.Services.AddScoped<IPacienteService, PacienteService>();
@@ -40,7 +47,6 @@ namespace turno_smart
             builder.Services.AddScoped<IEstudioService, EstudioService>();
             builder.Services.AddScoped<IMedicoService, MedicoService>();
             builder.Services.AddScoped<ITurnoService, TurnoService>();
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
