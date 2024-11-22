@@ -1,5 +1,10 @@
 ﻿@model ListTurnosVM
 
+@{
+    ViewData["Title"] = "Turnos";
+}
+
+
 <div class="container py-5">
     @if (@User.IsInRole("Paciente"))
     {
