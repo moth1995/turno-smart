@@ -42,6 +42,24 @@ namespace turno_smart.Data
                 .HasForeignKey<Medico>(m => m.DNI)
                 .HasPrincipalKey<Usuarios>(u => u.DNI) // Establecer DNI como clave principal
                 .OnDelete(DeleteBehavior.Restrict);
+            // Relación Usuario -> Paciente (1:1) desde Usuario hacia Paciente
+            modelBuilder.Entity<Usuarios>()
+                .HasOne(u => u.Paciente)  // Usuario tiene un solo Paciente
+                .WithOne(p => p.Usuario)  // Paciente tiene un solo Usuario
+                .HasForeignKey<Paciente>(p => p.DNI)  // La clave foránea en Paciente será DNI
+                .HasPrincipalKey<Usuarios>(u => u.DNI)  // La clave principal de Usuario es DNI
+                .OnDelete(DeleteBehavior.Restrict);  // Restricción en la eliminación
+
+            // Relación Usuario -> Medico (1:1) desde Usuario hacia Medico
+            modelBuilder.Entity<Usuarios>()
+                .HasOne(u => u.Medico)  // Usuario tiene un solo Medico
+                .WithOne(m => m.Usuario)  // Medico tiene un solo Usuario
+                .HasForeignKey<Medico>(m => m.DNI)  // La clave foránea en Medico será DNI
+                .HasPrincipalKey<Usuarios>(u => u.DNI)  // La clave principal de Usuario es DNI
+                .OnDelete(DeleteBehavior.Restrict);  // Restricción en la eliminación
+            modelBuilder.Entity<Usuarios>()
+                .HasIndex(u => u.DNI)
+                .IsUnique(); // DNI debe ser único
             // Relación Especialidad -> Medico (1:N)
             modelBuilder.Entity<Medico>()
                 .HasOne(m => m.Especialidad)

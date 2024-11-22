@@ -1,0 +1,16 @@
+﻿@model ListTurnosVM
+
+<div class="container py-5">
+    @if (@User.IsInRole("Paciente"))
+    {
+        @await Html.PartialAsync("_TurnosPaciente", Model)
+    }
+    else if (@User.IsInRole("Medico") || @User.IsInRole("Admin"))
+    {
+        @await Html.PartialAsync("_AgendaDiaria", Model)
+    }
+    else
+    {
+        Context.Response.Redirect("/");
+    }
+</div>

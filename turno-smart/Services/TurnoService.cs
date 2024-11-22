@@ -26,20 +26,31 @@ namespace turno_smart.Services
             }
         }
 
-        public List<Turno> GetAll(string filter)
+        public async Task<List<Turno>> GetAll(string? filter, int? pacienteId, int? medicoId)
         {
-           var query = from turno in _DBContext.Turnos select turno;
-            if (!string.IsNullOrEmpty(filter)) {
+            var query = from turno in _DBContext.Turnos select turno;
 
-                query = query.Where(x => 
-                    x.Medico.Nombre.Contains(filter, StringComparison.CurrentCultureIgnoreCase) ||
-                    x.Paciente.Nombre.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
-                )
-                .Include(t => t.Medico)
-                .Include(t => t.Paciente);
+            if (pacienteId != null)
+            {
+                query = query.Where(t =>
+                    t.IdPaciente == pacienteId
+                );
+            }
+            else if (medicoId != null) 
+            {
+                query = query.Where(t =>
+                    t.IdMedico == medicoId
+                );
+            }
+            else if (!string.IsNullOrEmpty(filter)) 
+            {
+                query = query.Where(x =>
+                    x.Medico.Nombre.Contains(filter.ToLower()) ||
+                    x.Paciente.Nombre.Contains(filter.ToLower())
+                );
             }
 
-            return [.. query];
+            return await query.ToListAsync();
         }
 
         public List<Turno> GetAll()

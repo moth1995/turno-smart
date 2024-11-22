@@ -5,10 +5,13 @@
 <div class="container py-5">
     <div class="d-flex justify-content align-items-center gap-3">
         <partial name="_BackToservicios" />
-        <!-- Botón para abrir el modal -->
-        <a type="button" class="btn btn-light btn-lg mt-4" asp-area="" asp-controller="Medico" asp-action="Create">
-            ➕ Crear Médico
-        </a>
+        @if (@User.IsInRole("Admin"))
+        {
+            <a type="button" class="btn btn-light btn-lg mt-4" asp-area="" asp-controller="Medico" asp-action="Create">
+                ➕ Crear Médico
+            </a>
+        }
+
     </div>
     <div class="row">
         <div class="col-lg-8">

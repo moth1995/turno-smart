@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Security.Claims;
 using turno_smart.Interfaces;
 using turno_smart.Models;
 using turno_smart.ViewModels.TurnoVM;
@@ -10,15 +11,18 @@ namespace turno_smart.Controllers
     public class TurnoController(
         ITurnoService turnoService,
         IMedicoService medicoService,
-        IPacienteService pacienteService
-    ): Controller {
+        IPacienteService pacienteService,
+        UserManager<Usuarios> userManager
+    ) : Controller {
 
         private readonly ITurnoService _turnoService = turnoService;
         private readonly IMedicoService _medicoService = medicoService;
         private readonly IPacienteService _pacienteService = pacienteService;
+        private readonly UserManager<Usuarios> _userManager = userManager;
 
         [HttpGet]
-        public IActionResult Index(string? filter)
+        [Authorize(Roles = "Admin,Paciente,Medico")]
+        public async Task<IActionResult> Index(string? filter, DateTime? date)
 		{
 
             if(!ModelState.IsValid)
@@ -26,20 +30,71 @@ namespace turno_smart.Controllers
                 return BadRequest(ModelState);
             }
 
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            if (currentUser == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            DateTime currentDate = date ?? DateTime.Today;
+
+            var turnos = new List<Turno>();
+            if (await _userManager.IsInRoleAsync(currentUser, "Paciente"))
+            {
+                turnos = await _turnoService.GetAll(filter, currentUser.Paciente?.Id, null);
+            }
+            else if (await _userManager.IsInRoleAsync(currentUser, "Medico"))
+            {
+                turnos = await _turnoService.GetAll(filter, null, currentUser.Medico?.Id);
+                turnos = turnos.Where(t => t.FechaTurno.Date == currentDate.Date).ToList();
+            }
+            else if (await _userManager.IsInRoleAsync(currentUser, "Admin"))
+            {
+                turnos = await _turnoService.GetAll(filter, null, null);
+                turnos = turnos.Where(t => t.FechaTurno.Date == currentDate.Date).ToList();
+            }
+
             var listTurnos = new ListTurnosVM();
 
-            if(!string.IsNullOrEmpty(filter)) {
-                listTurnos.Turnos = _turnoService.GetAll(filter);
-            } else {
-                listTurnos.Turnos = _turnoService.GetAll();
-            }
+            
+            listTurnos.Filter = filter;
+            listTurnos.CurrentDate = currentDate;
+            listTurnos.Turnos = turnos.Select(t => new TurnoVM
+            {
+                TurnoId = t.Id,
+                PacienteId = t.Paciente.Id,
+                MedicoId = t.Medico.Id,
+                Estado = t.Estado,
+                Fecha = t.FechaTurno,
+                Hora = t.FechaTurno.TimeOfDay,
+                PacienteNombre = t.Paciente.FullName(),
+                MedicoNombre = t.Medico.FullName(),
+                MedicoEspecialidad = t.Medico.Especialidad.Nombre,
+                MotivoConsulta = t.MotivoConsulta,
+                
+            }).ToList();
 
             return View(listTurnos);
         }
 
+        [HttpPost]
+        public IActionResult ChangeDate(DateTime date, string direction)
+        {
+            DateTime newDate = direction == "next" ? date.AddDays(1) : date.AddDays(-1);
+
+            return RedirectToAction("Index", new { date = newDate });
+        }
         [HttpGet]
+        [Authorize(Roles = "Admin,Paciente")]
         public async Task<IActionResult> Create(int? medicoId)
         {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (medicoId == null)
             {
                 return RedirectToAction("Index", "Medico");
@@ -53,7 +108,7 @@ namespace turno_smart.Controllers
             var availableSlots = await _medicoService.GetAvailableSlotsAsync(medico.Id, 60, new TimeSpan(8, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(0, 30, 0));
             var vm = new CreateTurnoVM
             {
-                PacienteId = 2,
+                PacienteId = currentUser.Paciente.Id,
                 MedicoId = medico.Id,
                 MedicoNombre = $"{medico.Nombre} {medico.Apellido}",
                 MedicoEspecialidad = medico.Especialidad.Nombre,
@@ -66,6 +121,7 @@ namespace turno_smart.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Paciente")]
         public IActionResult Create(CreateTurnoVM vm)
         {
             if(!ModelState.IsValid)

@@ -57,6 +57,12 @@ namespace turno_smart.Services
             return query.FirstOrDefault(m => m.Id == id);
         }
 
+        public Paciente? GetByDNI(int dni)
+        {
+            var query = from paciente in _DBContext.Pacientes select paciente;
+            return query.FirstOrDefault(p => p.DNI == dni);
+        }
+
         public void Update(Paciente obj)
         {
             _DBContext.Update(obj);

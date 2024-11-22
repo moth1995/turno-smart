@@ -11,9 +11,12 @@
 </head>
 <body>
     <div id="root">
-        <div class="min-vh-100 bg-custom">
+        <div class="min-vh-100 d-flex flex-column bg-custom">
             <partial name="_Navbar" />
-            @RenderBody()
+            <div class="flex-grow-1">
+                @RenderBody()
+            </div>
+            <partial name="_Footer" />
         </div>
     </div>
     @await Html.PartialAsync("_ValidationScriptsPartial")

@@ -17,7 +17,18 @@
         <div class="collapse navbar-collapse" id="basic-navbar-nav">
             <div class="navbar-nav ms-0">
                 <a class="text-white ps-0 nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="Servicios">Servicios</a>
+                @if (!@User.IsInRole("Medico"))
+                {
+                    <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="Servicios">Servicios</a>
+                }
+                @if (SignInManager.IsSignedIn(User) && @User.IsInRole("Paciente"))
+                {
+                    <a class="text-white nav-link" asp-area="" asp-controller="Turno" asp-action="Index">Mis Turnos</a>
+                }
+                else if (SignInManager.IsSignedIn(User) && (@User.IsInRole("Medico") || @User.IsInRole("Admin")))
+                {
+                    <a class="text-white nav-link" asp-area="" asp-controller="Turno" asp-action="Index">Agenda</a>
+                }
                 <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="Contacto">Contacto</a>
                 <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="Institucion">Institución</a>
             </div>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using turno_smart.Data;
 
@@ -11,9 +12,11 @@ using turno_smart.Data;
 namespace turno_smart.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241121193300_FixRelations")]
+    partial class FixRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -386,6 +389,9 @@ namespace turno_smart.Data.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int?>("MedicoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -393,6 +399,9 @@ namespace turno_smart.Data.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<int?>("PacienteId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -418,6 +427,8 @@ namespace turno_smart.Data.Migrations
                     b.HasIndex("DNI")
                         .IsUnique();
 
+                    b.HasIndex("MedicoId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -425,6 +436,8 @@ namespace turno_smart.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PacienteId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -510,7 +523,7 @@ namespace turno_smart.Data.Migrations
             modelBuilder.Entity("turno_smart.Models.Medico", b =>
                 {
                     b.HasOne("turno_smart.Models.Usuarios", "Usuario")
-                        .WithOne("Medico")
+                        .WithOne()
                         .HasForeignKey("turno_smart.Models.Medico", "DNI")
                         .HasPrincipalKey("turno_smart.Models.Usuarios", "DNI")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -530,7 +543,7 @@ namespace turno_smart.Data.Migrations
             modelBuilder.Entity("turno_smart.Models.Paciente", b =>
                 {
                     b.HasOne("turno_smart.Models.Usuarios", "Usuario")
-                        .WithOne("Paciente")
+                        .WithOne()
                         .HasForeignKey("turno_smart.Models.Paciente", "DNI")
                         .HasPrincipalKey("turno_smart.Models.Usuarios", "DNI")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -552,6 +565,21 @@ namespace turno_smart.Data.Migrations
                         .HasForeignKey("IdPaciente")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Medico");
+
+                    b.Navigation("Paciente");
+                });
+
+            modelBuilder.Entity("turno_smart.Models.Usuarios", b =>
+                {
+                    b.HasOne("turno_smart.Models.Medico", "Medico")
+                        .WithMany()
+                        .HasForeignKey("MedicoId");
+
+                    b.HasOne("turno_smart.Models.Paciente", "Paciente")
+                        .WithMany()
+                        .HasForeignKey("PacienteId");
 
                     b.Navigation("Medico");
 
@@ -580,13 +608,6 @@ namespace turno_smart.Data.Migrations
                     b.Navigation("HistorialMedico");
 
                     b.Navigation("Turnos");
-                });
-
-            modelBuilder.Entity("turno_smart.Models.Usuarios", b =>
-                {
-                    b.Navigation("Medico");
-
-                    b.Navigation("Paciente");
                 });
 #pragma warning restore 612, 618
         }
