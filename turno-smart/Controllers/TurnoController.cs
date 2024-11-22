@@ -232,7 +232,7 @@ namespace turno_smart.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPost]
         public IActionResult DeleteConfirmed(int id)
         {
             if(!ModelState.IsValid)
@@ -240,14 +240,17 @@ namespace turno_smart.Controllers
                 return BadRequest(ModelState);
             }
 
-            try {
+            try 
+            {
                 var turno = _turnoService.GetById(id);
 
                 if(turno == null) return NotFound();
                 _turnoService.Delete(id);
 
                 return RedirectToAction("Index");
-            } catch (Exception ex) {
+            } 
+            catch (Exception ex) 
+            {
                 return BadRequest(ex.Message);
             }
         }
