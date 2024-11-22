@@ -1,18 +1,16 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using turno_smart.Interfaces;
 using turno_smart.Models;
 using turno_smart.ViewModels.PacienteVM;
-using System.Threading.Tasks;
-using turno_smart.Services;
-using turno_smart.Data;
 
 namespace turno_smart.Controllers
-{    
+{
+    [Authorize(Roles = "Admin")]
     public class PacienteController(IPacienteService pacienteService) : Controller {
 
         private readonly IPacienteService _pacienteService = pacienteService;
 
-        
         [HttpGet]
         public IActionResult Index(string? filter)
         {
@@ -23,14 +21,21 @@ namespace turno_smart.Controllers
 
             var listPacienteVM = new ListPacienteVM();
 
-            if(!string.IsNullOrEmpty(filter)) {
-                var pacientes = _pacienteService.GetAll(filter);
-                listPacienteVM.Pacientes = pacientes;
-
-            } else {
-                var pacientes = _pacienteService.GetAll();
-                listPacienteVM.Pacientes = pacientes;
-            }
+            var pacientes = _pacienteService.GetAll(filter);
+            listPacienteVM.Pacientes = pacientes
+                .Select(p=> new PacienteViewModel
+                {
+                    Nombre = p.Nombre,
+                    Apellido = p.Apellido,
+                    Dni = p.DNI,
+                    Domicilio = p.Domicilio,
+                    FechaNacimiento = p.FechaNacimiento,
+                    Provincia = p.Provincia,
+                    Ciudad = p.Ciudad,
+                    Cobertura = p.Cobertura,
+                    Telefono = p.Telefono,
+                    Email = p.Email,
+                }).ToList();
 
             return View(listPacienteVM);
         }
@@ -130,7 +135,7 @@ namespace turno_smart.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(EditPacienteVM obj)
         {
@@ -191,7 +196,7 @@ namespace turno_smart.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPost]
         public IActionResult DeleteConfirmed(int id)
         {
             if (!ModelState.IsValid)
@@ -210,18 +215,6 @@ namespace turno_smart.Controllers
             } catch (Exception ex) {
                 return BadRequest(ex.Message);
             }
-        }
-
-        public IActionResult Buscar()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Buscar(string nombre, string apellido, int? dni)
-        {
-            var pacientes = await _pacienteService.BuscarPacientes(nombre, apellido, dni);
-            return View("ResultadoBusqueda", pacientes);
         }
     } 
 }
