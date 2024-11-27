@@ -51,17 +51,23 @@
                 string name = user.UserName;
                 if (user.Medico != null)
                 {
-                    name = $"Dr. {user.Medico.FullName()}";
+                    name = $"Medico<i class='fas fa-chevron-right ms-2'></i>  Dr. {user.Medico.FullName()}";
                 }
                 else if (user.Paciente != null)
                 {
-                    name = user.Paciente.FullName();
+                    name = $"Paciente<i class='fas fa-chevron-right ms-2'></i>  {user.Paciente.FullName()}";
+                }                
+                else
+                {
+                    name = $"Admin<i class='fas fa-chevron-right ms-2'></i>  {user.UserName}";
                 }
                 
                 <div class="d-flex gap-2">
-                    <a id="manage" class="nav-link text-white" asp-area="" asp-page="/Account/Manage/Index" title="Manage">
+                    <a id="manage" class="nav-link text-white"  asp-area="" asp-page="/Account/Manage/Index" title="Manage">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user me-2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        @name
+
+                        @* @name *@
+                        @Html.Raw(name)
                     </a>
                     <a href="javascript:void(0);" class="nav-link text-white" onclick="document.getElementById('logout-form').submit();">Logout</a>
                     <form id="logout-form" class="d-none" asp-area="" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
@@ -70,7 +76,7 @@
                 </div>
             }
             else
-            {
+            {               
                 <small class="text-white-50 me-2">¿Todavía no tienes una cuenta?</small>
                 <div class="d-flex gap-2">
                     <form method="get" asp-action="Register" asp-controller="Account" id="register-btn">

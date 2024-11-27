@@ -22,9 +22,9 @@ namespace turno_smart.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin,Paciente,Medico")]
         public async Task<IActionResult> Index(string? filter, DateTime? date)
-		{
+        {
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -56,7 +56,7 @@ namespace turno_smart.Controllers
 
             var listTurnos = new ListTurnosVM();
 
-            
+
             listTurnos.Filter = filter;
             listTurnos.CurrentDate = currentDate;
             listTurnos.Turnos = turnos.Select(t => new TurnoVM
@@ -71,7 +71,7 @@ namespace turno_smart.Controllers
                 MedicoNombre = t.Medico.FullName(),
                 MedicoEspecialidad = t.Medico.Especialidad.Nombre,
                 MotivoConsulta = t.MotivoConsulta,
-                
+
             }).ToList();
 
             return View(listTurnos);
