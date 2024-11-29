@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using turno_smart.Interfaces;
 using turno_smart.Models;
 using turno_smart.ViewModels.EspecialidadVM;
@@ -182,18 +183,36 @@ namespace turno_smart.Controllers
                 return BadRequest(ModelState);
             }
 
-            try {
+            try
+            {
                 var especialidad = _especialidadService.GetById(id);
-                if(especialidad == null) return NotFound();
+                if (especialidad == null) return NotFound();
 
                 _especialidadService.Delete(id);
                 TempData["SuccessMessage"] = "Especialidad eliminada correctamente.";
                 return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                // Mensaje de error para el usuario
+                TempData["ErrorMessage"] = "Antes de eliminar esta especialidad desvincule todos los medicos";
 
-            } catch (Exception ex) {
-                TempData["ErrorMessage"] = "Error al intentar eliminar la especialidad" + ex.Message;
+                // Registro de detalles técnicos para desarrolladores
+                var innerExceptionMessage = ex.InnerException?.Message;
+                var detailedErrorMessage = "Error al intentar eliminar la especialidad: " + ex.Message;
+                if (innerExceptionMessage != null)
+                {
+                    detailedErrorMessage += " Detalles: " + innerExceptionMessage;
+                }
+                Log.Error(detailedErrorMessage);
+
                 return RedirectToAction(nameof(Index));
             }
+
+            //} catch (Exception ex) {
+            //    TempData["ErrorMessage"] = "Error al intentar eliminar la especialidad" + ex.Message;
+            //    return RedirectToAction(nameof(Index));
+            //}
         } 
 
     }
