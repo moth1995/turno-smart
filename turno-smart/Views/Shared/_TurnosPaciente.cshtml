@@ -19,7 +19,7 @@
                         </h5>
                         <form method="get" asp-action="Delete" asp-controller="Turno" asp-route-id="@turno.TurnoId" id="delete-btn">
 
-                            <button class="btn btn-link position-absolute top-0 end-0 p-3" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <button class="btn btn-link position-absolute top-0 end-0 p-3" data-bs-toggle="modal" data-bs-target="#modal-delete">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x "><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
                             </button>
                         </form>
@@ -92,20 +92,4 @@
         </div>
     }
 
-</div>
-<!-- Modal de Edit-->
-<div id="modal-edit" class="modal fade" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div id='modal-edit-content'></div>
-        </div>
-    </div>
-</div>
-<!-- Modal de Eliminacion -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" id="modal-delete-content">
-
-        </div>
-    </div>
 </div>

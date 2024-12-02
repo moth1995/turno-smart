@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -7,7 +5,6 @@ using turno_smart.Data;
 using turno_smart.Interfaces;
 using turno_smart.Models;
 using turno_smart.Services;
-using Microsoft.Extensions.Hosting;
 
 namespace turno_smart
 {
