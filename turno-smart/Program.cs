@@ -15,7 +15,7 @@ namespace turno_smart
     {
         public static async Task Main(string[] args)
         {
-            //var builder = WebApplication.CreateBuilder(args);
+            //var builder = WebApplication.CreateBuilder(args); Inicializamos el builder dentro del tryy del logger
 
             // Configurar Serilog
             Log.Logger = new LoggerConfiguration()
