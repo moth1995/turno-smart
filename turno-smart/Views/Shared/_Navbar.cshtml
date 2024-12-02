@@ -80,12 +80,12 @@
                 <small class="text-white-50 me-2">¿Todavía no tienes una cuenta?</small>
                 <div class="d-flex gap-2">
                     <form method="get" asp-action="Register" asp-controller="Account" id="register-btn">
-                        <button type="submit" class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#registrationModal">
+                        <button type="submit" class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modal-registration">
                             Registrarse
                         </button>
                     </form>
                     <form method="get" asp-action="Login" asp-controller="Account" id="login-btn">
-                        <button type="submit" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <button type="submit" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modal-login">
                             Iniciar sesión
                         </button>
                     </form>
@@ -95,21 +95,5 @@
         </div>
     </div>
 </nav>
-<!-- Modal de Registro -->
-<div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content" id="modal-registration-content">
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal de Login -->
-<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="modal-login-content">
-        </div>
-    </div>
-</div>
 
 @await Html.PartialAsync("_ForgotPasswordModal")

@@ -14,12 +14,12 @@ document.querySelector('.navbar-toggler').addEventListener('click', function () 
 });
 
 function openRegistrationModal() {
-    var myModal = new bootstrap.Modal(document.getElementById('registrationModal'));
+    var myModal = new bootstrap.Modal(document.getElementById('modal-registration'));
     myModal.show();
 }
 
 function openLoginModal() {
-    var myModal = new bootstrap.Modal(document.getElementById('loginModal'));
+    var myModal = new bootstrap.Modal(document.getElementById('modal-login'));
     myModal.show();
 }
 
@@ -29,22 +29,27 @@ function openForgotPasswordModal() {
 }
 
 function onRegistrationModalLoginBtnClick() {
-    var myModal = bootstrap.Modal.getInstance(document.getElementById('registrationModal'));
+    var myModal = bootstrap.Modal.getInstance(document.getElementById('modal-registration'));
     myModal.hide();
     openLoginModal();
 }
 
 function onLoginModalRegisterBtnClick() {
-    var myModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+    var myModal = bootstrap.Modal.getInstance(document.getElementById('modal-login'));
     myModal.hide();
     openRegistrationModal();
 }
 
 function onLoginModalForgotPasswordBtnClick() {
-    var myModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+    var myModal = bootstrap.Modal.getInstance(document.getElementById('modal-login'));
     myModal.hide();
     openForgotPasswordModal();
 }
+
+$(document).on('hidden.bs.modal', '.modal', function () {
+    $(this).find('.modal-content').empty();
+});
+
 
 function handleFormSubmission(formSelector, resultContainerSelector) {
     $(document).on('submit', formSelector, function (event) {
