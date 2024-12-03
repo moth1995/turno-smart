@@ -5,6 +5,36 @@
 <p class="text-center text-muted mb-5">
     Accedé a tus próximos turnos, modificalos, o cancelalos en el momento.
 </p>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form method="get" asp-action="Index" asp-controller="Turno">
+            <div class="mb-3">
+                <label for="filter" class="form-label">Filtrar por Fecha:</label>
+                <select class="form-select" id="filter" name="filter">
+                    <option value="all">Todos</option>
+                    <option value="last">Último Turno</option>
+                    <option value="first">Primer Turno</option>                    
+                </select>
+                <button type="submit" class="btn btn-primary mt-2">Aplicar</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <form method="get" asp-action="Index" asp-controller="Turno">
+            <div class="mb-3">
+                <label for="filter" class="form-label">Filtrar por Estado:</label>
+                <select class="form-select" id="filter" name="filter">
+                    <option value="all">Todos</option>
+                    <option value="confirmado">Confirmado</option>
+                    <option value="reservado">Reservado</option>
+                    <option value="cancelado">Cancelado</option>
+                </select>
+                <button type="submit" class="btn btn-primary mt-2">Aplicar</button>
+            </div>
+        </form>
+    </div>
+    
+</div>
 
 <div class="row g-4">
     @if (Model.Turnos.Any())

@@ -53,6 +53,18 @@ namespace turno_smart.Controllers
                 turnos = await _turnoService.GetAll(filter, null, null);
                 turnos = turnos.Where(t => t.FechaTurno.Date == currentDate.Date).ToList();
             }
+            if (filter == "last")
+            {
+                turnos = turnos.OrderByDescending(t => t.FechaTurno).Take(1).ToList();
+            }
+            else if (filter == "first")
+            {
+                turnos = turnos.OrderBy(t => t.FechaTurno).Take(1).ToList();
+            }
+            else if (filter == "confirmado" || filter == "reservado" || filter == "cancelado")
+            {
+                turnos = turnos.Where(t => t.Estado.ToLower() == filter).ToList();
+            }
 
             var listTurnos = new ListTurnosVM();
 
