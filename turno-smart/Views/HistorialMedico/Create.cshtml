@@ -1,0 +1,83 @@
+@using turno_smart.ViewModels.HistorialMedicoVM.cs
+@model CreateHistorialMedicoVM
+
+<div class="container py-5">
+    <!-- Título principal -->
+    <h1 class="display-4 text-center mb-2">Crear Historia Médica</h1>
+    <p class="text-center text-muted mb-5">
+        Completa los datos para crear una nueva historia médica para el paciente <strong>@Model.Paciente.Nombre @Model.Paciente.Apellido</strong>.
+    </p>
+
+    <!-- Formulario para crear la historia médica -->
+    <form method="post" asp-action="Create">
+        <div class="row">
+            <!-- Fecha -->
+            <div class="col-md-6">
+                <div class="mb-4">
+                    <label for="Fecha" class="form-label">Fecha</label>
+                    <input type="date" id="Fecha" name="Fecha" class="form-control" value="@Model.Fecha.ToString("yyyy-MM-dd")" required />
+                </div>
+            </div>
+
+            <!-- Estudio -->
+           <div class="col-md-6">
+                <div class="mb-4">
+                    <label for="Estudio" class="form-label">Estudio</label>
+                    <select id="Estudio" name="IdEstudio" class="form-select" required>
+                        <option value="">Seleccione un estudio</option>
+                        @foreach (var estudio in Model.Estudios)
+                        {
+                            <option value="@estudio.Value">@estudio.Text</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Diagnóstico -->
+            <div class="col-md-6">
+                <div class="mb-4">
+                    <label for="Diagnostico" class="form-label">Diagnóstico</label>
+                    <input type="text" id="Diagnostico" name="Diagnostico" class="form-control" value="@Model.Diagnostico" required />
+                </div>
+            </div>
+
+            <!-- Síntomas -->
+            <div class="col-md-6">
+                <div class="mb-4">
+                    <label for="Sintomas" class="form-label">Síntomas</label>
+                    <input type="text" id="Sintomas" name="Sintomas" class="form-control" value="@Model.Sintomas" required />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Tratamiento -->
+            <div class="col-md-6">
+                <div class="mb-4">
+                    <label for="Tratamiento" class="form-label">Tratamiento</label>
+                    <input type="text" id="Tratamiento" name="Tratamiento" class="form-control" value="@Model.Tratamiento" required />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mb-4">
+            <label for="NotasAdicionales" class="form-label">Notas Adicionales</label>
+            <textarea id="NotasAdicionales" name="NotasAdicionales" class="form-control" rows="4">@Model.NotasAdicionales</textarea>
+        </div>
+
+        <input type="hidden" name="IdPaciente" value="@Model.Paciente.Id" />
+        <input type="hidden" name="IdMedico" value="@Model.Medico.Id" />
+
+        <!-- Botones de Crear y Volver -->
+        <div class="d-flex justify-content-between mt-4">
+            <!-- Botón de Volver -->
+            <partial name="_BackToHistorialMedico" model="new { pacienteId = @Model.Paciente.Id, medicoId = @Model.Medico.Id }" />
+
+            <!-- Botón de Crear -->
+            <button type="submit" class="btn btn-light btn-lg">➕ Crear Historia Médica</button>
+        </div>
+    </form>
+</div>

@@ -60,14 +60,14 @@ namespace turno_smart.Controllers
                 var especialidadModel = new Especialidad()
                 {
                     Nombre = obj.Nombre,
-                    Descripcion = obj.Descripcion ?? null
+                    Descripcion = obj.Descripcion
                 };
 
                 _especialidadService.Create(especialidadModel);
                 TempData["SuccessMessage"] = "Especialidad creada correctamente.";
                 return RedirectToAction(nameof(Index));
             } catch (Exception ex) {
-                TempData["ErrorMessage"] = "Error al intentar crear especialidad." + ex.Message;
+                TempData["ErrorMessage"] = "Error al intentar crear especialidad." + ex.InnerException?.Message ?? ex.Message;
                 return RedirectToAction(nameof(Index));
             }
         }

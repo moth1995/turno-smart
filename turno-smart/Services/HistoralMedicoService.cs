@@ -57,6 +57,15 @@ namespace turno_smart.Services
             return query.FirstOrDefault(m => m.Id == id);
         }
 
+        public List<HistorialMedico?> GetByPacienteId(int id)
+        {
+            var query = from historial in _DBContext.HistorialesMedicos
+                        where historial.IdPaciente == id
+                        select historial;
+
+            return query.ToList(); // Convierte la consulta a una lista
+        }
+
         public void Update(HistorialMedico obj)
         {
             _DBContext.Update(obj);

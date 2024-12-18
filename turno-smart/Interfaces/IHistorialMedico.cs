@@ -8,4 +8,5 @@ public interface IHistorialMedicoService {
   void Update(HistorialMedico obj);
   void Delete(int id);
   HistorialMedico? GetById(int id);
+  List<HistorialMedico>? GetByPacienteId(int id);
 }
