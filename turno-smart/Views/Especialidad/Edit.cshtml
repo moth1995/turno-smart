@@ -1,31 +1,45 @@
 ﻿@model turno_smart.ViewModels.EspecialidadVM.EditEspecialidadVM
 
-<div class="container py-5">
-    <div class="row mb-4">
-        <div class="col-lg-8">
-            <h2>Editar Especialidad</h2>
+@{
+    ViewData["Title"] = "Editar Especialidad";
+}
 
-            <form asp-action="Edit">
-                <div class="form-group">
-                    <label asp-for="Nombre" class="control-label"></label>
-                    <input asp-for="Nombre" class="form-control" />
-                    <span asp-validation-for="Nombre" class="text-danger"></span>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h1 class="display-4 text-center mb-4">@ViewData["Title"]</h1>
+            <p class="lead text-center mb-5">
+                Complete los datos para actualizar la especialidad en el sistema.
+            </p>
+
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <form asp-action="Edit">
+                        <div class="form-group">
+                            <label asp-for="Nombre" class="control-label"></label>
+                            <input asp-for="Nombre" class="form-control" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Descripcion" class="control-label"></label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="10" cols="50"></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="d-flex justify-content-between align-items-center">
+                            <input type="submit" value="Guardar" class="btn btn-primary" />
+                            <a href="@Url.Action("Index", "Especialidad")" class="btn btn-outline-secondary btn-lg">Cancelar</a>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Descripcion" class="control-label"></label>
-                    <textarea asp-for="Descripcion" class="form-control" rows="10" cols="50"></textarea>
-                    @* <input asp-for="Descripcion" class="form-control" /> *@
-                    <span asp-validation-for="Descripcion" class="text-danger"></span>
-                </div>
-                <br />
-                <div class="form-group">
-                    <input type="submit" value="Guardar" class="btn btn-primary" /> |
-                    <a asp-action="Index">Volver a la lista</a>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>   
+    </div>
 </div>
+
+
+    
+
 
 
 

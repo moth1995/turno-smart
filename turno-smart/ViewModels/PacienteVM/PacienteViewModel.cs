@@ -1,6 +1,6 @@
 ﻿namespace turno_smart.ViewModels.PacienteVM
 {
-    public class PacienteViewModel
+    public class PacienteVM
     {
         public int Id { get; set; }
         public string NombreCompleto => $"{Nombre} {Apellido}";

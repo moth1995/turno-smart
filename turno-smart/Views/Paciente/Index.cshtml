@@ -35,6 +35,7 @@
                                 <th>DNI</th>
                                 <th>Cobertura</th>
                                 <th>Telefono</th>
+                                <th>Estado</th>
                                 <th class="text-end pe-4">Acciones</th>
                             </tr>
                         </thead>
@@ -51,24 +52,51 @@
                                             @paciente.Dni
                                         </td>
                                         <td class="align-middle">
-                                            @paciente.Cobertura
+                                            @if (paciente.Cobertura == 0) { <span class="badge bg-danger">No</span> } else { <span class="badge bg-success">Si</span> }
                                         </td>
                                         <td class="align-middle">
                                             @paciente.Telefono
                                         </td>
+                                    
+                                        @if (paciente.Estado == 0)
+                                        {
+                                            <td>
+                                                <span class="badge bg-danger">Inactivo</span>
+                                            </td>
+                                        } else
+                                        {
+                                            <td>
+                                                <span class="badge bg-success">Activo</span>
+                                            </td>
+                                        }
                                         <td class="text-end pe-4 align-middle">
                                             <div class="btn-group">
-                                                <form method="get" asp-action="Edit" asp-controller="Paciente" id="edit-btn">
-                                                    <button type="submit" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-edit">
-                                                        Editar
-                                                    </button>
-                                                </form>
-                                                <form method="get" asp-action="Edit" asp-controller="Paciente" id="delete-btn">
-                                                    <button type="submit" class="btn btn-danger btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#modal-delete">
-                                                        Dar de baja
-                                                    </button>
-                                                </form>
-
+                                                <a asp-controller="Paciente"
+                                                    asp-action="Details"
+                                                    asp-route-id="@paciente.Id"
+                                                    class="btn btn-sm btn-secondary me-1">
+                                                    Info
+                                                </a>
+                                                <a asp-controller="Paciente"
+                                                    asp-action="Edit"
+                                                    asp-route-id="@paciente.Id"
+                                                    class="btn btn-sm btn-primary me-1">
+                                                    Editar
+                                                </a>
+                                                @if (paciente.Estado == 0)
+                                                {   
+                                                    <form asp-controller="Paciente" asp-action="Activate" method="post" asp-route-id="@paciente.Id" class="d-inline">
+                                                        <button type="submit" class="btn btn-success btn-sm ms-2">
+                                                            Activar
+                                                        </button>
+                                                    </form>
+                                                } else {
+                                                    <form asp-controller="Paciente" asp-action="Disable" method="post" asp-route-id="@paciente.Id" class="d-inline">
+                                                        <button type="submit" class="btn btn-danger btn-sm ms-2">
+                                                            Dar de baja
+                                                        </button>
+                                                    </form>
+                                                }
                                             </div>
                                         </td>
                                     </tr>
@@ -116,4 +144,41 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            var errorMessage = '@TempData["ErrorMessage"]';
+            console.log(successMessage);
+            console.log(errorMessage);
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            if (successMessage) {
+                toastr.success(successMessage);
+            }
+
+            if (errorMessage) {
+                toastr.error(errorMessage);
+            }
+        });
+    </script>
+}
 

@@ -27,8 +27,9 @@ namespace turno_smart.Controllers
 
             var pacientes = _pacienteService.GetAll(filter);
             listPacienteVM.Pacientes = pacientes
-                .Select(p=> new PacienteViewModel
+                .Select(p=> new PacienteVM
                 {
+                    Id = p.Id,
                     Nombre = p.Nombre,
                     Apellido = p.Apellido,
                     Dni = p.DNI,
@@ -39,6 +40,9 @@ namespace turno_smart.Controllers
                     Cobertura = p.Cobertura,
                     Telefono = p.Telefono,
                     Email = p.Email,
+                    Estado = p.Estado,
+                    FechaAlta = p.FechaAlta,
+                    FechaBaja = p.FechaBaja
                 }).ToList();
 
             return View(listPacienteVM);
@@ -59,7 +63,7 @@ namespace turno_smart.Controllers
                 Cobertura = 0,
                 Telefono = 0,
                 Email = string.Empty,
-                Estado = 0,
+                Estado = 1,
                 FechaAlta = DateTime.Now
             };
 
@@ -187,10 +191,12 @@ namespace turno_smart.Controllers
 
                 _pacienteService.Update(paciente);
 
+                TempData["SuccessMessage"] = "Paciente actualizado correctamente.";
                 return RedirectToAction("Index");
 
             } catch (Exception ex) {
-                return BadRequest(ex.Message);
+                TempData["ErrorMessage"] = "Error al intentar actualizar paciente." + ex.InnerException?.Message ?? ex.Message;
+                return RedirectToAction("Index");
             }
         }
 
@@ -238,6 +244,85 @@ namespace turno_smart.Controllers
 
             } catch (Exception ex) {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var paciente = _pacienteService.GetById(id);
+            if (paciente == null) return NotFound();
+
+            var pacienteModel = new PacienteVM
+            {
+                Id = paciente.Id,
+                Nombre = paciente.Nombre,
+                Apellido = paciente.Apellido,
+                Dni = paciente.DNI,
+                Domicilio = paciente.Domicilio,
+                FechaNacimiento = paciente.FechaNacimiento,
+                Provincia = paciente.Provincia,
+                Ciudad = paciente.Ciudad,
+                Cobertura = paciente.Cobertura,
+                Telefono = paciente.Telefono,
+                Email = paciente.Email,
+                Estado = paciente.Estado,
+                FechaAlta = paciente.FechaAlta,
+                FechaBaja = paciente.FechaBaja
+            };
+
+            return View(pacienteModel);
+        }
+
+        [HttpPost]
+        public IActionResult Disable (int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try {
+                var paciente = _pacienteService.GetById(id);
+                if (paciente == null) return NotFound();
+
+                paciente.Estado = 0;
+                paciente.FechaBaja = DateTime.Now;
+
+                _pacienteService.Update(paciente);
+
+                TempData["SuccessMessage"] = "Paciente deshabilitado correctamente.";
+                return RedirectToAction("Index");
+
+            } catch (Exception ex) {
+                TempData["ErrorMessage"] = "Error al intentar deshabilitar paciente." + ex.InnerException?.Message ?? ex.Message;
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Activate (int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try {
+                var paciente = _pacienteService.GetById(id);
+                if (paciente == null) return NotFound();
+
+                paciente.Estado = 1;
+                paciente.FechaBaja = null;
+
+                _pacienteService.Update(paciente);
+
+                TempData["SuccessMessage"] = "Paciente habilitado correctamente.";
+                return RedirectToAction("Index");
+
+            } catch (Exception ex) {
+                TempData["ErrorMessage"] = "Error al intentar habilitar paciente." + ex.InnerException?.Message ?? ex.Message;
+                return RedirectToAction("Index");
             }
         }
     } 

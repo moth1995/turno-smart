@@ -8,7 +8,6 @@
 }
 <div class="container py-5">
     <div class="d-flex justify-content align-items-center gap-3">
-        <partial name="_BackToservicios" />
         @if (@User.IsInRole("Admin"))
         {
             <a type="button" class="btn btn-light btn-lg mt-4" asp-area="" asp-controller="Medico" asp-action="Create">
@@ -71,7 +70,6 @@
                                                 <span class="me-2">•</span>
                                                 @medico.Nombre
                                             </a>
-
                                         }
                                     </li>
                                 }
