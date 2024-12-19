@@ -12,8 +12,8 @@ using turno_smart.Data;
 namespace turno_smart.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241219000703_CentrosMedicosTable")]
-    partial class CentrosMedicosTable
+    [Migration("20241219030857_CreateCentroMedicoTable")]
+    partial class CreateCentroMedicoTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
