@@ -110,6 +110,7 @@ namespace turno_smart.Data
          public DbSet<Turno> Turnos { get; set; } = default!;
          public DbSet<Estudio> Estudios { get; set; } = default!;
          public DbSet<HistorialMedico> HistorialesMedicos { get; set; } = default!;
+        public DbSet<CentroMedico> CentroMedico { get; set; }
 
     }
 }

@@ -66,8 +66,10 @@ namespace turno_smart.Controllers
 				IdEspecialidad = especialidades.FirstOrDefault()?.Id ?? 0,
 				Telefono = 0,
                 DNI = 0,
-				Email = string.Empty,
-				Especialidad = especialidades.Select(e => new SelectListItem
+                Email = string.Empty,
+                Reseña = string.Empty, 
+                Imagen = string.Empty,
+                Especialidad = especialidades.Select(e => new SelectListItem
 				{
 					Value = e.Id.ToString(),
 					Text = e.Nombre
@@ -81,12 +83,11 @@ namespace turno_smart.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateMedicoVM model)
         {
-
             ModelState.Remove("Especialidad");
             if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
+            {
+                return BadRequest(ModelState);
+            }
 
             Usuarios user = new Usuarios
             {
@@ -110,6 +111,8 @@ namespace turno_smart.Controllers
                         DNI = model.DNI,
                         Email = model.Email,
                         IdEspecialidad = model.IdEspecialidad,
+                        Reseña = model.Reseña,      // Nueva propiedad
+                        Imagen = model.Imagen       // Nueva propiedad (URL)
                     };
 
                     _medicoService.Create(medico);
@@ -134,21 +137,18 @@ namespace turno_smart.Controllers
             }).ToList();
 
             return View(model);
-
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-
             if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
+            {
+                return BadRequest(ModelState);
+            }
 
             try
             {
-                
                 var medico = _medicoService.GetById(id);
                 if (medico == null) return NotFound();
 
@@ -161,20 +161,20 @@ namespace turno_smart.Controllers
                     Apellido = medico.Apellido,
                     Telefono = medico.Telefono,
                     Email = medico.Email,
+                    IdEspecialidad = medico.IdEspecialidad,
+                    Reseña = medico.Reseña,       // Asignar valor existente
+                    Imagen = medico.Imagen,       // Asignar valor existente
                     Especialidad = especialidades.Select(e => new SelectListItem
                     {
                         Value = e.Id.ToString(),
                         Text = e.Nombre
                     }).ToList(),
-
                 };
 
                 return View(medicoModel);
-
             }
             catch (Exception ex)
             {
-                //TempData["ErrorMessage"] = "Error: " + ex.Message;
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -184,26 +184,29 @@ namespace turno_smart.Controllers
         public IActionResult Edit(EditMedicoVM obj)
         {
             ModelState.Remove("Especialidad");
-            if(!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            try {
+            try
+            {
                 var medico = _medicoService.GetById(obj.Id);
-                if(medico == null) return NotFound();
-                
+                if (medico == null) return NotFound();
+
                 medico.Nombre = obj.Nombre ?? medico.Nombre;
                 medico.Apellido = obj.Apellido ?? medico.Apellido;
                 medico.Email = obj.Email ?? medico.Email;
                 medico.Telefono = obj.Telefono ?? medico.Telefono;
                 medico.IdEspecialidad = obj.IdEspecialidad;
+                medico.Reseña = obj.Reseña ?? medico.Reseña;    // Actualizar la reseña
+                medico.Imagen = obj.Imagen ?? medico.Imagen;    // Actualizar la imagen (URL)
 
                 _medicoService.Update(medico);
-                //TempData["SuccessMessage"] = "Información del médico actualizada correctamente.";
                 return RedirectToAction(nameof(Index));
-            } catch (Exception ex) {
-                //TempData["ErrorMessage"] = "Error al intentar actualizar la información del médico." + ex.Message;
+            }
+            catch (Exception ex)
+            {
                 return RedirectToAction(nameof(Index));
             }
         }

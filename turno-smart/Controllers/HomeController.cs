@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using turno_smart.Data;
 using turno_smart.Models;
 using turno_smart.ViewModels;
 using turno_smart.ViewModels.HomeVM;
@@ -9,61 +11,49 @@ namespace turno_smart.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context; 
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var doctors = new List<DoctorVM>
-        {
-            new DoctorVM
-            {
-                Image = "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=300&h=300",
-                Name = "DRA. SANDRA HERRERA",
-                Specialty = "Ginecología",
-                Description = "Con más de una década de experiencia, la Dra. Herrera es la residente experta en ginecología general y salud de la mujer."
-            },
-            new DoctorVM
-            {
-                Image = "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=300&h=300",
-                Name = "DR. ARTURO DE LA PEÑA",
-                Specialty = "Neurología",
-                Description = "Como médico en jefe de Centro Médico del Bosque, el Dr. de la Peña se especializa en cirugía."
-            },
-            new DoctorVM
-            {
-                Image = "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=300&h=300",
-                Name = "DRA. NATALIA RAMOS",
-                Specialty = "Cardiología",
-                Description = "La Dra. Ramos cuenta con más de 15 años de experiencia en el área de cardiología."
-            },
-            new DoctorVM
-            {
-                Image = "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=300&h=300",
-                Name = "DR. MARCO VALENCIA",
-                Specialty = "Pediatría",
-                Description = "Especializado en el cuidado integral de niños y adolescentes, con enfoque en desarrollo infantil."
-            },
-            new DoctorVM
-            {
-                Image = "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?auto=format&fit=crop&q=80&w=300&h=300",
-                Name = "DRA. CAROLINA MENDEZ",
-                Specialty = "Dermatología",
-                Description = "Experta en tratamientos dermatológicos avanzados y cirugía dermatológica."
-            },
-            new DoctorVM
-            {
-                Image = "https://images.unsplash.com/photo-1637059824899-a441006a6875?auto=format&fit=crop&q=80&w=300&h=300",
-                Name = "DR. LUIS RODRIGUEZ",
-                Specialty = "Traumatología",
-                Description = "Especialista en lesiones deportivas y rehabilitación física integral."
-            }
-        };
+            // Obtener un centro médico (el primer registro)
+            var centroMedico = await _context.CentroMedico.FirstOrDefaultAsync();
 
-            return View(doctors);
+            var random = new Random();
+
+            // Traer todos los médicos de la base de datos
+            var allDoctors = await _context.Medicos
+                .Include(m => m.Especialidad) // Cargar especialidades relacionadas
+                .ToListAsync();
+
+            // Seleccionar aleatoriamente 6 médicos
+            var doctors = allDoctors
+                .OrderBy(m => random.Next()) // Ordenar aleatoriamente en memoria
+                .Take(6) // Tomar solo 6 médicos
+                .Select(m => new DoctorVM
+                {
+                    Image = m.Imagen,
+                    Name = m.FullName(),
+                    Specialty = m.Especialidad != null ? m.Especialidad.Nombre : "Sin Especialidad",
+                    Description = m.Reseña ?? "Sin descripción disponible"
+                })
+                .ToList();
+
+            // Crear un ViewModel para enviar ambos datos a la vista
+            var viewModel = new HomeVM
+            {
+                NombreCentroMedico = centroMedico?.Nombre ?? "Centro Médico",
+                LemaCentroMedico = centroMedico?.Lema ?? "Donde su salud es primero",
+                Doctors = doctors
+            };
+
+            return View(viewModel);
+
         }
 
         public IActionResult Servicios()
@@ -73,7 +63,17 @@ namespace turno_smart.Controllers
 
         public IActionResult Contacto()
         {
-            return View();
+            // Obtén los datos del centro médico
+            var centroMedico = _context.CentroMedico.FirstOrDefault();
+
+            var viewModel = new ContactoViewModel
+            {
+                Direccion = centroMedico?.Direccion ?? "Dirección no disponible",
+                Correo = centroMedico?.Correo ?? "Correo no disponible",
+                Telefono = centroMedico?.Telefono ?? "Teléfono no disponible"
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Institucion()

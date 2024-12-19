@@ -13,6 +13,8 @@ namespace turno_smart.Models
         public required int IdEspecialidad { get; set; }
         public int Telefono { get; set; }
         public required string Email { get; set; }
+        public string? Reseña { get; set; }
+        public string? Imagen { get; set; }
         public virtual Especialidad Especialidad { get; set; }
         public virtual List<Turno> Turnos { get; set; }
         public virtual List<HistorialMedico> HistorialMedico { get; set; }
