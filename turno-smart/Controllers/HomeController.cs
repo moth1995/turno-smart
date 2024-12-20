@@ -37,7 +37,7 @@ namespace turno_smart.Controllers
                 .Take(6) // Tomar solo 6 médicos
                 .Select(m => new DoctorVM
                 {
-                    Image = m.Imagen,
+                    Image = m.Imagen ?? "",
                     Name = m.FullName(),
                     Specialty = m.Especialidad != null ? m.Especialidad.Nombre : "Sin Especialidad",
                     Description = m.Reseña ?? "Sin descripción disponible"
