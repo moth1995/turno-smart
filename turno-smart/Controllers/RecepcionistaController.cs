@@ -78,12 +78,11 @@ namespace turno_smart.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Recepcionista obj) {
+        public async Task<IActionResult> Create(CreateRecepcionistaVM obj) {
             
-            ModelState.Remove("Usuario");
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return View(obj);
             }
 
             Usuarios user = new Usuarios
