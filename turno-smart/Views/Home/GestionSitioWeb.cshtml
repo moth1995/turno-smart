@@ -1,0 +1,46 @@
+﻿@model turno_smart.Models.CentroMedico;
+
+@{
+    ViewData["Title"] = "Gestion de Contenido Web";
+}
+
+<div class="container py-5">
+    <h1 class="h3 mb-4">Gestión de Contenido Web</h1>
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Información de la Clínica</h2>
+                <form asp-action="GestionSitioWeb" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label"></label>
+                        <input asp-for="Nombre" class="form-control" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Lema" class="form-label"></label>
+                        <input asp-for="Lema" class="form-control" />
+                        <span asp-validation-for="Lema" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Direccion" class="form-label"></label>
+                        <input asp-for="Direccion" class="form-control" />
+                        <span asp-validation-for="Direccion" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Correo" class="form-label"></label>
+                        <input asp-for="Correo" type="email" class="form-control" />
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Telefono" class="form-label"></label>
+                        <input asp-for="Telefono" type="tel" class="form-control" />
+                        <span asp-validation-for="Telefono" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -69,7 +70,7 @@ namespace turno_smart.Controllers
             var viewModel = new ContactoViewModel
             {
                 Direccion = centroMedico?.Direccion ?? "Dirección no disponible",
-                Correo = centroMedico?.Correo ?? "Correo no disponible",
+                Correo = centroMedico?.Correo ?? "mail@example.com",
                 Telefono = centroMedico?.Telefono ?? "Teléfono no disponible"
             };
 
@@ -85,6 +86,40 @@ namespace turno_smart.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GestionSitioWeb()
+        {
+            var centroMedico = _context.CentroMedico.FirstOrDefault();
+
+            if (centroMedico == null)
+            {
+                centroMedico = new CentroMedico();
+                centroMedico.Nombre = "Centro Médico";
+                centroMedico.Lema = "Donde su salud es primero";
+                centroMedico.Direccion = "Dirección no disponible";
+                centroMedico.Correo = "mail@example.com";
+                centroMedico.Telefono = "Teléfono no disponible";
+
+                _context.CentroMedico.Add(centroMedico);
+            }
+
+            return View(centroMedico);
+        }
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GestionSitioWeb(CentroMedico model)
+        {
+            if (!ModelState.IsValid) 
+            {
+                return View(model);
+            }
+
+            _context.Update(model);
+            _context.SaveChanges();
+
+            return View(model);
         }
     }
 }

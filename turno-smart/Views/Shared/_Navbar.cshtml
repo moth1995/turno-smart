@@ -28,6 +28,7 @@
                 }
                 else if (SignInManager.IsSignedIn(User) && @User.IsInRole("Admin"))
                 {
+                    <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="GestionSitioWeb">Sitio Web</a>
                     <a class="text-white nav-link" asp-area="" asp-controller="Turno" asp-action="Index">Agenda</a>
                     <a class="text-white nav-link" asp-area="" asp-controller="Medico" asp-action="Index">Medicos</a>
                     <a class="text-white nav-link" asp-area="" asp-controller="Paciente" asp-action="Index">Pacientes</a>
