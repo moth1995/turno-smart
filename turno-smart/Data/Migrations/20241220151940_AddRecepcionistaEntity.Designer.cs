@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using turno_smart.Data;
 
@@ -11,9 +12,11 @@ using turno_smart.Data;
 namespace turno_smart.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241220151940_AddRecepcionistaEntity")]
+    partial class AddRecepcionistaEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,9 +308,6 @@ namespace turno_smart.Data.Migrations
 
                     b.Property<string>("Imagen")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Matricula")
-                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()

@@ -10,13 +10,11 @@ namespace turno_smart.Controllers
     public class TurnoController(
         ITurnoService turnoService,
         IMedicoService medicoService,
-        IPacienteService pacienteService,
         UserManager<Usuarios> userManager
     ) : Controller {
 
         private readonly ITurnoService _turnoService = turnoService;
         private readonly IMedicoService _medicoService = medicoService;
-        private readonly IPacienteService _pacienteService = pacienteService;
         private readonly UserManager<Usuarios> _userManager = userManager;
 
         [HttpGet]
@@ -138,7 +136,7 @@ namespace turno_smart.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "La fecha y hora seleccionadas no son válidas.");
+                ModelState.AddModelError(string.Empty, "La fecha y hora seleccionadas no son vï¿½lidas.");
                 return View(vm);
             }
             try
@@ -206,7 +204,7 @@ namespace turno_smart.Controllers
                 if (turno == null) return NotFound();
                 var availableSlots = await _medicoService.GetAvailableSlotsAsync(turno.IdMedico, 60, new TimeSpan(8, 0, 0), new TimeSpan(18, 0, 0), new TimeSpan(0, 30, 0));
                 
-                ModelState.AddModelError(string.Empty, "La fecha y hora seleccionadas no son válidas.");
+                ModelState.AddModelError(string.Empty, "La fecha y hora seleccionadas no son vï¿½lidas.");
                 var newVM = new EditTurnoVM
                 {
                     TurnoId = turno.Id,
