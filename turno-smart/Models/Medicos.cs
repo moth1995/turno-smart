@@ -19,6 +19,7 @@ namespace turno_smart.Models
         public virtual List<Turno> Turnos { get; set; }
         public virtual List<HistorialMedico> HistorialMedico { get; set; }
         public virtual Usuarios Usuario { get; set; }
+        public int Matricula { get; set; }
         public string FullName()
         {
             return $"{Nombre} {Apellido}";

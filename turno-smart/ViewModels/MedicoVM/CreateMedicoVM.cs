@@ -12,6 +12,7 @@ namespace turno_smart.ViewModels.MedicoVM
         public required string Email { get; set;}
         public required string Reseña { get; set; }
         public required string Imagen { get; set; }
+        public required int Matricula { get; set; }
         public List<SelectListItem> Especialidad { get; set; } = [];
     }
 }
