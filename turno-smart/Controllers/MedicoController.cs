@@ -170,44 +170,43 @@ namespace turno_smart.Controllers
                         Text = e.Nombre
                     }).ToList(),
                 };
-
-                return View(medicoModel);
+                return Json(medicoModel);                
             }
             catch (Exception ex)
             {
                 return RedirectToAction(nameof(Index));
             }
         }
-
+        
         [HttpPut]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(EditMedicoVM obj)
+        public IActionResult Edit([FromBody] EditMedicoVM obj)
         {
             ModelState.Remove("Especialidad");
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new { success = false, message = "Modelo no válido" });
             }
 
             try
             {
                 var medico = _medicoService.GetById(obj.Id);
-                if (medico == null) return NotFound();
+                if (medico == null) return NotFound(new { success = false, message = "Médico no encontrado" });
 
                 medico.Nombre = obj.Nombre ?? medico.Nombre;
                 medico.Apellido = obj.Apellido ?? medico.Apellido;
                 medico.Email = obj.Email ?? medico.Email;
                 medico.Telefono = obj.Telefono ?? medico.Telefono;
                 medico.IdEspecialidad = obj.IdEspecialidad;
-                medico.Reseña = obj.Reseña ?? medico.Reseña;    // Actualizar la reseña
-                medico.Imagen = obj.Imagen ?? medico.Imagen;    // Actualizar la imagen (URL)
+                medico.Reseña = obj.Reseña ?? medico.Reseña;
+                medico.Imagen = obj.Imagen ?? medico.Imagen;
 
                 _medicoService.Update(medico);
-                return RedirectToAction(nameof(Index));
+                return Ok(new { success = true });
             }
             catch (Exception ex)
             {
-                return RedirectToAction(nameof(Index));
+                return StatusCode(500, new { success = false, message = "Error interno del servidor: " + ex.Message });
             }
         }
 
