@@ -5,6 +5,7 @@ using turno_smart.ViewModels.AccountVM;
 using turno_smart.Interfaces;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using turno_smart.ViewModels.PacienteVM;
 
 namespace turno_smart.Controllers
 {
@@ -114,6 +115,94 @@ namespace turno_smart.Controllers
             }
             return PartialView("_RegistrationModal", model);
         }
+
+        [HttpGet]
+        public IActionResult Details(string? ActiveTab = "general")
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            var paciente = _pacienteService.GetByDNI(user.DNI);
+
+            var pacienteVM = new ProfileVM
+            {
+                Id = paciente.Id,
+                Nombre = paciente.Nombre,
+                Apellido = paciente.Apellido,
+                FechaNacimiento = paciente.FechaNacimiento,
+                DNI = paciente.DNI,
+                Domicilio = paciente.Domicilio,
+                Ciudad = paciente.Ciudad,
+                Provincia = paciente.Provincia,
+                Telefono = paciente.Telefono,
+                Email = paciente.Email,
+                ActiveTab = ActiveTab,
+            };
+
+            return View(pacienteVM);
+        }
+
+        public async Task<IActionResult> UpdatePassword(string password)
+        {
+            try
+            {
+
+                var user = await _userManager.GetUserAsync(User);
+                if(user == null) {
+                    return NotFound();
+                }
+
+                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, resetToken, password);
+
+                if (result.Succeeded)
+                {
+                    TempData["SuccessMessage"] = "Contraseña actualizada correctamente.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error al actualizar la contraseña.";
+                }
+
+                return RedirectToAction("Details");
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Error al actualizar la contraseña.";
+                return RedirectToAction("Details");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateProfile(ProfileVM model)
+        {
+            ModelState.Remove("Password");
+            ModelState.Remove("ActiveTab");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var paciente = _pacienteService.GetById(model.Id);
+                    paciente.Nombre = model.Nombre;
+                    paciente.Apellido = model.Apellido;
+                    paciente.FechaNacimiento = model.FechaNacimiento;
+                    paciente.DNI = model.DNI;
+                    paciente.Domicilio = model.Domicilio;
+                    paciente.Ciudad = model.Ciudad;
+                    paciente.Provincia = model.Provincia;
+                    paciente.Telefono = model.Telefono;
+                    paciente.Email = model.Email;
+
+                    _pacienteService.Update(paciente);
+
+                    TempData["SuccessMessage"] = "Datos actualizados correctamente.";
+                    return RedirectToAction("Details");
+                } catch (Exception ex) {
+                    TempData["ErrorMessage"] = "Error al actualizar los datos." + ex.Message;
+                    return RedirectToAction("Details");
+                }
+            } 
+            return View(model);
+        }
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

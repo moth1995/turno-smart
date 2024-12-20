@@ -74,6 +74,11 @@
                         @* @name *@
                         @Html.Raw(name)
                     </a>
+                    @if(User.IsInRole("Paciente")) {
+                        <a href="javascript:void(0);" class="nav-link text-white" onclick="document.getElementById('account-form').submit();"><Main>Mi Perfil</Main></a>
+                        <form id="account-form" class="d-none" asp-area="" asp-controller="Account" asp-action="Details" method="get">
+                        </form>
+                    }
                     <a href="javascript:void(0);" class="nav-link text-white" onclick="document.getElementById('logout-form').submit();">Logout</a>
                     <form id="logout-form" class="d-none" asp-area="" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
                     </form>

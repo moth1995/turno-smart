@@ -105,7 +105,7 @@ namespace turno_smart.Controllers
                         Cobertura = obj.Cobertura,
                         Telefono = obj.Telefono,
                         Email = obj.Email,
-                        Estado = obj.Estado,
+                        Estado = 1,
                         FechaAlta = obj.FechaAlta
                     };
 
