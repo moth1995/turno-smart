@@ -76,6 +76,7 @@
                                                         Info
                                                     </button>
                                                 </form>
+
                                                 @if(User.IsInRole("Admin") || User.IsInRole("Recepcionista"))
                                                 {
                                                     <!-- Botón para Editar -->
@@ -84,10 +85,7 @@
                                                             Editar
                                                         </button>
                                                     </form>
-                                                }
 
-                                                @if(User.IsInRole("Admin"))
-                                                {
                                                     @if (paciente.Estado == 0)
                                                     {   
                                                         <form asp-controller="Paciente" asp-action="Activate" method="post" asp-route-id="@paciente.Id" class="d-inline">
@@ -95,19 +93,13 @@
                                                                 Activar
                                                             </button>
                                                         </form>
-                                                    } else {
+                                                    } else if(User.IsInRole("Admin")) {
                                                         <form asp-controller="Paciente" asp-action="Disable" method="post" asp-route-id="@paciente.Id" class="d-inline">
                                                             <button type="submit" class="btn btn-danger btn-sm ms-2">
                                                                 Dar de baja
                                                             </button>
                                                         </form>
                                                     }
-                                                    <!-- Botón para Eliminar -->
-                                                    <form method="get" asp-action="Delete" asp-route-id="@paciente.Id" id="delete-btn">
-                                                        <button type="submit" class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-delete">
-                                                            Eliminar
-                                                        </button>
-                                                    </form>
                                                 }
                                             </div>
                                         </td>
