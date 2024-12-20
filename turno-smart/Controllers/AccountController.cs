@@ -58,7 +58,12 @@ namespace turno_smart.Controllers
                 int dni;
                 if (!int.TryParse(model.DNI, out dni))
                 {
-                    ModelState.AddModelError("", "DNI ingresado invalido");
+                    ModelState.AddModelError("DNI", "DNI ingresado invalido");
+                    return PartialView("_RegistrationModal", model);
+                }
+                if (!model.AceptoTerminos)
+                {
+                    ModelState.AddModelError("AceptoTerminos", "Debes aceptar los terminos para registrarte.");
                     return PartialView("_RegistrationModal", model);
                 }
                 Usuarios users = new Usuarios
