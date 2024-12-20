@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using turno_smart.Models;
 
 namespace turno_smart.Data
@@ -9,6 +11,19 @@ namespace turno_smart.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            try
+            {
+                var dbCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+                if (dbCreator != null)
+                {
+                    if (!dbCreator.CanConnect()) dbCreator.Create();
+                    if (!dbCreator.HasTables()) dbCreator.CreateTables();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
