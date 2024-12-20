@@ -89,4 +89,5 @@ handleFormSubmission('#edit-btn', '#modal-edit-content'); //get
 handleFormSubmission('#turno-delete-form', '#modal-delete-content'); //post
 handleFormSubmission('#delete-btn', '#modal-delete-content'); //get
 
+handleFormSubmission('#details-btn', '#modal-details-content'); //get
 
