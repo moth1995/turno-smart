@@ -89,9 +89,14 @@ handleFormSubmission('#edit-btn', '#modal-edit-content'); //get
 handleFormSubmission('#turno-delete-form', '#modal-delete-content'); //post
 handleFormSubmission('#delete-btn', '#modal-delete-content'); //get
 
+
+
+
+handleFormSubmission('#details-btn', '#modal-details-content'); //get
+
+
 document.addEventListener('DOMContentLoaded', function () {
     var editMedicoModal = document.getElementById('modal-edit');
-
     // Limpiar datos del modal al cerrarlo
     editMedicoModal.addEventListener('hidden.bs.modal', function () {
         document.getElementById('modal-edit-content').innerHTML = '';
