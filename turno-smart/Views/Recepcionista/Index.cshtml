@@ -55,18 +55,18 @@
                                         </td>
                                         <td class="text-end pe-4 align-middle">
                                             <div class="btn-group">
-                                                <a asp-controller="Recepcionista"
-                                                    asp-action="Details"
-                                                    asp-route-id="@recepcionista.Id"
-                                                    class="btn btn-sm btn-secondary me-1">
-                                                    Info
-                                                </a>
-                                                <a asp-controller="Recepcionista"
-                                                    asp-action="Edit"
-                                                    asp-route-id="@recepcionista.Id"
-                                                    class="btn btn-sm btn-primary me-1">
-                                                    Editar
-                                                </a>
+                                                <!-- Botón para Editar -->
+                                                <form method="get" asp-action="Edit" asp-route-id="@recepcionista.Id" id="edit-btn">
+                                                    <button type="submit" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                                        Editar
+                                                    </button>
+                                                </form>
+                                                <!-- Botón para Eliminar -->
+                                                <form method="get" asp-action="Delete" asp-route-id="@recepcionista.Id" id="delete-btn">
+                                                    <button type="submit" class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-delete">
+                                                        Eliminar
+                                                    </button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
@@ -116,6 +116,26 @@
 
 @section Scripts {
     <script>
+
+        function editarValor(id, valor){
+            
+            var idaguardar = document.getElementById("elementId");
+            var input = document.getElementById("elementName");
+            input.value = valor;
+            idaguardar.value = id;
+
+            var editModal = document.getElementById("editModal");
+            var modal = bootstrap.Modal.getOrCreateInstance(editModal);
+            modal.show();
+            
+        }
+        
+        function cerrarModal(){
+            var editModal = document.getElementById("editModal");
+            var modal = bootstrap.Modal.getOrCreateInstance(editModal);
+            modal.hide();
+        }
+
         $(document).ready(function () {
             var successMessage = '@TempData["SuccessMessage"]';
             var errorMessage = '@TempData["ErrorMessage"]';

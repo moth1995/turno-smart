@@ -20,7 +20,8 @@ namespace turno_smart.Services
             var recepcionista = _DBContext.Recepcionistas.Find(id);
             if (recepcionista != null)
             {
-                _DBContext.Recepcionistas.Remove(recepcionista);
+                _DBContext.Remove(recepcionista);
+                _DBContext.SaveChanges();
             }
         }
 
@@ -38,12 +39,13 @@ namespace turno_smart.Services
 
         Recepcionista? IRecepcionistaService.GetById(int id)
         {
-            return _DBContext.Recepcionistas.Find(id);
+            var query = from recepcionista in _DBContext.Recepcionistas select recepcionista;
+            return query.FirstOrDefault(m => m.Id == id);
         }
 
         void IRecepcionistaService.Update(Recepcionista obj)
         {
-            _DBContext.Entry(obj).State = EntityState.Modified;
+            _DBContext.Update(obj);
             _DBContext.SaveChanges();
         }
     }
