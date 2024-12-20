@@ -1,22 +1,68 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* Custom Bootstrap styles */
 body {
-  margin-bottom: 60px;
+    font-family: 'Questrial', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.bg-custom {
+    background-color: #98DFD6;
+}
+
+.bg-custom-nav {
+    background-color: #00A896;
+}
+
+.btn-custom {
+    background-color: #00A896;
+    border-color: #00A896;
+    color: white;
+}
+
+.btn-custom:hover {
+    background-color: #008C7E;
+    border-color: #008C7E;
+    color: white;
+}
+
+.text-custom {
+    color: #00A896;
+}
+
+.doctor-card {
+    transition: transform 0.3s ease;
+}
+
+.doctor-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Override Bootstrap primary color */
+.bg-primary {
+    background-color: #00A896 !important;
+}
+
+.text-primary {
+    color: #00A896 !important;
+}
+
+.btn-primary {
+    background-color: #00A896 !important;
+    border-color: #00A896 !important;
+}
+
+    .btn-primary:hover {
+        background-color: #008C7E !important;
+        border-color: #008C7E !important;
+    }
+
+/* Calendar styles */
+.badge.bg-custom {
+    background-color: #00A896 !important;
+}
+
+/* Footer styles */
+.footer {
+    margin-top: auto;
+    background-color: rgba(255, 255, 255, 0.9);
 }

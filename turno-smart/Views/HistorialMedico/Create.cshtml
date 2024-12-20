@@ -1,0 +1,64 @@
+@model CreateHistorialMedicoVM
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <div class="modal-title h4" id="modal-create-label">Nueva entrada - @Model.PacienteNombre</div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<form asp-action="Create" method="post" id="create-form">
+    <div class="modal-body">
+
+        <input asp-for="IdPaciente" type="hidden" />
+        <input asp-for="IdMedico" type="hidden" />
+        <input asp-for="Fecha" type="hidden" />
+        <input asp-for="PacienteNombre" type="hidden" />
+
+        <div class="mb-3">
+            <label asp-for="Sintomas" class="form-label">Síntomas y Observaciones</label>
+            <textarea asp-for="Sintomas" class="form-control"></textarea>
+            <span asp-validation-for="Sintomas" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Diagnostico" class="form-label">Diagnóstico</label>
+            <textarea asp-for="Diagnostico" class="form-control"></textarea>
+            <span asp-validation-for="Diagnostico" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Tratamiento" class="form-label">Tratamiento Indicado</label>
+            <textarea asp-for="Tratamiento" class="form-control"></textarea>
+            <span asp-validation-for="Tratamiento" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Prescripciones" class="form-label">Prescripciones</label>
+            <textarea asp-for="Prescripciones" class="form-control"></textarea>
+            <span asp-validation-for="Prescripciones" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NotasAdicionales" class="form-label">Notas Adicionales</label>
+            <textarea asp-for="NotasAdicionales" class="form-control"></textarea>
+            <span asp-validation-for="NotasAdicionales" class="text-danger"></span>
+        </div>
+
+
+        <div class="mb-3">
+            <label asp-for="Seguimiento" class="form-label">Seguimiento Recomendado</label>
+            <textarea asp-for="Seguimiento" class="form-control"></textarea>
+            <span asp-validation-for="Seguimiento" class="text-danger"></span>
+        </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save me-2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+            Guardar Historia Clínica
+        </button>
+    </div>
+</form>

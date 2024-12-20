@@ -1,0 +1,110 @@
+﻿﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Usuarios> SignInManager
+@inject UserManager<Usuarios> UserManager
+
+@{
+    var navbarExpanded = false;
+}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-light bg-custom-nav py-2">
+    <div class="container-fluid px-3">
+        <!-- Botón Toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#basic-navbar-nav" aria-controls="basic-navbar-nav" aria-expanded="@navbarExpanded" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="basic-navbar-nav">
+            <div class="navbar-nav ms-0">
+                <a class="text-white ps-0 nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                @if (SignInManager.IsSignedIn(User) && @User.IsInRole("Paciente"))
+                {
+                    <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="Servicios">Servicios</a>
+                    <a class="text-white nav-link" asp-area="" asp-controller="Turno" asp-action="Index">Mis Turnos</a>
+                }
+                else if (SignInManager.IsSignedIn(User) && @User.IsInRole("Medico"))
+                {
+                    <a class="text-white nav-link" asp-area="" asp-controller="Turno" asp-action="Index">Mi Agenda</a>
+                }
+                else if (SignInManager.IsSignedIn(User) && @User.IsInRole("Admin"))
+                {
+                    <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="GestionSitioWeb">Sitio Web</a>
+                    <a class="text-white nav-link" asp-area="" asp-controller="Turno" asp-action="Index">Agenda</a>
+                    <a class="text-white nav-link" asp-area="" asp-controller="Medico" asp-action="Index">Medicos</a>
+                    <a class="text-white nav-link" asp-area="" asp-controller="Paciente" asp-action="Index">Pacientes</a>
+                    <a class="text-white nav-link" asp-area="" asp-controller="Recepcionista" asp-action="Index">Recepcionistas</a>
+                    <a class="text-white nav-link" asp-area="" asp-controller="Especialidad" asp-action="Index">Especialidades</a>
+                }
+                else if (SignInManager.IsSignedIn(User) && @User.IsInRole("Recepcionista"))
+                {
+                    <a class="text-white nav-link" asp-area="" asp-controller="Turno" asp-action="Index">Agenda</a>
+                    <a class="text-white nav-link" asp-area="" asp-controller="Paciente" asp-action="Index">Pacientes</a>
+                }
+                @if (!(@User.IsInRole("Medico") || @User.IsInRole("Admin") || @User.IsInRole("Recepcionista")))
+                {
+                    <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="Contacto">Contacto</a>
+                    <a class="text-white nav-link" asp-area="" asp-controller="Home" asp-action="Institucion">Institución</a>
+                }
+            </div>
+        </div>
+
+        <div class="d-flex d-md-flex align-items-center ms-auto">
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                
+                var user = await @UserManager.GetUserAsync(User);
+                string name = user.UserName;
+                if (user.Medico != null)
+                {
+                    name = $"Medico<i class='fas fa-chevron-right ms-2'></i>  Dr. {user.Medico.FullName()}";
+                }
+                else if (user.Paciente != null)
+                {
+                    name = $"Paciente<i class='fas fa-chevron-right ms-2'></i>  {user.Paciente.FullName()}";
+                }                
+                else
+                {
+                    name = $"Admin<i class='fas fa-chevron-right ms-2'></i>  {user.UserName}";
+                }
+                
+                <div class="d-flex gap-2">
+                    <a id="manage" class="nav-link text-white"  asp-area="" asp-page="/Account/Manage/Index" title="Manage">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user me-2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+
+                        @* @name *@
+                        @Html.Raw(name)
+                    </a>
+                    @if(User.IsInRole("Paciente")) {
+                        <a href="javascript:void(0);" class="nav-link text-white" onclick="document.getElementById('account-form').submit();"><Main>Mi Perfil</Main></a>
+                        <form id="account-form" class="d-none" asp-area="" asp-controller="Account" asp-action="Details" method="get">
+                        </form>
+                    }
+                    <a href="javascript:void(0);" class="nav-link text-white" onclick="document.getElementById('logout-form').submit();">Logout</a>
+                    <form id="logout-form" class="d-none" asp-area="" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                    </form>
+
+                </div>
+            }
+            else
+            {               
+                <small class="text-white-50 me-2">¿Todavía no tienes una cuenta?</small>
+                <div class="d-flex gap-2">
+                    <form method="get" asp-action="Register" asp-controller="Account" id="register-btn">
+                        <button type="submit" class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modal-registration">
+                            Registrarse
+                        </button>
+                    </form>
+                    <form method="get" asp-action="Login" asp-controller="Account" id="login-btn">
+                        <button type="submit" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modal-login">
+                            Iniciar sesión
+                        </button>
+                    </form>
+                </div>
+            }
+
+        </div>
+    </div>
+</nav>
+
+@await Html.PartialAsync("_ForgotPasswordModal")

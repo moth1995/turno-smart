@@ -1,0 +1,230 @@
+@model turno_smart.ViewModels.AccountVM.ProfileVM
+
+@{
+    ViewData["Title"] = "Modificá tu Perfil";
+}
+@* 
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h1 class="display-4 text-center mb-4">@ViewData["Title"]</h1>
+
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <form method="post" asp-action="UpdateAccount">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id"/>
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label"></label>
+                            <input asp-for="Nombre" class="form-control" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Apellido" class="form-label"></label>
+                            <input asp-for="Apellido" class="form-control" />
+                            <span asp-validation-for="Apellido" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DNI" class="form-label"></label>
+                            <input asp-for="DNI" type="number" class="form-control" />
+                            <span asp-validation-for="DNI" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Telefono" class="form-label"></label>
+                            <input asp-for="Telefono" type="number" class="form-control" />
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FechaNacimiento" class="form-label"></label>
+                            <input asp-for="FechaNacimiento" type="date" class="form-control" />
+                            <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Domicilio" class="form-label"></label>
+                            <input asp-for="Domicilio" class="form-control" />
+                            <span asp-validation-for="Domicilio" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Ciudad" class="form-label"></label>
+                            <input asp-for="Ciudad" class="form-control" />
+                            <span asp-validation-for="Ciudad" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Provincia" class="form-label"></label>
+                            <input asp-for="Provincia" class="form-control" />
+                            <span asp-validation-for="Provincia" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" type="email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <input type="hidden" asp-for="Cobertura" />
+                        <input type="hidden" asp-for="FechaAlta" />
+
+                        <div class="modal-footer">
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="nav flex-column">
+                        <!-- Botón General -->
+                        <a href="/Account/Details?ActiveTab=general" 
+                           class="btn text-start @(Model.ActiveTab == "general" ? "fw-bold text-custom" : "text-dark")">
+                            General
+                        </a>
+                        
+                        <!-- Botón Seguridad -->
+                        <a href="/Account/Details?ActiveTab=security" 
+                           class="btn text-start @(Model.ActiveTab == "security" ? "fw-bold text-custom" : "text-dark")">
+                            Seguridad
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    @if (Model.ActiveTab == "general")
+                    {
+                        <form asp-action="UpdateProfile" method="post">
+                            <h2 class="h4 mb-4">Modificá tu Perfil</h2>
+                            <div class="row g-3">
+
+                                <input type="hidden" asp-for="Id" />
+
+                                <div class="col-md-6">
+                                     <label asp-for="Nombre" class="form-label"></label>
+                                    <input asp-for="Nombre" class="form-control" placeholder="Nombre" />
+                                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                     <label asp-for="Apellido" class="form-label"></label>
+                                    <input asp-for="Apellido" class="form-control" placeholder="Apellido" />
+                                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                     <label asp-for="DNI" class="form-label"></label>
+                                    <input asp-for="DNI" class="form-control" placeholder="DNI" />
+                                    <span asp-validation-for="DNI" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                     <label asp-for="FechaNacimiento" class="form-label"></label>
+                                    <input asp-for="FechaNacimiento" class="form-control" placeholder="Fecha de nacimiento" />
+                                    <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="Email" class="form-label"></label>
+                                    <input asp-for="Email" class="form-control" placeholder="Email" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="Telefono" class="form-label"></label>
+                                    <input asp-for="Telefono" class="form-control" placeholder="Teléfono" />
+                                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="Domicilio" class="form-label"></label>
+                                    <input asp-for="Domicilio" class="form-control" placeholder="Docimicilio" />
+                                    <span asp-validation-for="Domicilio" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Ciudad" class="form-label"></label>
+                                    <input asp-for="Ciudad" class="form-control" placeholder="Ciudad" />
+                                    <span asp-validation-for="Ciudad" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Provincia" class="form-label"></label>
+                                    <input asp-for="Provincia" class="form-control" placeholder="Provincia" />
+                                    <span asp-validation-for="Provincia" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-custom w-100">Confirmar</button>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                    else if (Model.ActiveTab == "security")
+                    {
+                        <form asp-action="UpdatePassword" method="post">
+                            <h2 class="h4 mb-4">Actualizá tu contraseña</h2>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <input class="form-control" placeholder="Contraseña actual" required/>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="password" asp-for="Password" class="form-control" placeholder="Nueva contraseña" required/>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-custom w-100">Confirmar</button>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            var errorMessage = '@TempData["ErrorMessage"]';
+            console.log(successMessage);
+            console.log(errorMessage);
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            if (successMessage) {
+                toastr.success(successMessage);
+            }
+
+            if (errorMessage) {
+                toastr.error(errorMessage);
+            }
+        });
+    </script>
+}
+

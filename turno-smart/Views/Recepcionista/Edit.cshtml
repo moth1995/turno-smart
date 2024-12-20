@@ -1,0 +1,40 @@
+@model turno_smart.ViewModels.RecepcionistaVM.EditRecepcionistaVM
+
+@{
+    Layout = null;
+}
+<div class="modal-header">
+    <div class="modal-title h4" id="modal-edit-label">Editar Recepcionista</div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+    <p class="text-muted mb-4">Complete los datos para actualizar los datos del recepcionista en el sistema.</p>
+    <form method="post" asp-action="EditConfirmed" id="edit-form">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id"/>
+        <div class="mb-3">
+            <label asp-for="Nombre" class="control-label"></label>
+            <input asp-for="Nombre" class="form-control" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Apellido" class="control-label"></label>
+            <input asp-for="Apellido" class="form-control" />
+            <span asp-validation-for="Apellido" class="text-danger"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+    </form>
+</div>
+
+    
+
+
+
+
+   
+
+

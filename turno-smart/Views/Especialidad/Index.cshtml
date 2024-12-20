@@ -1,0 +1,155 @@
+﻿@model ListEspecialidadVM
+
+@Html.AntiForgeryToken()
+@{
+    ViewData["Title"] = "Especialidades";
+}
+
+
+<div class="container py-5">
+    <div class="d-flex justify-content align-items-center gap-3">
+        <partial name="_BackToServicios" />
+        @if (User.IsInRole("Admin"))
+        {
+        <form method="get" asp-action="Create">
+            <button type="submit" class="btn btn-light btn-lg mt-4">➕ Crear Especialidad</button>
+        </form>
+        }
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <h1 class="display-4 mb-4">Especialidades</h1>
+            <p class="lead mb-5">Seleccioná el profesional con el que querés reservar tu turno online.</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <form method="get" class="input-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Buscar especialidad..."
+                       asp-for="Filter" />
+                <button type="submit" class="btn btn-outline-secondary">🔍</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    @if (Model.Especialidades.Any())
+                    {
+                        <ul class="list-unstyled">
+                            @foreach (var item in Model.Especialidades)
+                            {
+                                <li class="mb-3 d-flex align-items-center justify-content-between">
+                                    <a asp-controller="Medico"
+                                       asp-action="Index"
+                                       asp-route-especialidadId="@item.Id"
+                                       class="text-decoration-none text-dark d-flex align-items-center"
+                                       data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Descripcion">
+                                        <span class="me-2">•</span>
+                                        @item.Nombre
+                                    </a>
+                                    @if (@User.IsInRole("Admin"))
+                                    {
+                                        <div class="btn-group">
+                                            <!-- Botón para Editar -->
+                                            <form method="get" asp-action="Edit" asp-route-id="@item.Id" id="edit-btn">
+                                                <button type="submit" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                                    Editar
+                                                </button>
+                                            </form>
+
+                                            <!-- Botón para Detalles -->
+                                            <form method="get" asp-action="Details" asp-route-id="@item.Id" id="details-btn">
+                                                <button type="submit" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-details">
+                                                    Detalles
+                                                </button>
+                                            </form>
+
+                                            <!-- Botón para Eliminar -->
+                                            <form method="get" asp-action="Delete" asp-route-id="@item.Id" id="delete-btn">
+                                                <button type="submit" class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-delete">
+                                                    Eliminar
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No se encontraron especialidades</p>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        function editarValor(id, valor){
+            
+            var idaguardar = document.getElementById("elementId");
+            var input = document.getElementById("elementName");
+            input.value = valor;
+            idaguardar.value = id;
+
+            var editModal = document.getElementById("editModal");
+            var modal = bootstrap.Modal.getOrCreateInstance(editModal);
+            modal.show();
+            
+        }
+        
+
+        function cerrarModal(){
+            var editModal = document.getElementById("editModal");
+            var modal = bootstrap.Modal.getOrCreateInstance(editModal);
+            modal.hide();
+        }
+
+
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            var errorMessage = '@TempData["ErrorMessage"]';
+            console.log(successMessage);
+            console.log(errorMessage);
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            if (successMessage) {
+                toastr.success(successMessage);
+            }
+
+            if (errorMessage) {
+                toastr.error(errorMessage);
+            }
+        });
+    </script>
+
+}

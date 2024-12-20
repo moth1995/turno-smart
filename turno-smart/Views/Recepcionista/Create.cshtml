@@ -1,0 +1,47 @@
+@using turno_smart.ViewModels.CreateRecepcionistaVM
+@model CreateRecepcionistaVM
+@{
+    ViewData["Title"] = "Crear Recepcionista";
+}
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <div class="modal-title h4" id="modal-create-label">Complete los datos para crear un nuevo recepcionista en el sistema.</div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form asp-action="Create" method="post" id="create-form">
+    <div class="modal-body">
+
+        <div class="mb-3">
+            <label asp-for="Nombre" class="form-label"></label>
+            <input asp-for="Nombre" class="form-control" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Apellido" class="form-label"></label>
+            <input asp-for="Apellido" class="form-control" />
+            <span asp-validation-for="Apellido" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DNI" class="form-label"></label>
+            <input asp-for="DNI" type="number" class="form-control" />
+            <span asp-validation-for="DNI" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" type="email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary btn-lg">Crear Recepcionista</button>
+    </div>
+</form>

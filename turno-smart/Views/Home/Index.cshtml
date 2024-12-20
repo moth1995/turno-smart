@@ -1,8 +1,50 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model turno_smart.ViewModels.HomeVM.HomeVM
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@{
+    ViewData["Title"] = Model.NombreCentroMedico;
+}
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Usuarios> SignInManager
+@inject UserManager<Usuarios> UserManager
+
+<div class="container py-5">
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6 text-center mb-4 mb-lg-0">
+            <div class="d-flex flex-column align-items-center">
+                <div class="text-custom mb-4" style="width: 96px; height: 96px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-square w-100 h-100">
+                        <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                        <path d="M8 12h8"></path>
+                        <path d="M12 8v8"></path>
+                    </svg>
+                </div>
+
+                <!-- Nombre del Centro Médico -->
+                <h1 class="display-4 fw-light mb-3">
+                    @Model.NombreCentroMedico
+                </h1>
+
+                <!-- Lema del Centro Médico -->
+                <p class="text-uppercase mb-4">
+                    @Model.LemaCentroMedico
+                </p>
+
+                @if (!(User.IsInRole("Medico") || User.IsInRole("Admin")))
+                {
+                    <partial name="_AgendarConsultarButton" />
+                }
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&q=80&w=800&h=600" alt="Doctora sonriente" class="img-fluid rounded shadow-lg" style="height: 450px; width: 100%; object-fit: cover" />
+        </div>
+    </div>
+
+    <!-- Doctors List -->
+    <div class="g-4 row row-cols-lg-6 row-cols-md-3 row-cols-sm-2 row-cols-1">
+        @foreach (var doctor in Model.Doctors)
+        {
+            <partial name="_DoctorCard" model="doctor" />
+        }
+    </div>
 </div>

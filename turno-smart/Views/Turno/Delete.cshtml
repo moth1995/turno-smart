@@ -1,0 +1,44 @@
+﻿@model DeleteTurnoVM
+@{
+    Layout = null;
+}
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Usuarios> SignInManager
+@inject UserManager<Usuarios> UserManager
+
+@if(User.IsInRole("Paciente"))
+{
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-delete-label">Cancelar Turno</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <p>¿Estás seguro que deseas cancelar tu turno para @Model.MedicoEspecialidad?</p>
+        <p class="text-muted mb-0">Fecha: @Model.FechaTurno.ToString("g") Hs</p>
+    </div>
+    <div class="modal-footer">
+        <form method="post" asp-action="DeleteConfirmed" asp-controller="Turno" id="delete-form">
+            <input type="hidden" asp-for=Id/>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+    </div>
+}
+else
+{
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-delete-label">Cancelar Turno</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <p>¿Estás seguro que deseas cancelar el turno para @Model.PacienteNombre?</p>
+        <p class="text-muted mb-0">Fecha: @Model.FechaTurno.ToString("g") Hs</p>
+    </div>
+    <div class="modal-footer">
+        <form method="post" asp-action="DeleteConfirmed" asp-controller="Turno" id="delete-form">
+            <input type="hidden" asp-for=Id />
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+    </div>
+}

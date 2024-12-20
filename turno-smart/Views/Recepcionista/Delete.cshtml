@@ -1,0 +1,32 @@
+@model turno_smart.ViewModels.RecepcionistaVM.DeleteRecepcionistaVM
+
+@{
+    Layout = null;
+}
+<div class="modal-header">
+    <div class="modal-title h4" id="modal-edit-label">Eliminar Recepcionista</div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+    <form method="post" asp-action="DeleteConfirmed" id="edit-form">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id"/>
+
+        <dl class="row">
+            <dt class="col-sm-4">Nombre</dt>
+            <dd class="col-sm-8">@Model.Nombre</dd>
+
+            <dt class="col-sm-4">Apellido</dt>
+            <dd class="col-sm-8">@Model.Apellido</dd>
+
+            <dt class="col-sm-4">DNI</dt>
+            <dd class="col-sm-8">@Model.DNI</dd>
+        </dl>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </div>
+    </form>
+</div>
+

@@ -1,0 +1,106 @@
+@model turno_smart.ViewModels.PacienteVM.EditPacienteVM
+
+@{
+    Layout = null;
+}
+<div class="modal-header">
+    <div class="modal-title h4" id="modal-edit-label">Editar Paciente</div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+    <p class="text-muted mb-4">Complete los datos para actualizar los datos del paciente en el sistema.</p>
+    <form method="post" asp-action="EditConfirmed" id="edit-form">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id"/>
+        <div class="mb-3">
+            <label asp-for="Nombre" class="form-label"></label>
+            <input asp-for="Nombre" class="form-control" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Apellido" class="form-label"></label>
+            <input asp-for="Apellido" class="form-control" />
+            <span asp-validation-for="Apellido" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DNI" class="form-label"></label>
+            <input asp-for="DNI" type="number" class="form-control" />
+            <span asp-validation-for="DNI" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Telefono" class="form-label"></label>
+            <input asp-for="Telefono" type="number" class="form-control" />
+            <span asp-validation-for="Telefono" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="FechaNacimiento" class="form-label"></label>
+            <input asp-for="FechaNacimiento" type="date" class="form-control" />
+            <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Domicilio" class="form-label"></label>
+            <input asp-for="Domicilio" class="form-control" />
+            <span asp-validation-for="Domicilio" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Ciudad" class="form-label"></label>
+            <input asp-for="Ciudad" class="form-control" />
+            <span asp-validation-for="Ciudad" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Provincia" class="form-label"></label>
+            <input asp-for="Provincia" class="form-control" />
+            <span asp-validation-for="Provincia" class="text-danger"></span>
+        </div>
+        @* <div class="mb-3">
+            <label asp-for="Cobertura" class="form-label"></label>
+            <select asp-for="Cobertura" class="form-control">
+                <option value="">Seleccione una opci�n</option>
+                <option value="1">S�</option>
+                <option value="0">No</option>
+            </select>
+            <span asp-validation-for="Cobertura" class="text-danger"></span>
+        </div> *@
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" type="email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" asp-for="Cobertura" />
+        <input type="hidden" asp-for="FechaAlta" />
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+    </form>
+</div>
+
+    
+
+
+
+
+   
+
+
+
+
+
+    
+
+
+
+
+   
+
+

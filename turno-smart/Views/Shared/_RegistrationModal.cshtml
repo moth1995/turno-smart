@@ -1,0 +1,81 @@
+﻿@model RegisterVM
+<div class="modal-header">
+    <h5 class="modal-title" id="modal-registration-label">Registro</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form id="registrationForm" method="post" asp-controller="Account" asp-action="Register">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Nombre" asp-for="Nombre" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Apellido" asp-for="Apellido" />
+                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="DNI" asp-for="DNI" />
+                    <span asp-validation-for="DNI" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Fecha de Nacimiento" asp-for="FechaNacimiento" />
+                    <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Email" asp-for="Email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Contraseña" asp-for="Password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Repetir Contraseña" asp-for="ConfirmPassword" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="AceptoTerminos" />
+                    <label title="" for="terms" class="form-check-label">
+                        <span>
+                            Acepto los <a href="#" class="text-custom">Términos de Uso</a> y la<a href="#" class="text-custom"> Política de Privacidad</a>
+                        </span>
+                    </label>
+                    <span asp-validation-for="AceptoTerminos" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <button type="submit" class="w-100 mb-3 btn btn-custom">Registrarse</button>
+                <div class="text-center">
+                    <span class="text-muted">
+                        ¿Ya tienes cuenta?
+                    </span>
+                    <button type="button" class="p-0 text-custom btn btn-link" onclick="onRegistrationModalLoginBtnClick()">¡Ingresa!</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

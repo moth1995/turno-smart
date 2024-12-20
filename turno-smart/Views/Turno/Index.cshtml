@@ -1,0 +1,24 @@
+﻿@model ListTurnosVM
+
+@{
+    ViewData["Title"] = "Turnos";
+}
+
+
+<div class="container py-5">
+    @if (@User.IsInRole("Paciente"))
+    {
+        @await Html.PartialAsync("_TurnosPaciente", Model)
+    }
+    else if (@User.IsInRole("Medico") || @User.IsInRole("Admin") || @User.IsInRole("Recepcionista"))
+    {
+        @await Html.PartialAsync("_AgendaDiaria", Model)
+    }
+    else
+    {
+        Context.Response.Redirect("/");
+    }
+</div>
+
+
+

@@ -1,0 +1,40 @@
+﻿@model turno_smart.ViewModels.EspecialidadVM.EditEspecialidadVM
+
+@{
+    Layout = null;
+}
+<div class="modal-header">
+    <div class="modal-title h4" id="modal-edit-label">Editar Especialidad</div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+    <p class="text-muted mb-4">Complete los datos para actualizar la especialidad en el sistema.</p>
+    <form method="post" asp-action="Edit" id="edit-form">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id"/>
+        <div class="mb-3">
+            <label asp-for="Nombre" class="control-label"></label>
+            <input asp-for="Nombre" class="form-control" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Descripcion" class="control-label"></label>
+            <textarea asp-for="Descripcion" class="form-control" rows="10" cols="50"></textarea>
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+    </form>
+</div>
+
+    
+
+
+
+
+   
+
+

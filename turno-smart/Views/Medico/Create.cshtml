@@ -1,0 +1,75 @@
+﻿@model turno_smart.ViewModels.MedicoVM.CreateMedicoVM
+
+@{
+    ViewData["Title"] = "Crear Médico";
+}
+
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h1 class="display-4 text-center mb-4">@ViewData["Title"]</h1>
+            <p class="lead text-center mb-5">
+                Complete los datos para crear un nuevo médico en el sistema.
+            </p>
+
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label for="Nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="Nombre" name="Nombre" value="@Model.Nombre" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Apellido" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="Apellido" name="Apellido" value="@Model.Apellido" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="DNI" class="form-label">DNI</label>
+                            <input type="number" class="form-control" id="DNI" name="DNI" value="@Model.DNI" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Telefono" class="form-label">Teléfono</label>
+                            <input type="number" class="form-control" id="Telefono" name="Telefono" value="@Model.Telefono" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" required />
+                        </div>
+
+                    <div class="mb-3">
+                        <label for="Reseña" class="form-label">Reseña</label>
+                        <textarea class="form-control" id="Reseña" name="Reseña" rows="3" placeholder="Escribe una reseña del médico" required>@Model.Reseña</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Imagen" class="form-label">URL de la Imagen</label>
+                        <input type="text" class="form-control" id="Imagen" name="Imagen" value="@Model.Imagen" placeholder="https://example.com/imagen.jpg" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Matricula" class="form-label">Matrícula</label>
+                        <input type="number" class="form-control" id="Matricula" name="Matricula" value="@Model.Matricula" required />
+                    </div>
+
+                        <div class="mb-3">
+                            <label for="IdEspecialidad" class="form-label">Especialidad</label>
+                            <select class="form-select" id="IdEspecialidad" name="IdEspecialidad" required>
+                                <option value="">Seleccione una especialidad</option>
+                                @foreach (var especialidad in Model.Especialidad)
+                                {
+                                    <option value="@especialidad.Value">@especialidad.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="submit" class="btn btn-primary btn-lg">Crear Médico</button>
+                            <a href="@Url.Action("Index", "Medico")" class="btn btn-outline-secondary btn-lg">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

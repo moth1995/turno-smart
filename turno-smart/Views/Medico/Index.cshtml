@@ -1,0 +1,129 @@
+﻿﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Usuarios> SignInManager
+@inject UserManager<Usuarios> UserManager
+
+@model ListMedicoVM
+@{
+    ViewData["Title"] = "Medicos";
+}
+<div class="container py-5">
+    <div class="d-flex justify-content align-items-center gap-3">
+        @if (@User.IsInRole("Admin"))
+        {
+            <a type="button" class="btn btn-light btn-lg mt-4" asp-area="" asp-controller="Medico" asp-action="Create">
+                ➕ Crear Médico
+            </a>
+        }
+
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="display-4 mb-4">@ViewData["Title"]</h1>
+            <p class="lead mb-5">
+                Seleccioná el profesional con el que querés reservar tu turno online.
+            </p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <form method="get" class="input-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Buscar profesional..."
+                       asp-for="Filter" />
+                <button type="submit" class="btn btn-outline-secondary">🔍</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            @if (Model.Medicos.Any())
+            {
+                <div id="doctors-list" class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        @{
+                            var groupedBySpecialty = Model.Medicos
+                            .GroupBy(m => m.Especialidad)
+                            .OrderBy(g => g.Key);
+                        }
+
+                        @foreach (var group in groupedBySpecialty)
+                        {
+                            <h2 class="h4 mb-4">@group.Key</h2>
+                            <ul class="list-unstyled">
+                                @foreach (var medico in group)
+                                {
+                                    <li class="mb-3 d-flex justify-content-between align-items-center">
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <p class="text-decoration-none text-dark d-flex align-items-center">
+                                                <span class="me-2">•</span>
+                                                @medico.Nombre
+                                            </p>                                           
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-edit" data-id="@medico.Id">
+                                                Editar Médico
+                                            </button>
+
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Create", "Turno", new { medicoId = medico.Id })"
+                                               class="text-decoration-none text-dark d-flex align-items-center">
+                                                <span class="me-2">•</span>
+                                                @medico.Nombre
+                                            </a>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                            <hr class="my-4" />
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No se encontraron profesionales</p>
+            }
+        </div>
+        @await Html.PartialAsync("_Modals")
+       
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            var errorMessage = '@TempData["ErrorMessage"]';
+            console.log(successMessage);
+            console.log(errorMessage);
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            if (successMessage) {
+                toastr.success(successMessage);
+            }
+
+            if (errorMessage) {
+                toastr.error(errorMessage);
+            }
+        });
+    </script>
+       
+}

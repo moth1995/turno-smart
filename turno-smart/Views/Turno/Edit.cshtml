@@ -1,0 +1,83 @@
+﻿@model turno_smart.ViewModels.TurnoVM.EditTurnoVM
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <div class="modal-title h4" id="modal-edit-label">Modificá tu turno para  @Model.MedicoEspecialidad</div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+    <p class="text-muted mb-4">También puedes modificar por teléfono si lo prefieres.</p>
+    <form method="post" asp-action="Edit" id="edit-form">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="TurnoId" />
+        <input type="hidden" asp-for="MedicoEspecialidad" />
+
+        <div class="mb-3">
+            <label asp-for="MedicoNombre" class="form-label">Medico</label>
+            <input class="form-control w-auto d-inline-block" type="text" readonly asp-for="MedicoNombre" placeholder="@Model.MedicoNombre">
+        </div>
+        <div class="mb-3">
+                <label asp-for="SelectedDate" class="form-label">Seleccione una Fecha</label>
+                <input type="date" id="dateInput" class="form-control w-auto d-inline-block" asp-for="SelectedDate"
+                       min="@Model.AvailableDates.First().ToString("yyyy-MM-dd")"
+                       max="@Model.AvailableDates.Last().ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="SelectedDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="SelectedTime" class="form-label">Seleccione un Horario</label>
+            <select id="timeSelect" class="form-select w-auto d-inline-block" asp-for="SelectedTime">
+                <option value="">Seleccione un horario</option>
+            </select>
+            <span asp-validation-for="SelectedTime" class="text-danger"></span>
+        </div>
+
+
+        <div class="mb-3">
+            <label class="form-label">Motivo de Consulta</label>
+            <textarea class="form-control" asp-for="MotivoConsulta" rows="3"></textarea>
+            <span asp-validation-for="MotivoConsulta" class="text-danger"></span>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+    </form>
+</div>
+
+    <script>
+        document.getElementById('dateInput').addEventListener('change', function () {
+            const selectedDate = this.value;
+            const availableSlots = @Html.Raw(Json.Serialize(Model.AvailableSlots));
+            // Convertir las claves del objeto `availableSlots` para que solo tengan la fecha (YYYY-MM-DD)
+            const formattedAvailableSlots = {};
+            for (const [key, value] of Object.entries(availableSlots)) {
+                // Extraemos solo la fecha (YYYY-MM-DD) del valor completo (YYYY-MM-DDTHH:mm:ss)
+                const dateKey = key.substring(0, 10); // Extrae 'YYYY-MM-DD'
+                formattedAvailableSlots[dateKey] = value;
+            }
+
+            // Ahora `formattedAvailableSlots` tiene las claves con el formato correcto
+            const timeSelect = document.getElementById('timeSelect');
+            timeSelect.innerHTML = ''; // Limpiar opciones previas
+
+            if (formattedAvailableSlots[selectedDate]) {
+                formattedAvailableSlots[selectedDate].forEach(slot => {
+                    const option = document.createElement('option');
+                    option.value = slot;
+                    option.textContent = slot;
+                    timeSelect.appendChild(option);
+                });
+            } else {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No hay horarios disponibles';
+                timeSelect.appendChild(option);
+            }
+        });
+    </script>
+

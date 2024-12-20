@@ -1,0 +1,64 @@
+﻿@model turno_smart.ViewModels.HomeVM.ContactoViewModel
+
+@{
+    ViewData["Title"] = "Contacto";
+}
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Columna de Información de Contacto -->
+        <div class="col-md-6">
+            <h1 class="display-4 fw-light mb-4">
+                COMUNÍCATE CON NOSOTROS
+            </h1>
+
+            <!-- Dirección -->
+            <div class="mb-4">
+                <h2 class="h4 mb-3">DIRECCIÓN</h2>
+                <div class="d-flex align-items-center text-muted">
+                    <svg class="me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4.586 8-10a8 8 0 10-16 0c0 5.414 8 10 8 10z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11a3 3 0 110-6 3 3 0 010 6z" />
+                    </svg>
+                    <p class="mb-0">@Model.Direccion</p>
+                </div>
+            </div>
+
+            <!-- Correo Electrónico -->
+            <div class="mb-4">
+                <h2 class="h4 mb-3">CORREO ELECTRÓNICO</h2>
+                <div class="d-flex align-items-center">
+                    <svg class="me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H8m4-6h-4m4 12H8" />
+                    </svg>
+                    <a href="mailto:@Model.Correo" class="text-custom text-decoration-none">
+                        @Model.Correo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="mb-4">
+                <h2 class="h4 mb-3">TELÉFONO</h2>
+                <div class="d-flex align-items-center">
+                    <svg class="me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 10a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm9-6a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1V8zm0 10a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z" />
+                    </svg>
+                    <a href="tel:@Model.Telefono" class="text-custom text-decoration-none">
+                        @Model.Telefono
+                    </a>
+                </div>
+            </div>
+
+            <!-- Botón de Agendar Consulta -->
+            <partial name="_AgendarConsultarButton" />
+        </div>
+
+        <!-- Columna del Mapa -->
+        <div class="col-md-6">
+            <div class="bg-white rounded shadow h-100 d-flex align-items-center justify-content-center" style="min-height: 400px;">
+                <span class="text-muted">Mapa de ubicación</span>
+            </div>
+        </div>
+    </div>
+</div>

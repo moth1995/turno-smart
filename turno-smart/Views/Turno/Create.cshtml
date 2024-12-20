@@ -1,0 +1,109 @@
+﻿@model CreateTurnoVM
+
+@{
+    ViewData["Title"] = "Reservar Turno";
+}
+
+
+<div class="container pt-4">
+    <partial name="_BackToServicios" />
+</div>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="h5 mb-4">LOCALIZACIÓN</h2>
+                    <h3 class="h3 mb-4">Te esperamos</h3>
+                    <div class="mb-4">
+                        <h4 class="h6 mb-2">Horario de atención</h4>
+                        <p class="mb-0">De Lunes a Domingo, de 8:00h a 18:00h.</p>
+                    </div>
+                    <hr class="my-4">
+                    <div class="mb-3">
+                        <h4 class="h6 mb-2">Dirección</h4>
+                        <p class="mb-0">Calle Cualquiera 123, Cualquier Lugar, CP: 12345</p>
+                    </div>
+                    <div class="mb-3">
+                        <h4 class="h6 mb-2">Teléfono</h4>
+                        <p class="mb-0">91-1234-567</p>
+                    </div>
+                    <div>
+                        <h4 class="h6 mb-2">Email</h4>
+                        <a href="mailto:info@centro-medico-ejemplo.com.ar" class="text-custom text-decoration-none">info@centro-medico-ejemplo.com.ar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <h1 class="display-6 mb-2">Reserva tu turno para</h1>
+            <h2 class="h3 mb-4">@Model.MedicoNombre - @Model.MedicoEspecialidad</h2>
+            <p class="text-muted mb-4">También puedes reservar por teléfono si lo prefieres.</p>
+
+            <form method="post" asp-action="Create">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="MedicoEspecialidad" value="@Model.MedicoEspecialidad" />
+                <input type="hidden" asp-for="MedicoId" value="@Model.MedicoId"/>
+                <input type="hidden" asp-for="PacienteId" value="@Model.PacienteId" />
+                <input type="hidden" asp-for="MedicoNombre" value="@Model.MedicoNombre" />
+
+                <div class="mb-4">
+                    <label asp-for="SelectedDate" class="form-label">Seleccione una Fecha</label>
+                    <input type="date" id="dateInput" class="form-control w-auto d-inline-block" asp-for="SelectedDate"
+                           min="@Model.AvailableDates.First().ToString("yyyy-MM-dd")"
+                           max="@Model.AvailableDates.Last().ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="SelectedDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="SelectedTime" class="form-label">Seleccione un Horario</label>
+                    <select id="timeSelect" class="form-select w-auto d-inline-block" asp-for="SelectedTime">
+                        <option value="">Seleccione un horario</option>
+                    </select>
+                    <span asp-validation-for="SelectedTime" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="MotivoConsulta" class="form-label">Motivo de la consulta</label>
+                    <textarea asp-for="MotivoConsulta" class="form-control" rows="4" placeholder="Escriba el motivo de la consulta"></textarea>
+                    <span asp-validation-for="MotivoConsulta" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Reservar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+    document.getElementById('dateInput').addEventListener('change', function () {
+        const selectedDate = this.value;
+        const availableSlots = @Html.Raw(Json.Serialize(Model.AvailableSlots));
+        // Convertir las claves del objeto `availableSlots` para que solo tengan la fecha (YYYY-MM-DD)
+        const formattedAvailableSlots = {};
+        for (const [key, value] of Object.entries(availableSlots)) {
+            // Extraemos solo la fecha (YYYY-MM-DD) del valor completo (YYYY-MM-DDTHH:mm:ss)
+            const dateKey = key.substring(0, 10); // Extrae 'YYYY-MM-DD'
+            formattedAvailableSlots[dateKey] = value;
+        }
+
+        // Ahora `formattedAvailableSlots` tiene las claves con el formato correcto
+        const timeSelect = document.getElementById('timeSelect');
+        timeSelect.innerHTML = ''; // Limpiar opciones previas
+
+        if (formattedAvailableSlots[selectedDate]) {
+            formattedAvailableSlots[selectedDate].forEach(slot => {
+                const option = document.createElement('option');
+                option.value = slot;
+                option.textContent = slot;
+                timeSelect.appendChild(option);
+            });
+        } else {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'No hay horarios disponibles';
+            timeSelect.appendChild(option);
+        }
+    });
+    </script>
+}

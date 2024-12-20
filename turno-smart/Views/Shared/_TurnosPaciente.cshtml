@@ -1,0 +1,125 @@
+﻿@model ListTurnosVM
+@using System.Globalization
+
+<h1 class="display-4 text-center mb-2">Mis Turnos</h1>
+<p class="text-center text-muted mb-5">
+    Accedé a tus próximos turnos, modificalos, o cancelalos en el momento.
+</p>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form method="get" asp-action="Index" asp-controller="Turno">
+            <div class="mb-3">
+                <label for="filter" class="form-label">Filtrar por Fecha:</label>
+                <select class="form-select" id="filter" name="filter">
+                    <option value="all">Todos</option>
+                    <option value="last">Último Turno</option>
+                    <option value="first">Primer Turno</option>                    
+                </select>
+                <button type="submit" class="btn btn-primary mt-2">Aplicar</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <form method="get" asp-action="Index" asp-controller="Turno">
+            <div class="mb-3">
+                <label for="filter" class="form-label">Filtrar por Estado:</label>
+                <select class="form-select" id="filter" name="filter">
+                    <option value="all">Todos</option>
+                    <option value="confirmado">Confirmado</option>
+                    <option value="reservado">Reservado</option>
+                    <option value="cancelado">Cancelado</option>
+                </select>
+                <button type="submit" class="btn btn-primary mt-2">Aplicar</button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+<div class="row g-4">
+    @if (Model.Turnos.Any())
+    {
+        @foreach (var turno in Model.Turnos)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm bg-white">
+                    <div class="card-header bg-primary text-white py-3 position-relative">
+                        <h5 class="mb-0">
+                            Atención Médica
+                        </h5>
+                        <form method="get" asp-action="Delete" asp-controller="Turno" asp-route-id="@turno.TurnoId" id="delete-btn">
+
+                            <button class="btn btn-link position-absolute top-0 end-0 p-3" data-bs-toggle="modal" data-bs-target="#modal-delete">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x "><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                            </button>
+                        </form>
+                    </div>
+                    @{
+                        var badgeBG = "";
+                        if (turno.Estado.ToLower() == "confirmado")
+                        {
+                            badgeBG = "bg-success";
+                        }
+                        else if (turno.Estado.ToLower() == "reservado")
+                        {
+                            badgeBG = "bg-warning";
+                        }
+                        else if (turno.Estado.ToLower() == "cancelado")
+                        {
+                            badgeBG = "bg-danger";
+                        }
+                        var ti = CultureInfo.CurrentCulture.TextInfo;
+                    }
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <span class="badge @badgeBG">
+                                @ti.ToTitleCase(turno.Estado)
+                            </span>
+                        </div>
+
+                        <p class="mb-2">
+                            <span class="fw-medium">Especialidad: </span>
+                            <span class="text-primary">@turno.MedicoEspecialidad</span>
+                        </p>
+                        <p class="mb-2">
+                            <span class="fw-medium">Doctor/a: </span>
+                            <span class="text-primary">@turno.MedicoNombre</span>
+                        </p>
+
+                        <p class="mb-2">
+                            <span class="fw-medium">Fecha: </span>
+                            @turno.Fecha.ToString(@"dd/MM/yyyy")
+                        </p>
+
+                        <p class="mb-2">
+                            <span class="fw-medium">Hora: </span>
+                            @turno.Hora.ToString(@"hh\:mm") hs
+                        </p>
+
+                        <p class="mb-2">
+                            <span class="fw-medium">Dirección: </span>
+                            Calle Falsa 1234
+                        </p>
+
+                        <p class="mb-2">
+                            <span class="fw-medium">Motivo de la consulta: </span>
+                            @turno.MotivoConsulta
+                        </p>
+                        <form method="get" asp-action="Edit" asp-controller="Turno" asp-route-id="@turno.TurnoId" id="edit-btn">
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                Editar Turno
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12 text-center text-muted">
+            No hay turnos programados
+        </div>
+    }
+
+</div>

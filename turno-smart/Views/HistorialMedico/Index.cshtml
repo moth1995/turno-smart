@@ -1,0 +1,108 @@
+﻿@model ListHistorialMedicoVM
+@{
+    ViewData["Title"] = "Historial Medico";
+}
+<div class="container-fluid py-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="h3 mb-2">Historia Clínica</h1>
+            <p class="text-muted">Paciente: @Model.Paciente.FullName()</p>
+        </div>
+        <div class="col-auto">
+            <form method="get" asp-action="Create" id="create-btn" asp-route-pacienteId="@Model.Paciente.Id" asp-route-medicoId="@Model.Medico.Id">
+                <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modal-create">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus me-2"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+                    Nueva Entrada
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-filter me-2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                        Filtros
+                    </h5>
+                    <form method="get">
+                        <input type="hidden" name="pacienteId" value="@Model.Paciente.Id" />
+                        <input type="hidden" name="medicoId" value="@Model.Medico.Id" />
+                        <div class="mb-3">
+                            <label class="form-label">Medico</label>
+                            <select asp-for="SelectedMedicoId" class="form-control">
+                                <option value="">Seleccione un médico</option>
+                                @foreach (var medico in Model.Medicos)
+                                {
+                                    <option value="@medico.Id">@medico.FullName()</option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">
+                                Aplicar Filtros
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        @if (Model.HistorialesMedicos.Count > 0)
+                        {
+                            <div class="list-group">
+                                @foreach (var historialMedico in Model.HistorialesMedicos)
+                                {
+                                    <div class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div>
+                                                <h6 class="mb-0">@historialMedico.Fecha.ToString("dd/MM/yyyy")</h6>
+                                                <small class="text-muted">
+                                                    @historialMedico.Medico.FullName() - @historialMedico.Medico.Especialidad.Nombre
+                                                </small>
+                                            </div>
+                                            <button class="btn btn-link text-primary" onclick="toggleDetails(@historialMedico.Id)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text "><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+                                            </button>
+                                        </div>
+                                        <div id="details-@historialMedico.Id" class="mt-3 collapse">
+                                            <p class="mb-2"><strong>Síntomas:</strong> @historialMedico.Sintomas</p>
+                                            <p class="mb-2"><strong>Diagnóstico:</strong> @historialMedico.Diagnostico</p>
+                                            <p class="mb-2"><strong>Tratamiento:</strong> @historialMedico.Tratamiento</p>
+                                            <p class="mb-2"><strong>Prescripciones:</strong> @historialMedico.Prescripciones</p>
+                                            <p class="mb-2"><strong>Notas:</strong> @historialMedico.NotasAdicionales</p>
+                                            <p class="mb-0"><strong>Seguimiento:</strong> @historialMedico.Seguimiento</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                        }
+                        else{
+                            <div class="text-center py-4 text-muted">
+                                No se encontraron registros
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleDetails(recordId) {
+        const element = document.getElementById(`details-${recordId}`);
+        if (element.classList.contains("show")) {
+            element.classList.remove("show");
+        } else {
+            element.classList.add("show");
+        }
+    }
+</script>
