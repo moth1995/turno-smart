@@ -14,6 +14,9 @@ services:
      - SA_PASSWORD=turn0sm4rt!
     networks:
      - turno-smart-network
+    volumes:
+      - turno-smart-db-data:/var/opt/mssql
+
   turno-smart:
     container_name: turno-smart
     image: ${DOCKER_REGISTRY-}turnosmart
@@ -21,8 +24,8 @@ services:
       context: .
       dockerfile: turno-smart/Dockerfile
     ports:
-      - 8080:8080
-      - 8081:8081
+      - 80:8080
+      - 443:8081
     depends_on:
       - turno-smart-db
     environment:
@@ -37,3 +40,5 @@ services:
     networks:
      - turno-smart-network
 
+volumes:
+  turno-smart-db-data:
