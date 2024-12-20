@@ -244,7 +244,7 @@ namespace turno_smart.Controllers
             }
         }
         [HttpPost]
-        public IActionResult TurnoConfirmed(int id)
+        public IActionResult TurnoConfirmed(int id, DateTime date)
         {
             try
             {
@@ -254,7 +254,7 @@ namespace turno_smart.Controllers
                 turno.Estado = "CONFIRMADO";
                 _turnoService.Update(turno);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { date = date });
             }
             catch (Exception ex)
             {

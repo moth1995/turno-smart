@@ -4,6 +4,7 @@ using turno_smart.Models;
 using turno_smart.ViewModels.AccountVM;
 using turno_smart.Interfaces;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace turno_smart.Controllers
 {
@@ -37,8 +38,9 @@ namespace turno_smart.Controllers
                 {
                     return Json(new { redirectUrl = Url.Action("Index", "Home") });
                 }
+                ModelState.AddModelError("", "Email or password is incorrect.");
             }
-            ModelState.AddModelError("", "Email or password is incorrect.");
+            
             return PartialView("_LoginModal", model);
         }
 
@@ -56,7 +58,12 @@ namespace turno_smart.Controllers
                 int dni;
                 if (!int.TryParse(model.DNI, out dni))
                 {
-                    ModelState.AddModelError("", "DNI ingresado invalido");
+                    ModelState.AddModelError("DNI", "DNI ingresado invalido");
+                    return PartialView("_RegistrationModal", model);
+                }
+                if (!model.AceptoTerminos)
+                {
+                    ModelState.AddModelError("AceptoTerminos", "Debes aceptar los terminos para registrarte.");
                     return PartialView("_RegistrationModal", model);
                 }
                 Usuarios users = new Usuarios

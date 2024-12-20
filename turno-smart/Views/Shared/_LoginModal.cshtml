@@ -7,6 +7,7 @@
 <div class="modal-body">
     <!-- Formulario de login -->
     <form id="loginForm" method="post" asp-controller="Account" asp-action="Login">
+        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="mb-3">
             <input asp-for="Email" class="form-control" placeholder="Email" value="" />
             <span asp-validation-for="Email" class="text-danger"></span>

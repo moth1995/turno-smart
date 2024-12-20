@@ -92,7 +92,7 @@ namespace turno_smart.Controllers
                 var result = await _userManager.CreateAsync(user, "NuevoPacient3!");
                 if (result.Succeeded)
                 {
-
+                    await _userManager.AddToRoleAsync(user, "Paciente");
                     var pacienteModel = new Paciente()
                     {
                         Nombre = obj.Nombre,
