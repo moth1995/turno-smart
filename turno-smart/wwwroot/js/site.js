@@ -146,6 +146,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <input type="text" class="form-control" id="imagen" name="Imagen" value="${data.imagen}" required />
                             </div>
                             <div class="mb-3">
+                                <label for="matricula" class="form-label">Matricula</label>
+                                <input type="matricula" class="form-control" id="matricula" name="Matricula" value="${data.matricula}" />
+                            </div>
+                            <div class="mb-3">
                                 <label for="especialidad" class="form-label">Especialidad</label>
                                 <select class="form-control" id="especialidad" name="IdEspecialidad">
                                     ${data.especialidad.map(especialidad => `
