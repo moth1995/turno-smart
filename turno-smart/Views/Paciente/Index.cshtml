@@ -76,7 +76,7 @@
                                                         Info
                                                     </button>
                                                 </form>
-                                                @if(User.IsInRole("Admin"))
+                                                @if(User.IsInRole("Admin") || User.IsInRole("Recepcionista"))
                                                 {
                                                     <!-- Botón para Editar -->
                                                     <form method="get" asp-asp-controller="Paciente" asp-action="Edit" asp-route-id="@paciente.Id" id="edit-btn">
@@ -84,6 +84,10 @@
                                                             Editar
                                                         </button>
                                                     </form>
+                                                }
+
+                                                @if(User.IsInRole("Admin"))
+                                                {
                                                     @if (paciente.Estado == 0)
                                                     {   
                                                         <form asp-controller="Paciente" asp-action="Activate" method="post" asp-route-id="@paciente.Id" class="d-inline">
