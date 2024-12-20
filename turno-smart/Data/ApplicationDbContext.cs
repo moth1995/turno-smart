@@ -111,11 +111,11 @@ namespace turno_smart.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Relación Estudio -> HistorialMedico (1:N)
-            modelBuilder.Entity<HistorialMedico>()
-                .HasOne(h => h.Estudio)
-                .WithMany(e => e.HistorialMedico)
-                .HasForeignKey(h => h.IdEstudio)
-                .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<HistorialMedico>()
+            //    .HasOne(h => h.Estudio)
+            //    .WithMany(e => e.HistorialMedico)
+            //    .HasForeignKey(h => h.IdEstudio)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
         }
 

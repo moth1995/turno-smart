@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace turno_smart.ViewModels.HistorialMedicoVM.cs
+namespace turno_smart.ViewModels.HistorialMedicoVM
 {
     public class EditHistorialMedicoVM
     {

@@ -37,8 +37,8 @@ namespace turno_smart.Services
                     x.Paciente.DNI.ToString().Contains(lowerFilter, StringComparison.CurrentCultureIgnoreCase) ||
                     x.Medico.Nombre.Contains(lowerFilter, StringComparison.CurrentCultureIgnoreCase) ||
                     x.Medico.Apellido.Contains(lowerFilter, StringComparison.CurrentCultureIgnoreCase) ||
-                    x.Medico.Especialidad.Nombre.Contains(lowerFilter, StringComparison.CurrentCultureIgnoreCase) ||
-                    x.Estudio.Descripcion.Contains(lowerFilter, StringComparison.CurrentCultureIgnoreCase)
+                    x.Medico.Especialidad.Nombre.Contains(lowerFilter, StringComparison.CurrentCultureIgnoreCase) 
+                    //|| x.Estudio.Descripcion.Contains(lowerFilter, StringComparison.CurrentCultureIgnoreCase)
                 );
             }
 

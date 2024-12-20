@@ -90,6 +90,9 @@ handleFormSubmission('#delete-form', '#modal-delete-content'); //post
 
 handleFormSubmission('#details-btn', '#modal-details-content'); //get
 
+handleFormSubmission('#create-btn', '#modal-create-content'); //get
+handleFormSubmission('#create-form', '#modal-create-content'); //post
+
 
 document.addEventListener('DOMContentLoaded', function () {
     var editMedicoModal = document.getElementById('modal-edit');
