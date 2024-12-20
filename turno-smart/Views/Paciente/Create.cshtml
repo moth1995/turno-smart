@@ -61,7 +61,15 @@
                             <input asp-for="Provincia" class="form-control" />
                             <span asp-validation-for="Provincia" class="text-danger"></span>
                         </div>
-
+                       @*  <div class="mb-3">
+                            <label asp-for="Cobertura" class="form-label"></label>
+                            <select asp-for="Cobertura" class="form-control">
+                                <option value="">Seleccione una opción</option>
+                                <option value="1">Sí</option>
+                                <option value="0">No</option>
+                            </select>
+                            <span asp-validation-for="Cobertura" class="text-danger"></span>
+                        </div> *@
                         <div class="mb-3">
                             <label asp-for="Email" class="form-label"></label>
                             <input asp-for="Email" type="email" class="form-control" />
