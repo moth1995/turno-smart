@@ -26,7 +26,7 @@ namespace turno_smart
 
                 var builder = WebApplication.CreateBuilder(args);
 
-                // Configurar Serilog como el logger de la aplicación
+                // Configurar Serilog como el logger de la aplicaciï¿½n
                 builder.Host.UseSerilog();
 
                 // Add services to the container.
@@ -76,6 +76,7 @@ namespace turno_smart
                 builder.Services.AddScoped<IEstudioService, EstudioService>();
                 builder.Services.AddScoped<IMedicoService, MedicoService>();
                 builder.Services.AddScoped<ITurnoService, TurnoService>();
+                builder.Services.AddScoped<IRecepcionistaService, RecepcionistaService>(); 
                 var app = builder.Build();
 
                 // Configure the HTTP request pipeline.
@@ -106,7 +107,7 @@ namespace turno_smart
                 {
                     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                    string[] roles = new string[] { "Admin", "Medico", "Paciente" };
+                    string[] roles = new string[] { "Admin", "Medico", "Paciente", "Recepcionista" };
                     foreach (var role in roles)
                     {
                         if (!await roleManager.RoleExistsAsync(role))
