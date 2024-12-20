@@ -173,14 +173,14 @@ namespace turno_smart.Controllers
                         Text = e.Nombre
                     }).ToList(),
                 };
-                return Json(medicoModel);                
+                return Json(medicoModel);
             }
             catch (Exception ex)
             {
                 return RedirectToAction(nameof(Index));
             }
         }
-        
+
         [HttpPut]
         [ValidateAntiForgeryToken]
         public IActionResult Edit([FromBody] EditMedicoVM obj)
