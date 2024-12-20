@@ -37,8 +37,8 @@ namespace turno_smart.Controllers
                 {
                     return Json(new { redirectUrl = Url.Action("Index", "Home") });
                 }
-                ModelState.AddModelError("", "Email or password is incorrect.");
             }
+            ModelState.AddModelError("", "Email or password is incorrect.");
             return PartialView("_LoginModal", model);
         }
 
