@@ -57,7 +57,11 @@
                                     {
                                         <div class="ms-auto">
                                             <!-- Botón para Editar -->
-                                            <button class="btn btn-sm btn-primary me-1" onclick="editarValor(@item.Id,'@item.Nombre')";>Editar</button>
+                                            <form method="get" asp-action="Edit" asp-route-id="@item.Id" id="edit-btn">
+                                                <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                                    Editar Turno
+                                                </button>
+                                            </form>
 
                                             <!-- Botón para Detalles -->
                                             <a asp-controller="Especialidad"

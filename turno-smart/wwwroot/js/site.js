@@ -78,10 +78,14 @@ function handleFormSubmission(formSelector, resultContainerSelector) {
 
 handleFormSubmission('#registrationForm', '#modal-registration-content'); //post
 handleFormSubmission('#register-btn', '#modal-registration-content'); //get
+
 handleFormSubmission('#login-btn', '#modal-login-content'); //post
 handleFormSubmission('#loginForm', '#modal-login-content'); //get
-handleFormSubmission('#TurnoEditForm', '#modal-edit-content'); //post
+
+//handleFormSubmission('#TurnoEditForm', '#modal-edit-content'); //post
+handleFormSubmission('#edit-form', '#modal-edit-content'); //post
 handleFormSubmission('#edit-btn', '#modal-edit-content'); //get
+
 handleFormSubmission('#turno-delete-form', '#modal-delete-content'); //post
 handleFormSubmission('#delete-btn', '#modal-delete-content'); //get
 

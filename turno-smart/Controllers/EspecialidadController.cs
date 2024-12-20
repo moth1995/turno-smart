@@ -123,10 +123,10 @@ namespace turno_smart.Controllers
 
                 _especialidadService.Update(especialidad);
                 TempData["SuccessMessage"] = "Información de la especialidad actualizada correctamente.";
-                return RedirectToAction(nameof(Index));
+                return Json(new { redirectUrl = Url.Action("Index") });
             } catch (Exception ex) {
                 TempData["ErrorMessage"] = "Error al intentar actualizar la información de la especialidad." + ex.Message;
-                return RedirectToAction(nameof(Index));
+                return Json(new { redirectUrl = Url.Action("Index") });
             }
         }
 
