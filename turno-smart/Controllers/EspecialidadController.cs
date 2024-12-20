@@ -188,14 +188,21 @@ namespace turno_smart.Controllers
                 var especialidad = _especialidadService.GetById(id);
                 if (especialidad == null) return NotFound();
 
-                _especialidadService.Delete(id);
-                TempData["SuccessMessage"] = "Especialidad eliminada correctamente.";
-                return RedirectToAction(nameof(Index));
+                if (especialidad.Medicos.Any())
+                {
+                    TempData["ErrorMessage"] = "Antes de eliminar esta especialidad desvincule todos los medicos";
+                }
+                else
+                {
+                    _especialidadService.Delete(id);
+                    TempData["SuccessMessage"] = "Especialidad eliminada correctamente.";
+                }
+                return Json(new { redirectUrl = Url.Action("Index") });
             }
             catch (Exception ex)
             {
                 // Mensaje de error para el usuario
-                TempData["ErrorMessage"] = "Antes de eliminar esta especialidad desvincule todos los medicos";
+                TempData["ErrorMessage"] = "Ocurrio un error al intentar eliminar especialidad";
 
                 // Registro de detalles técnicos para desarrolladores
                 var innerExceptionMessage = ex.InnerException?.Message;
@@ -206,13 +213,8 @@ namespace turno_smart.Controllers
                 }
                 Log.Error(detailedErrorMessage);
 
-                return RedirectToAction(nameof(Index));
+                return Json(new { redirectUrl = Url.Action("Index") });
             }
-
-            //} catch (Exception ex) {
-            //    TempData["ErrorMessage"] = "Error al intentar eliminar la especialidad" + ex.Message;
-            //    return RedirectToAction(nameof(Index));
-            //}
         } 
 
     }

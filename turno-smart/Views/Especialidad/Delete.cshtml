@@ -1,30 +1,20 @@
 ﻿@model turno_smart.ViewModels.EspecialidadVM.DeleteEspecialidadVM
 
-<div class="container py-5">
-    <div class="row mb-4">
-        <div class="col-lg-8">
-            <h2>Eliminar Especialidad</h2>
+@{
+    Layout = null;
+}
 
-            <h3>¿Estás seguro que deseas eliminar esta especialidad?</h3>
-            <div>
-                <hr />
-                <dl class="row">
-                    <dt class="col-sm-2">
-                        Especialidad:
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Model.Nombre
-                    </dd>
-                </dl>
-
-                <a href="@Url.Action("Index", "Especialidad")"></a>
-
-                <form asp-action="Delete">
-                    <input type="hidden" asp-for="Id" />
-                    <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-                    <a asp-action="Index">Volver a la lista</a>
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="modal-header">
+    <h5 class="modal-title" id="modal-delete-label">Cancelar Turno</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <p>¿Estás seguro que deseas eliminar la especialidad @Model.Nombre?</p>
+</div>
+<div class="modal-footer">
+    <form method="post" asp-action="Delete" id="delete-form">
+        <input type="hidden" asp-for=Id />
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+    </form>
 </div>
