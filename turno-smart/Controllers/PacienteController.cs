@@ -9,7 +9,7 @@ using turno_smart.ViewModels.PacienteVM;
 
 namespace turno_smart.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Recepcionista")]
     public class PacienteController(IPacienteService pacienteService, UserManager<Usuarios> userManager) : Controller {
 
         private readonly IPacienteService _pacienteService = pacienteService;
@@ -165,7 +165,7 @@ namespace turno_smart.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(EditPacienteVM obj)
+        public IActionResult EditConfirmed(EditPacienteVM obj)
         {
             if(!ModelState.IsValid)
             {
@@ -192,11 +192,11 @@ namespace turno_smart.Controllers
                 _pacienteService.Update(paciente);
 
                 TempData["SuccessMessage"] = "Paciente actualizado correctamente.";
-                return RedirectToAction("Index");
+                return Json(new { redirectUrl = Url.Action("Index") });
 
             } catch (Exception ex) {
                 TempData["ErrorMessage"] = "Error al intentar actualizar paciente." + ex.InnerException?.Message ?? ex.Message;
-                return RedirectToAction("Index");
+                return Json(new { redirectUrl = Url.Action("Index") });
             }
         }
 

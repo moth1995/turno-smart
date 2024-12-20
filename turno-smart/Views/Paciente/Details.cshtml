@@ -1,84 +1,68 @@
 @model PacienteVM
+@{
+    Layout = null;
+}
 
-<div class="container py-5 d-flex justify-content-center">
-    <div class="w-75">
-        <h1 class="display-4 text-center mb-2">Detalles del Paciente</h1>
-        <p class="text-center text-muted mb-5">Información completa del paciente</p>
+<div class="modal-header">
+    <div class="modal-title h4" id="modal-details-label">Detalles del Paciente</del></div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+        <dl class="row">
+            <dt class="col-sm-4">Nombre</dt>
+            <dd class="col-sm-8">@Model.Nombre</dd>
 
-        <div class="card border-0 shadow-sm">
-            <div class="card-body">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <h5 class="fw-bold">Nombre Completo</h5>
-                        <p>@Model.NombreCompleto</p>
-                    </div>
-                    <div class="col-md-6">
-                        <h5 class="fw-bold">DNI</h5>
-                        <p>@Model.Dni</p>
-                    </div>
-                </div>
+            <dt class="col-sm-4">Apellido</dt>
+            <dd class="col-sm-8">@Model.Apellido</dd>
 
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <h5 class="fw-bold">Fecha de Nacimiento</h5>
-                        <p>@Model.FechaNacimiento.ToString("dd/MM/yyyy")</p>
-                    </div>
-                    <div class="col-md-6">
-                        <h5 class="fw-bold">Teléfono</h5>
-                        <p>@Model.Telefono</p>
-                    </div>
-                </div>
+            <dt class="col-sm-4">DNI</dt>
+            <dd class="col-sm-8">@Model.Dni</dd>
 
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <h5 class="fw-bold">Domicilio</h5>
-                        <p>@Model.Domicilio, @Model.Ciudad, @Model.Provincia</p>
-                    </div>
-                    <div class="col-md-6">
-                        <h5 class="fw-bold">Email</h5>
-                        <p>@Model.Email</p>
-                    </div>
-                </div>
+            <dt class="col-sm-4">Teléfono</dt>
+            <dd class="col-sm-8">@Model.Telefono</dd>
 
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <h5 class="fw-bold">Cobertura</h5>
-                        <p>
-                            @if (Model.Cobertura == 0) {
-                                <span class="badge bg-danger">No</span>
-                            } else {
-                                <span class="badge bg-success">Sí</span>
-                            }
-                        </p>
-                    </div>
-                    <div class="col-md-6">
-                        <h5 class="fw-bold">Estado</h5>
-                        <p>
-                            @if (Model.Estado == 0) {
-                                <span class="badge bg-danger">Inactivo</span>
-                            } else {
-                                <span class="badge bg-success">Activo</span>
-                            }
-                        </p>
-                    </div>
-                </div>
+            <dt class="col-sm-4">Fecha de Nacimiento</dt>
+            <dd class="col-sm-8">@Model.FechaNacimiento.ToString("dd/MM/yyyy")</dd>
 
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <h5 class="fw-bold">Fecha de Alta</h5>
-                        <p>@Model.FechaAlta.ToString("dd/MM/yyyy")</p>
-                    </div>
-                    <div class="col-md-6">
-                        <h5 class="fw-bold">Fecha de Baja</h5>
-                        <p>@(Model.FechaBaja.HasValue ? Model.FechaBaja.Value.ToString("dd/MM/yyyy") : "-" )</p>
-                    </div>
-                </div>
+            <dt class="col-sm-4">Domicilio</dt>
+            <dd class="col-sm-8">@Model.Domicilio</dd>
 
-                <div class="d-flex justify-content-end gap-2">
-                    <a asp-controller="Paciente" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
-                    <a asp-controller="Paciente" asp-action="Index" class="btn btn-secondary">Volver</a>
-                </div>
-            </div>
+            <dt class="col-sm-4">Ciudad</dt>
+            <dd class="col-sm-8">@Model.Ciudad</dd>
+
+            <dt class="col-sm-4">Provincia</dt>
+            <dd class="col-sm-8">@Model.Provincia</dd>
+
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8">@Model.Email</dd>
+
+            <dt class="col-sm-4">Cobertura</dt>
+            <dd class="col-sm-8">
+                @if (Model.Cobertura == 0) {
+                    <span class="badge bg-danger">No</span>
+                } else {
+                    <span class="badge bg-success">Sí</span>
+                }
+            </dd>
+
+            <dt class="col-sm-4">Estado</dt>
+            <dd class="col-sm-8">
+                @if (Model.Estado == 0) {
+                    <span class="badge bg-danger">Inactivo</span>
+                } else {
+                    <span class="badge bg-success">Activo</span>
+                }
+            </dd>
+
+            <dt class="col-sm-4">Fecha de Alta</dt>
+            <dd class="col-sm-8">@Model.FechaAlta.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-4">Fecha de Baja</dt>
+            <dd class="col-sm-8">@Model.FechaBaja?.ToString("dd/MM/yyyy")</dd>
+
+
+        </dl>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
-    </div>
 </div>

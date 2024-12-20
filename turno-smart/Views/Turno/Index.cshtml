@@ -10,7 +10,7 @@
     {
         @await Html.PartialAsync("_TurnosPaciente", Model)
     }
-    else if (@User.IsInRole("Medico") || @User.IsInRole("Admin"))
+    else if (@User.IsInRole("Medico") || @User.IsInRole("Admin") || @User.IsInRole("Recepcionista"))
     {
         @await Html.PartialAsync("_AgendaDiaria", Model)
     }

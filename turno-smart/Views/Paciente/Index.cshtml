@@ -71,29 +71,37 @@
                                         }
                                         <td class="text-end pe-4 align-middle">
                                             <div class="btn-group">
-                                                <a asp-controller="Paciente"
-                                                    asp-action="Details"
-                                                    asp-route-id="@paciente.Id"
-                                                    class="btn btn-sm btn-secondary me-1">
-                                                    Info
-                                                </a>
-                                                <a asp-controller="Paciente"
-                                                    asp-action="Edit"
-                                                    asp-route-id="@paciente.Id"
-                                                    class="btn btn-sm btn-primary me-1">
-                                                    Editar
-                                                </a>
-                                                @if (paciente.Estado == 0)
-                                                {   
-                                                    <form asp-controller="Paciente" asp-action="Activate" method="post" asp-route-id="@paciente.Id" class="d-inline">
-                                                        <button type="submit" class="btn btn-success btn-sm ms-2">
-                                                            Activar
+                                                <form method="get" asp-asp-controller="Paciente" asp-action="Details" asp-route-id="@paciente.Id" id="edit-btn">
+                                                    <button type="submit" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                                        Info
+                                                    </button>
+                                                </form>
+                                                @if(User.IsInRole("Admin"))
+                                                {
+                                                    <!-- Botón para Editar -->
+                                                    <form method="get" asp-asp-controller="Paciente" asp-action="Edit" asp-route-id="@paciente.Id" id="edit-btn">
+                                                        <button type="submit" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                                            Editar
                                                         </button>
                                                     </form>
-                                                } else {
-                                                    <form asp-controller="Paciente" asp-action="Disable" method="post" asp-route-id="@paciente.Id" class="d-inline">
-                                                        <button type="submit" class="btn btn-danger btn-sm ms-2">
-                                                            Dar de baja
+                                                    @if (paciente.Estado == 0)
+                                                    {   
+                                                        <form asp-controller="Paciente" asp-action="Activate" method="post" asp-route-id="@paciente.Id" class="d-inline">
+                                                            <button type="submit" class="btn btn-success btn-sm ms-2">
+                                                                Activar
+                                                            </button>
+                                                        </form>
+                                                    } else {
+                                                        <form asp-controller="Paciente" asp-action="Disable" method="post" asp-route-id="@paciente.Id" class="d-inline">
+                                                            <button type="submit" class="btn btn-danger btn-sm ms-2">
+                                                                Dar de baja
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                    <!-- Botón para Eliminar -->
+                                                    <form method="get" asp-action="Delete" asp-route-id="@paciente.Id" id="delete-btn">
+                                                        <button type="submit" class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-delete">
+                                                            Eliminar
                                                         </button>
                                                     </form>
                                                 }
@@ -121,32 +129,28 @@
 
 </div>
 
-<!-- Modal de Edit-->
-<div id="modal-edit" class="modal fade" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div id='modal-edit-content'></div>
-        </div>
-    </div>
-</div>
-<!-- Modal de Create-->
-<div id="modal-create" class="modal fade" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div id='modal-create-content'></div>
-        </div>
-    </div>
-</div>
-<!-- Modal de Delete -->
-<div id="modal-delete" class="modal fade" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="modal-delete-content">
-        </div>
-    </div>
-</div>
-
 @section Scripts {
     <script>
+
+        function editarValor(id, valor){
+            
+            var idaguardar = document.getElementById("elementId");
+            var input = document.getElementById("elementName");
+            input.value = valor;
+            idaguardar.value = id;
+
+            var editModal = document.getElementById("editModal");
+            var modal = bootstrap.Modal.getOrCreateInstance(editModal);
+            modal.show();
+            
+        }
+        
+        function cerrarModal(){
+            var editModal = document.getElementById("editModal");
+            var modal = bootstrap.Modal.getOrCreateInstance(editModal);
+            modal.hide();
+        }
+
         $(document).ready(function () {
             var successMessage = '@TempData["SuccessMessage"]';
             var errorMessage = '@TempData["ErrorMessage"]';

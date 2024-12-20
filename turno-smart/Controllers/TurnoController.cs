@@ -18,7 +18,7 @@ namespace turno_smart.Controllers
         private readonly UserManager<Usuarios> _userManager = userManager;
 
         [HttpGet]
-        [Authorize(Roles = "Admin,Paciente,Medico")]
+        [Authorize(Roles = "Admin, Paciente, Medico, Recepcionista")]
         public async Task<IActionResult> Index(string? filter, DateTime? date)
         {
 
@@ -47,6 +47,11 @@ namespace turno_smart.Controllers
                 turnos = turnos.Where(t => t.FechaTurno.Date == currentDate.Date).ToList();
             }
             else if (await _userManager.IsInRoleAsync(currentUser, "Admin"))
+            {
+                turnos = await _turnoService.GetAll(filter, null, null);
+                turnos = turnos.Where(t => t.FechaTurno.Date == currentDate.Date).ToList();
+            }
+            else if (await _userManager.IsInRoleAsync(currentUser, "Recepcionista"))
             {
                 turnos = await _turnoService.GetAll(filter, null, null);
                 turnos = turnos.Where(t => t.FechaTurno.Date == currentDate.Date).ToList();
@@ -87,7 +92,7 @@ namespace turno_smart.Controllers
             return View(listTurnos);
         }
         [HttpGet]
-        [Authorize(Roles = "Admin,Paciente")]
+        [Authorize(Roles = "Admin, Paciente, Recepcionista")]
         public async Task<IActionResult> Create(int? medicoId)
         {
             var currentUser = await _userManager.GetUserAsync(User);
@@ -122,7 +127,7 @@ namespace turno_smart.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Paciente")]
+        [Authorize(Roles = "Admin,Paciente, Recepcionista")]
         public IActionResult Create(CreateTurnoVM vm)
         {
             if(!ModelState.IsValid)
