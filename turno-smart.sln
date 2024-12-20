@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "turno-smart", "turno-smart\turno-smart.csproj", "{F01AE125-FD0A-4EB3-A43D-7609F65A01EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "turno-smart", "turno-smart\turno-smart.csproj", "{F01AE125-FD0A-4EB3-A43D-7609F65A01EB}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E4FB27C4-B30A-41EE-A550-707634D7207D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F01AE125-FD0A-4EB3-A43D-7609F65A01EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F01AE125-FD0A-4EB3-A43D-7609F65A01EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F01AE125-FD0A-4EB3-A43D-7609F65A01EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4FB27C4-B30A-41EE-A550-707634D7207D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4FB27C4-B30A-41EE-A550-707634D7207D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4FB27C4-B30A-41EE-A550-707634D7207D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4FB27C4-B30A-41EE-A550-707634D7207D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

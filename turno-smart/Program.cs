@@ -30,7 +30,21 @@ namespace turno_smart
                 builder.Host.UseSerilog();
 
                 // Add services to the container.
-                var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                string connectionString;
+
+                var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+                var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+                var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+                if (!string.IsNullOrEmpty(dbHost) && !string.IsNullOrEmpty(dbName) && !string.IsNullOrEmpty(dbPassword))
+                {
+                    connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User ID=sa;Password={dbPassword}";
+                }
+                else
+                {
+                    connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                }
+                
                 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseLazyLoadingProxies().UseSqlServer(connectionString));
                 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
