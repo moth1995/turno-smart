@@ -145,6 +145,11 @@ namespace turno_smart.Controllers
             try
             {
 
+                if(string.IsNullOrEmpty(password)) {
+                    TempData["ErrorMessage"] = "Por favor, agregue una contraseña";
+                    return RedirectToAction("Details");
+                }
+
                 var user = await _userManager.GetUserAsync(User);
                 if(user == null) {
                     return NotFound();
