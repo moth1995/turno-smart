@@ -111,7 +111,7 @@ namespace turno_smart.Controllers
 
                     _pacienteService.Create(pacienteModel);
 
-                    return RedirectToAction("Index");
+                    return Json(new { redirectUrl = Url.Action("Index") });
                 }
                 foreach (var error in result.Errors)
                 {

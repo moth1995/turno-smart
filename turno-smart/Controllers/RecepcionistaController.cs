@@ -108,17 +108,17 @@ namespace turno_smart.Controllers
 
                     _recepcionistaService.Create(recepcionista);
                     TempData["SuccessMessage"] = "Recepcionista creado correctamente.";
-                    return RedirectToAction(nameof(Index));
+                    return Json(new { redirectUrl = Url.Action("Index") });
                 }
                 catch (Exception ex)
                 {
                     TempData["ErrorMessage"] = "Error al intentar crear recepcionista." + ex.Message;
-                    return RedirectToAction(nameof(Index));
+                    return Json(new { redirectUrl = Url.Action("Index") });
                 }
             }
 
             TempData["ErrorMessage"] = "Error al intentar crear recepcionista.";
-            return RedirectToAction(nameof(Index));
+            return Json(new { redirectUrl = Url.Action("Index") });
         }
 
         [HttpGet]
