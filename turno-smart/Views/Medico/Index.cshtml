@@ -121,6 +121,10 @@
                         <label for="imagen" class="form-label">Imagen</label>
                         <input type="text" class="form-control" id="imagen" name="Imagen" required />
                     </div>
+                            <div class="mb-3">
+                                <label for="matricula" class="form-label">Matrícula</label>
+                                <input type="text" class="form-control" id="matricula" name="Matricula" />
+                            </div>
                     <div class="mb-3">
                         <label for="especialidad" class="form-label">Especialidad</label>
                         <select class="form-control" id="especialidad" name="IdEspecialidad">
@@ -189,6 +193,7 @@
                     document.getElementById('email').value = data.email;
                     document.getElementById('resena').value = data.reseña ||'';
                     document.getElementById('imagen').value = data.imagen;
+                    document.getElementById('matricula').value = data.matricula || '';
 
                     // Llenar las opciones de especialidad
                     var especialidadSelect = document.getElementById('especialidad');

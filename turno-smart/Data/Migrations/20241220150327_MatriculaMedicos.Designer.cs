@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using turno_smart.Data;
 
@@ -11,9 +12,11 @@ using turno_smart.Data;
 namespace turno_smart.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241220150327_MatriculaMedicos")]
+    partial class MatriculaMedicos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -390,39 +393,6 @@ namespace turno_smart.Data.Migrations
                     b.ToTable("Pacientes");
                 });
 
-            modelBuilder.Entity("turno_smart.Models.Recepcionista", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Apellido")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DNI")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UsuarioId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("Recepcionistas");
-                });
-
             modelBuilder.Entity("turno_smart.Models.Turno", b =>
                 {
                     b.Property<int>("Id")
@@ -637,15 +607,6 @@ namespace turno_smart.Data.Migrations
                         .HasPrincipalKey("turno_smart.Models.Usuarios", "DNI")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("turno_smart.Models.Recepcionista", b =>
-                {
-                    b.HasOne("turno_smart.Models.Usuarios", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
 
                     b.Navigation("Usuario");
                 });

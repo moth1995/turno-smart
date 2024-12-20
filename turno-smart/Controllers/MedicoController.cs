@@ -69,6 +69,7 @@ namespace turno_smart.Controllers
                 Email = string.Empty,
                 Reseña = string.Empty, 
                 Imagen = string.Empty,
+                Matricula = 0,
                 Especialidad = especialidades.Select(e => new SelectListItem
 				{
 					Value = e.Id.ToString(),
@@ -112,7 +113,8 @@ namespace turno_smart.Controllers
                         Email = model.Email,
                         IdEspecialidad = model.IdEspecialidad,
                         Reseña = model.Reseña,      // Nueva propiedad
-                        Imagen = model.Imagen       // Nueva propiedad (URL)
+                        Imagen = model.Imagen,      // Nueva propiedad (URL)
+                        Matricula = model.Matricula
                     };
 
                     _medicoService.Create(medico);
@@ -163,7 +165,8 @@ namespace turno_smart.Controllers
                     Email = medico.Email,
                     IdEspecialidad = medico.IdEspecialidad,
                     Reseña = medico.Reseña,       // Asignar valor existente
-                    Imagen = medico.Imagen,       // Asignar valor existente
+                    Imagen = medico.Imagen,
+                    Matricula = medico.Matricula,// Asignar valor existente
                     Especialidad = especialidades.Select(e => new SelectListItem
                     {
                         Value = e.Id.ToString(),
@@ -200,6 +203,7 @@ namespace turno_smart.Controllers
                 medico.IdEspecialidad = obj.IdEspecialidad;
                 medico.Reseña = obj.Reseña ?? medico.Reseña;
                 medico.Imagen = obj.Imagen ?? medico.Imagen;
+                medico.Matricula = obj.Matricula ?? medico.Matricula;
 
                 _medicoService.Update(medico);
                 return Ok(new { success = true });

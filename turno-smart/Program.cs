@@ -34,17 +34,17 @@ namespace turno_smart
 
                 var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
                 var dbName = Environment.GetEnvironmentVariable("DB_NAME");
-                var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
-
+                var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+                Log.Information($"dbHost: {dbHost}, dbName: {dbName}, dbPassword: {dbPassword}");
                 if (!string.IsNullOrEmpty(dbHost) && !string.IsNullOrEmpty(dbName) && !string.IsNullOrEmpty(dbPassword))
                 {
-                    connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User ID=sa;Password={dbPassword}";
+                    connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User ID=sa;Password={dbPassword};TrustServerCertificate=True;";
                 }
                 else
-                {
+                {                    
                     connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
                 }
-                
+                Log.Information($"connectionString: {connectionString}");
                 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseLazyLoadingProxies().UseSqlServer(connectionString));
                 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

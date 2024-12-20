@@ -10,7 +10,7 @@
 
 <div class="modal-body">
     <p class="text-muted mb-4">También puedes modificar por teléfono si lo prefieres.</p>
-    <form method="post" asp-action="Edit" id="TurnoEditForm">
+    <form method="post" asp-action="Edit" id="edit-form">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="TurnoId" />
         <input type="hidden" asp-for="MedicoEspecialidad" />

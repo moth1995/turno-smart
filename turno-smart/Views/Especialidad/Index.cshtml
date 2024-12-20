@@ -55,25 +55,27 @@
                                     </a>
                                     @if (@User.IsInRole("Admin"))
                                     {
-                                        <div class="ms-auto">
+                                        <div class="btn-group">
                                             <!-- Botón para Editar -->
-                                            <button class="btn btn-sm btn-primary me-1" onclick="editarValor(@item.Id,'@item.Nombre')";>Editar</button>
+                                            <form method="get" asp-action="Edit" asp-route-id="@item.Id" id="edit-btn">
+                                                <button type="submit" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                                    Editar Turno
+                                                </button>
+                                            </form>
 
                                             <!-- Botón para Detalles -->
-                                            <a asp-controller="Especialidad"
-                                               asp-action="Details"
-                                               asp-route-id="@item.Id"
-                                               class="btn btn-sm btn-secondary me-1">
-                                                Detalles
-                                            </a>
+                                            <form method="get" asp-action="Details" asp-route-id="@item.Id" id="details-btn">
+                                                <button type="submit" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-details">
+                                                    Detalles
+                                                </button>
+                                            </form>
 
                                             <!-- Botón para Eliminar -->
-                                            <a asp-controller="Especialidad"
-                                               asp-action="Delete"
-                                               asp-route-id="@item.Id"
-                                               class="btn btn-sm btn-danger">
-                                                Eliminar
-                                            </a>                                           
+                                            <form method="get" asp-action="Delete" asp-route-id="@item.Id" id="delete-btn">
+                                                <button type="submit" class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#modal-delete">
+                                                    Eliminar
+                                                </button>
+                                            </form>
                                         </div>
                                     }
                                 </li>
@@ -92,26 +94,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Editar Especialidad</h5>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Nombre de Especialidad</label>
-                        <input type="text" class="form-control" id="elementName" name="Name" placeholder="Introduce un nombre">
-                    </div>
-                    <input type="hidden" id="elementId" name="Id">
-                    <input type="submit" value="Guardar" class="btn btn-primary" />
-                    <button onclick="cerrarModal();" class="btn btn-danger">Cerrar</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 @section Scripts {
     <script>
 
