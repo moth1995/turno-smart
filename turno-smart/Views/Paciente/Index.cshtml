@@ -33,7 +33,7 @@
                             <tr>
                                 <th class="ps-4">Nombre</th>
                                 <th>DNI</th>
-                                <th>Cobertura</th>
+                                @* <th>Cobertura</th> *@
                                 <th>Telefono</th>
                                 <th>Estado</th>
                                 <th class="text-end pe-4">Acciones</th>
@@ -51,9 +51,9 @@
                                         <td class="align-middle">
                                             @paciente.Dni
                                         </td>
-                                        <td class="align-middle">
+                                       @*  <td class="align-middle">
                                             @if (paciente.Cobertura == 0) { <span class="badge bg-danger">No</span> } else { <span class="badge bg-success">Si</span> }
-                                        </td>
+                                        </td> *@
                                         <td class="align-middle">
                                             @paciente.Telefono
                                         </td>
